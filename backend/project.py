@@ -7,4 +7,6 @@ class Project(db.Model):
     title = db.Column(db.String(50), unique=True)
     current_state = db.Column(db.Integer)
     description = db.Text()
+    pm_id = db.Column(db.Integer, db.ForeignKey('person.id'))
+
 

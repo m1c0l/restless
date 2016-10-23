@@ -1,6 +1,14 @@
 import json, flask
 from flask import Flask, request
-app = Flask(__name__)
+from flask_sqlalchemy import SQLAlchemy
+
+def create_app():
+    app = Flask(__name__)
+    db.init_app(app)
+    return app
+
+app = create_app()
+app.app_context().push()
 
 def error(msg='Bad Request', status='BAD_REQUEST', code=400): #todo: add logging?
     try:
