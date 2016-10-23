@@ -10,3 +10,5 @@ class User(db.Model):
     LinkedIn_profile_id = db.Column(db.Text)
     bio = db.Column(db.Text)
     signup_time = db.Column(db.DateTime)
+
+    #projects = db.relationship('Project', backref='user')
