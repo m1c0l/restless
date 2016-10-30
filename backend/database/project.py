@@ -10,3 +10,9 @@ class Project(db.Model):
     pm_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     project_i_skill = db.relationship('Skill', secondary=project_skills, backref='project', lazy='select')
 
+    def __init__(self, title, description, pm_id):
+        self.title = title
+        self.description = description
+        self.pm_id = pm_id
+        self.current_state = 0
+

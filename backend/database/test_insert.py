@@ -23,4 +23,7 @@ with app.app_context():
     s = Skill(skill_name="Python")
     db.session.add(s)
     db.session.commit()
+    p = Project(title="H4cks", description="M4st3r h4cks 4 dayz", pm_id=u.id)
+    db.session.add(p)
+    db.session.commit() 
 
