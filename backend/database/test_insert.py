@@ -16,6 +16,9 @@ from user_skills import user_skills
 from swipe import Swipe
 
 with app.app_context():
+    db.drop_all()
+    db.create_all()
+
     u = User(first_name="John", last_name="Dough", email="xyz", username="jd", bio="m4st3r h4x0r")
     db.session.add(u)
     db.session.commit()
