@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from database import db
 from devs_to_projects import devs_to_projects
 from user_skills import user_skills
+from datetime import datetime
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -13,6 +14,15 @@ class User(db.Model):
     bio = db.Column(db.Text, nullable=False, default="")
     signup_time = db.Column(db.DateTime, nullable=False)
     # foreign relationships to PMs, devs, and skills
-    projects_i_pm = db.relationship('Project', backref='user', lazy='select')
-    projects_i_dev = db.relationship('devs_to_projects', secondary=devs_to_projects, backref='user', lazy='select')
-    user_i_skill = db.relationship('user_skills', secondary=user_skills, backref='user', lazy='select')
+    projects_i_pm = db.relationship('Project', backref='projects_managing', lazy='select')
+    projects_i_dev = db.relationship('Project', secondary=devs_to_projects, backref='projects_developing', lazy='select')
+    user_i_skill = db.relationship('Skill', secondary=user_skills, backref='skill_sets', lazy='select')
+
+    def __init__(self, username, first_name, last_name, email, bio):
+        self.username = username
+        self.first_name = first_name
+        self.last_name = last_name
+        self.email = email
+        self.bio = bio
+        self.signup_time = datetime.now()
+
