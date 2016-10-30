@@ -8,3 +8,8 @@ class Swipe(db.Model):
     result = db.Column(db.Integer, nullable=False)
     who_swiped = db.Column(db.Integer, nullable=False)
 
+    def __init__(self, user_id, project_id, who_swiped):
+        self.user_id = user_id
+        self.project_id = project_id
+        self.result = 0
+        self.who_swiped = who_swiped
