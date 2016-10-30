@@ -8,4 +8,4 @@ createdb:
 	python database/create_db.py
 
 clean:
-	rm *.pyc
+	rm -f *.pyc */*.pyc
