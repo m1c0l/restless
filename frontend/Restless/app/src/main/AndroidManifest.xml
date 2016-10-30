@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".DevPMSelectionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,7 +23,16 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".SignIn"></activity>
+        <activity android:name=".SignIn" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".PMActivity" />
+        <activity android:name=".editProfileActivity" />
+        <activity android:name=".createProjectActivity" />
+        <activity android:name=".selectProjectActivity" />
+        <activity android:name=".projectActivity" />
+        <activity android:name=".pendingMatchActivity" />
+        <activity android:name=".editProjectActivity" />
+        <activity android:name=".selectDevelopersActivity"></activity>
     </application>
 
 </manifest>
