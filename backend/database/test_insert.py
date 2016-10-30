@@ -20,5 +20,7 @@ with app.app_context():
     #db.create_all()
     u = User(first_name="John", last_name="Dough", email="xyz", username="jd", bio="m4st3r h4x0r")
     db.session.add(u)
+    s = Skill(skill_name="Python")
+    db.session.add(s)
     db.session.commit()
 

@@ -5,3 +5,6 @@ class Skill(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     skill_name = db.Column(db.String(64), unique=True, nullable=False)
 
+    def __init__(self, skill_name):
+        self.skill_name = skill_name
+
