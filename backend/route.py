@@ -15,7 +15,7 @@ def error(msg='Bad Request', status='BAD_REQUEST', code=400): #todo: add logging
     try:
         er = {
             'error_message' : msg,
-            'status': status,
+            'status': status
         }
         return flask.jsonify(**er), code
     except:
