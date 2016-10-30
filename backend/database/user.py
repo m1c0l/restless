@@ -26,3 +26,5 @@ class User(db.Model):
         self.bio = bio
         self.signup_time = datetime.now()
 
+    def __repr__(self):
+        return "<User '%s' id=%d>" % (self.username, self.id)
