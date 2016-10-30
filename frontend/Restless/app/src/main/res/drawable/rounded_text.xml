@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  res/drawable/edittext_rounded_corners.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_pressed="true" android:state_focused="true">
+        <shape>
+            <solid android:color="#f8f6f6"/>
+            <stroke
+
+                android:color="#f8f6f6" />
+            <corners
+                android:radius="10dp" />
+        </shape>
+    </item>
+
+    <item android:state_pressed="true" android:state_focused="false">
+        <shape>
+            <solid android:color="#f8f6f6"/>
+            <stroke
+                android:color="#f8f6f6" />
+            <corners
+                android:radius="10dp" />
+        </shape>
+    </item>
+
+    <item android:state_pressed="false" android:state_focused="true">
+        <shape>
+            <solid android:color="#f7f6f6"/>
+            <stroke
+                android:color="#f7f6f6" />
+            <corners
+                android:radius="10dp" />
+        </shape>
+    </item>
+
+    <item android:state_pressed="false" android:state_focused="false">
+        <shape>
+            <gradient
+                android:startColor="#f7f6f6"
+                android:centerColor="#f7f6f6"
+                android:endColor="#f7f6f6"
+                android:angle="270"
+                />
+            <stroke
+                android:color="#f7f6f6" />
+            <corners
+                android:radius="10dp" />
+        </shape>
+    </item>
+
+    <item android:state_enabled="true">
+        <shape>
+            <padding
+                android:left="4dp"
+                android:top="4dp"
+                android:right="4dp"
+                android:bottom="4dp"
+                />
+        </shape>
+    </item>
+
+</selector>

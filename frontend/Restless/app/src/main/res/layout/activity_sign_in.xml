@@ -11,15 +11,85 @@
     android:background="#885fb62c"
     tools:context="com.example.eric.restless.MainActivity">
 
+    <TextView
+        android:text="@string/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="19dp"
+        android:layout_marginStart="19dp"
+        android:id="@+id/email"
+        android:textColor="#B0000000"
+        android:layout_alignBaseline="@+id/emailText"
+        android:layout_alignBottom="@+id/emailText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="20sp"
+        android:textAllCaps="false" />
+
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:ems="10"
-        android:layout_marginTop="50dp"
-        android:id="@+id/editText"
-        android:backgroundTint="@drawable/common_google_signin_btn_icon_dark"
+        android:layout_marginTop="70dp"
+        android:id="@+id/emailText"
+        android:backgroundTintMode="src_atop"
+        android:background="@drawable/rounded_text"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:layout_marginTop="140dp"
+        android:id="@+id/passwordText"
+        android:backgroundTintMode="src_atop"
+        android:background="@drawable/rounded_text"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="@string/password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/password"
+        android:textColor="#B0000000"
+        android:textSize="20sp"
+        android:textAllCaps="false"
+        android:layout_alignBaseline="@+id/passwordText"
+        android:layout_alignBottom="@+id/passwordText"
+        android:layout_alignLeft="@+id/email"
+        android:layout_alignStart="@+id/email" />
+
+    <Button
+        android:text="Sign in with LinkedIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/linkedinSign"
+        android:layout_marginBottom="87dp"
+        android:background="@drawable/roundedbutton"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="linkedInLogin"
+        />
+
+    <Button
+        android:text="Sign In"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/signIn"
+        android:background="@drawable/roundedbutton"
+        android:layout_above="@+id/linkedinSign"
+        android:layout_alignLeft="@+id/linkedinSign"
+        android:layout_alignStart="@+id/linkedinSign"
+        android:layout_marginBottom="20dp"
+        android:layout_alignRight="@+id/linkedinSign"
+        android:layout_alignEnd="@+id/linkedinSign"
+        android:onClick="signIn"
+        />
 </RelativeLayout>
