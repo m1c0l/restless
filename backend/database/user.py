@@ -14,9 +14,9 @@ class User(db.Model):
     bio = db.Column(db.Text, nullable=False, default="")
     signup_time = db.Column(db.DateTime, nullable=False)
     # foreign relationships to PMs, devs, and skills
-    projects_i_pm = db.relationship('Project', backref='projects_managing', lazy='select')
-    projects_i_dev = db.relationship('Project', secondary=devs_to_projects, backref='projects_developing', lazy='select')
-    user_i_skill = db.relationship('Skill', secondary=user_skills, backref='skill_sets', lazy='select')
+    projects_managing = db.relationship('Project', backref='projects_managing', lazy='select')
+    projects_developing = db.relationship('Project', secondary=devs_to_projects, backref='projects_developing', lazy='select')
+    skill_sets = db.relationship('Skill', secondary=user_skills, backref='skill_sets', lazy='select')
 
     def __init__(self, username, first_name, last_name, email, bio):
         self.username = username
