@@ -40,9 +40,21 @@ for u in user_arr:
 s = Skill(skill_name="Python")
 insert_db_obj(s)
 
-p = Project(title="H4cks", description="M4st3r h4cks 4 dayz", pm_id=user_arr[0].id)
-insert_db_obj(p)
+project_arr = [
+    Project(title="H4cks", description="M4st3r h4cks 4 dayz", pm_id=user_arr[0].id),
+    Project(title="H4cks2", description="M4st3r h4cks again", pm_id=user_arr[3].id),
+    Project(title="H4cks3", description="M4st3r h4cks in Minecraft", pm_id=user_arr[3].id),
+    Project(title="H4cks4", description="M4st3r h4cks IRL", pm_id=user_arr[2].id)
+]
+for p in project_arr:
+    insert_db_obj(p)
 
-sw = Swipe(user_id=user_arr[0].id, project_id=p.id, who_swiped=0)
-insert_db_obj(sw)
+swipe_arr = [
+    Swipe(user_id=user_arr[1].id, project_id=project_arr[0].id, who_swiped=0),
+    Swipe(user_id=user_arr[2].id, project_id=project_arr[1].id, who_swiped=0),
+    Swipe(user_id=user_arr[0].id, project_id=project_arr[2].id, who_swiped=0),
+    Swipe(user_id=user_arr[3].id, project_id=project_arr[3].id, who_swiped=0)
+]
+for sw in swipe_arr:
+    insert_db_obj(sw)
 
