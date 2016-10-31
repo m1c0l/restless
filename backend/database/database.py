@@ -12,6 +12,10 @@ from user_skills import user_skills
 from swipe import Swipe
 from login import Login
 
+def insert_obj(obj):
+    db.session.add(obj)
+    db.session.commit()
+
 def get_user_by_id(id):
     return User.query.filter_by(id=id).first()
 

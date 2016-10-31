@@ -18,10 +18,6 @@ from login import Login
 
 app.app_context().push()
 
-def insert_db_obj(obj):
-    db.session.add(obj)
-    db.session.commit()
-
 db.drop_all()
 db.create_all()
 
@@ -35,10 +31,10 @@ user_arr = [
     User(first_name="Vince", last_name="Jin", email="jinir", username="vince", bio="flask dev")
 ]
 for u in user_arr:
-    insert_db_obj(u)
+    database.insert_obj(u)
 
 s = Skill(skill_name="Python")
-insert_db_obj(s)
+database.insert_obj(s)
 
 project_arr = [
     Project(title="H4cks", description="M4st3r h4cks 4 dayz", pm_id=user_arr[0].id),
@@ -47,7 +43,7 @@ project_arr = [
     Project(title="H4cks4", description="M4st3r h4cks IRL", pm_id=user_arr[2].id)
 ]
 for p in project_arr:
-    insert_db_obj(p)
+    database.insert_obj(p)
 
 swipe_arr = [
     Swipe(user_id=user_arr[1].id, project_id=project_arr[0].id, who_swiped=0),
@@ -56,5 +52,5 @@ swipe_arr = [
     Swipe(user_id=user_arr[3].id, project_id=project_arr[3].id, who_swiped=0)
 ]
 for sw in swipe_arr:
-    insert_db_obj(sw)
+    database.insert_obj(sw)
 
