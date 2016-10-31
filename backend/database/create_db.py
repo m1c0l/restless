@@ -25,6 +25,9 @@ def insert_db_obj(obj):
 db.drop_all()
 db.create_all()
 
+if app.config['INSERT_TEST_DATA'] == False:
+    exit()
+
 user_arr = [
     User(first_name="John", last_name="Dough", email="xyz", username="jd", bio="m4st3r h4x0r"),
     User(first_name="Mike", last_name="Li", email="mail", username="mic", bio="admin"),
