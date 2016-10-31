@@ -24,3 +24,11 @@ def get_project_by_id(id):
 
 def get_project_by_pm_id(pm_id):
     return Project.query.filter_by(pm_id=pm_id).first()
+
+def update(obj, **kwargs):
+    for key, value in kwargs.items():
+        if hasattr(obj, key):
+            setattr(obj, key, value)
+        else:
+            raise AttributeError("%s has no attribute '%s'" % (obj.__class__, key))
+    db.session.commit()
