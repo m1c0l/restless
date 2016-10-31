@@ -29,17 +29,19 @@ def delete(obj):
     db.session.commit()
 
 
+# TODO: use *_or_404 for stuff
+
 def get_user_by_id(id):
-    return User.query.filter_by(id=id).first()
+    return User.query.get(id)
 
 def get_project_by_id(id):
-    return Project.query.filter_by(id=id).first()
+    return Project.query.get(id)
 
 def get_skill_by_id(id):
-    return Skill.query.filter_by(id=id).first()
+    return Skill.query.get(id)
 
 def get_swipe_by_id(id):
-    return Swipe.query.filter_by(id=id).first()
+    return Swipe.query.get(id)
 
 def get_projects_by_pm_id(pm_id):
     return Project.query.filter_by(pm_id=pm_id).all()
