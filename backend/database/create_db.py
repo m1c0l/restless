@@ -33,8 +33,14 @@ user_arr = [
 for u in user_arr:
     database.insert_obj(u)
 
-s = Skill(skill_name="Python")
-database.insert_obj(s)
+skill_arr = [
+    Skill(skill_name="Python"),
+    Skill(skill_name="Django"),
+    Skill(skill_name="MySQL"),
+    Skill(skill_name="SQLAlchemy"),
+]
+for s in skill_arr:
+    database.insert_obj(s)
 
 project_arr = [
     Project(title="H4cks", description="M4st3r h4cks 4 dayz", pm_id=user_arr[0].id),
