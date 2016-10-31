@@ -39,3 +39,11 @@ def get_swipe_by_id(id):
 
 def get_projects_by_pm_id(pm_id):
     return Project.query.filter_by(pm_id=pm_id).all()
+
+def add_new_user(user_obj, password):
+    insert_obj(user_obj)
+    new_login = Login(username=user_obj.username, password=password)
+    insert_obj(new_login)
+
+def validate_login(login_obj):
+    return Login.query.filter_by(username=login_obj.username).filter_by(password=login_obj.password).first()
