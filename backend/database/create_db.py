@@ -1,12 +1,12 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from database import db
+import database
 
 app = Flask(__name__)
 app.config.from_pyfile('../config.py')
 db.init_app(app)
 
-from database import db 
 from user import User 
 from project import Project
 from skill import Skill

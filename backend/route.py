@@ -6,8 +6,8 @@ app = Flask(__name__)
 def init_app():
     app.config.from_pyfile("config.py")
 
-    from database.database import db
-    db.init_app(app)
+    from database import database
+    database.db.init_app(app)
 
     return
 
