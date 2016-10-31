@@ -41,6 +41,9 @@ skill_arr = [
 ]
 for s in skill_arr:
     database.insert_obj(s)
+    user_arr[1].skill_sets.append(s)
+    user_arr[2].skill_sets.append(s)
+    db.session.commit()
 
 project_arr = [
     Project(title="H4cks", description="M4st3r h4cks 4 dayz", pm_id=user_arr[0].id),
@@ -50,6 +53,9 @@ project_arr = [
 ]
 for p in project_arr:
     database.insert_obj(p)
+    user_arr[1].projects_developing.append(p)
+    p.skills_needed.append(skill_arr[3])
+    db.session.commit()
 
 swipe_arr = [
     Swipe(user_id=user_arr[1].id, project_id=project_arr[0].id, who_swiped=0),
