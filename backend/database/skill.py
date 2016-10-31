@@ -9,4 +9,4 @@ class Skill(db.Model):
         self.skill_name = skill_name
 
     def __repr__(self):
-        return "<Skill '%s' id=%d>" % (self.skill_name, self.id)
+        return "<Skill '%s' id=%r>" % (self.skill_name, self.id)

@@ -17,4 +17,4 @@ class Project(db.Model):
         self.current_state = 0
 
     def __repr__(self):
-        return "<Project '%s' id=%d>" % (self.title, self.id)
+        return "<Project '%s' id=%r>" % (self.title, self.id)

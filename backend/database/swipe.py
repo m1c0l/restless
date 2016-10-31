@@ -15,4 +15,4 @@ class Swipe(db.Model):
         self.who_swiped = who_swiped
 
     def __repr__(self):
-        return "<Swipe user=%d project=%d id=%d>" % (self.user_id, self.project_id, self.id)
+        return "<Swipe user=%d project=%d id=%r>" % (self.user_id, self.project_id, self.id)

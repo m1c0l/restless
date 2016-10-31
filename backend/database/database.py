@@ -24,6 +24,10 @@ def update(obj, **kwargs):
             raise AttributeError("%s has no attribute '%s'" % (obj.__class__, key))
     db.session.commit()
 
+def delete(obj):
+    db.session.delete(obj)
+    db.session.commit()
+
 
 def get_user_by_id(id):
     return User.query.filter_by(id=id).first()
