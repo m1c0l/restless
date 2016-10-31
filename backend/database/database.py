@@ -18,4 +18,5 @@ def get_user_by_id(id):
 def get_project_by_id(id):
     return Project.query.filter_by(id=id).first()
 
-def get_
+def get_project_by_pm_id(pm_id):
+    return Project.query.filter_by(pm_id=pm_id).first()
