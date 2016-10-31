@@ -16,15 +16,6 @@ def insert_obj(obj):
     db.session.add(obj)
     db.session.commit()
 
-def get_user_by_id(id):
-    return User.query.filter_by(id=id).first()
-
-def get_project_by_id(id):
-    return Project.query.filter_by(id=id).first()
-
-def get_projects_by_pm_id(pm_id):
-    return Project.query.filter_by(pm_id=pm_id).all()
-
 def update(obj, **kwargs):
     for key, value in kwargs.items():
         if hasattr(obj, key):
@@ -32,3 +23,19 @@ def update(obj, **kwargs):
         else:
             raise AttributeError("%s has no attribute '%s'" % (obj.__class__, key))
     db.session.commit()
+
+
+def get_user_by_id(id):
+    return User.query.filter_by(id=id).first()
+
+def get_project_by_id(id):
+    return Project.query.filter_by(id=id).first()
+
+def get_skill_by_id(id):
+    return Skill.query.filter_by(id=id).first()
+
+def get_swipe_by_id(id):
+    return Swipe.query.filter_by(id=id).first()
+
+def get_projects_by_pm_id(pm_id):
+    return Project.query.filter_by(pm_id=pm_id).all()
