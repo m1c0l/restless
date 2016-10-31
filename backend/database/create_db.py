@@ -32,6 +32,8 @@ user_arr = [
 ]
 for u in user_arr:
     database.insert_obj(u)
+    login = Login(username=u.username, password="hunter2")
+    database.insert_obj(login)
 
 skill_arr = [
     Skill(skill_name="Python"),
