@@ -4,9 +4,14 @@ run:
 createdb:
 	python database/create_db.py
 
-docs: *.py **/*.py
+DOCS_DIR = docs/
+
+docs:
+	mkdir -p $(DOCS_DIR)
 	pydoc -w ./
-	mv *.html docs/
+	mv *.html $(DOCS_DIR)
 
 clean:
-	rm -f *.pyc **/*.pyc docs/
+	rm -rf *.pyc **/*.pyc $(DOCS_DIR)
+
+.PHONY: docs
