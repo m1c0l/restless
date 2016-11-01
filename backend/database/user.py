@@ -1,5 +1,4 @@
-from flask_sqlalchemy import SQLAlchemy
-from database import db
+from db import db
 from devs_to_projects import devs_to_projects
 from user_skills import user_skills
 from datetime import datetime

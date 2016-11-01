@@ -1,5 +1,4 @@
-from flask_sqlalchemy import SQLAlchemy
-from database import db
+from db import db
 
 class Skill(db.Model):
     id = db.Column(db.Integer, primary_key=True)

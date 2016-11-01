@@ -1,5 +1,4 @@
-from flask_sqlalchemy import SQLAlchemy
-from database import db
+from db import db
 from project_skills import project_skills
 
 class Project(db.Model):
