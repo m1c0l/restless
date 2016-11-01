@@ -5,9 +5,9 @@ createdb:
 	python database/create_db.py
 
 docs:
-	epydoc --html .
+	epydoc --html -v .
 
 clean:
-	rm -rf *.pyc **/*.pyc html/
+	rm -f *.pyc **/*.pyc
 
 .PHONY: docs
