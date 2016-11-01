@@ -9,4 +9,4 @@ docs: *.py **/*.py
 	mv *.html docs/
 
 clean:
-	rm -f *.pyc */*.pyc
+	rm -f *.pyc **/*.pyc docs/
