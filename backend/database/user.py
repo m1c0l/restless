@@ -4,24 +4,94 @@ from user_skills import user_skills
 from datetime import datetime
 
 class User(db.Model):
+    """
+    This class is the database model for the users of Restless. Users are both
+    Developers and Project Managers.
+    """
+
     id = db.Column(db.Integer, primary_key=True)
     """
-    A User's id. This is User's primary key in the database.
+    A user's id. This is User's primary key in the database.
     @type: C{int}
     """
+
     username = db.Column(db.String(20), unique=True, nullable=False)
+    """
+    The user's username. This is used for authentication and identification
+    and cannot be changed.
+    @type: C{str}
+    """
+
     first_name = db.Column(db.Text, nullable=False)
+    """
+    The user's first name.
+    @type: C{str}
+    """
+
     last_name = db.Column(db.Text, nullable=False)
+    """
+    The user's last name.
+    @type: C{str}
+    """
+
     email = db.Column(db.Text, nullable=False)
+    """
+    The user's email.
+    @type: C{str}
+    """
+
     LinkedIn_profile_id = db.Column(db.Text, nullable=True)
+    """
+    The user's LinkedIn profile id.
+    @type: C{str}
+    """
+
     bio = db.Column(db.Text, nullable=False, default="")
+    """
+    A description about the user.
+    @type: C{str}
+    """
+
     signup_time = db.Column(db.DateTime, nullable=False)
+    """
+    When the user signed up.
+    @type: C{datetime}
+    """
+
     # foreign relationships to PMs, devs, and skills
     projects_managing = db.relationship('Project', backref='projects_managing', lazy='select')
+    """
+    The projects this user is a Project Manager for.
+    @type: list of L{Project}
+    """
+
     projects_developing = db.relationship('Project', secondary=devs_to_projects, backref='projects_developing', lazy='select')
+    """
+    The projects this user is a Developer for.
+    @type: list of L{Project}
+    """
+
     skill_sets = db.relationship('Skill', secondary=user_skills, backref='skill_sets', lazy='select')
+    """
+    The skills this user has.
+    @type: list of L{Skill}
+    """
 
     def __init__(self, username, first_name, last_name, email, bio):
+        """
+        Construct a User
+
+        @param username: A unique username
+        @type username: C{str}
+        @param first_name: First name
+        @type first_name: C{str}
+        @param last_name: last name
+        @type last_name: C{str}
+        @param email: Email
+        @type email: C{str}
+        @param bio: A descriptive bio
+        @type bio: C{str}
+        """
         self.username = username
         self.first_name = first_name
         self.last_name = last_name
