@@ -1,6 +1,6 @@
 import json, flask
 from flask import Flask, request
-
+from database import database
 app = Flask(__name__)
 
 def init_app():
@@ -13,11 +13,11 @@ def init_app():
 
 def error(msg='Bad Request', status='BAD_REQUEST', code=400): #todo: add logging?
     try:
-        er = {
+        err = {
             'error_message' : msg,
             'status': status
         }
-        return flask.jsonify(**er), code
+        return flask.jsonify(**err), code
     except:
         return 'Internal server error...', 500
         
@@ -25,12 +25,18 @@ def error(msg='Bad Request', status='BAD_REQUEST', code=400): #todo: add logging
 def index():
     return error(msg='There is no index!')
 
-@app.route("/api/<type>/<id>/", methods=['GET', 'POST'])
+@app.route("/api/<type>/<id>", methods=['GET', 'POST'])
 def retrieve(type,id): # todo: find stuff with the id
     if type == "" or id == "":
         return error(msg='Please fill in your parameters!')
     if type.lower() == 'user':
-        pass
+        try:
+            id = int(id)
+            response = database.get_user_by_id(id)
+            response_dict = response.__dict__
+            return flask.jsonify(response_dict)
+        except:
+            return error(msg='Invalid ID')
     elif type.lower() == 'project':
         pass
     elif type.lower() == 'skill':
