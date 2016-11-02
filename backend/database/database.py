@@ -28,6 +28,7 @@ def update(obj, **kwargs):
     @param obj: An existing object in the database
     @type obj: flask_sqlalchemy.Model
     @param kwargs: The attributes to update on I{obj}
+    @raise AttributeError: If C{obj} does not have a given attribute
     """
     for key, value in kwargs.items():
         if hasattr(obj, key):
