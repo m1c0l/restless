@@ -5,6 +5,10 @@ from datetime import datetime
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    """
+    A User's id. This is User's primary key in the database.
+    @type: C{int}
+    """
     username = db.Column(db.String(20), unique=True, nullable=False)
     first_name = db.Column(db.Text, nullable=False)
     last_name = db.Column(db.Text, nullable=False)
