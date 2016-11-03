@@ -29,18 +29,18 @@ def index():
 def retrieve(type,id): # todo: find stuff with the id
     if type == "" or id == "":
         return error(msg='Please fill in your parameters!')
-    if type.lower() == 'user':
+    database_commands = {
+        'user' : database.get_user_by_id,
+        'project' : database.get_project_by_id,
+        'skill' : database.get_skill_by_id,
+    }
+    if type.lower() in database_commands:
         try:
             id = int(id)
-            response = database.get_user_by_id(id)
-            response_dict = response.__dict__
-            return flask.jsonify(response_dict)
+            response = database_commands[type.lower()](id)
+            return flask.jsonify(**response_dict)
         except:
             return error(msg='Invalid ID')
-    elif type.lower() == 'project':
-        pass
-    elif type.lower() == 'skill':
-        pass
     else:
         return error(msg='Invalid type.')
 
