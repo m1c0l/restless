@@ -1,8 +1,13 @@
-DB = restless
-USER = restless
+run:
+	python route.py
 
 createdb:
 	python database/create_db.py
 
+docs:
+	epydoc --html -v .
+
 clean:
-	rm *.pyc
+	rm -f *.pyc **/*.pyc
+
+.PHONY: docs

@@ -1,6 +1,4 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from database import db
+from db import db
 
 devs_to_projects = db.Table('devs_to_projects',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
