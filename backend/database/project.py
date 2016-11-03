@@ -45,11 +45,11 @@ class Project(db.Model):
         Constuct a project.
 
         @param title: The title of the project
-        @type title: c{str}
+        @type title: C{str}
         @param description: The description of the project
-        @type description: c{str}
+        @type description: C{str}
         @param pm_id: The id of the developer who is the PM
-        @type pm_id: c{int}
+        @type pm_id: C{int}
         """
         self.title = title
         self.description = description

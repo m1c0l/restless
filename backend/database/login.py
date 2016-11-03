@@ -25,9 +25,9 @@ class Login(db.Model):
         Construct a Login.
 
         @param username: The user's username.
-        @type username: c{str}
+        @type username: C{str}
         @param password: The user's password.
-        @type password: c{str}
+        @type password: C{str}
         """
         self.username = username
         self.password = password
