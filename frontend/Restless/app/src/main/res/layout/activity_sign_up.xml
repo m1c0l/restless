@@ -10,8 +10,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.eric.restless.signUp">
 
-
-
     <TextView
         android:text="N e w    A c c o u n t"
         android:background="@drawable/roundedheader"
@@ -125,7 +123,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
+        android:inputType="numberDecimal"
 
         android:background="@drawable/rounded_text"
         android:ems="10"
