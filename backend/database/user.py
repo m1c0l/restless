@@ -101,3 +101,6 @@ class User(db.Model):
 
     def __repr__(self):
         return "<User '%s' id=%r>" % (self.username, self.id)
+
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}

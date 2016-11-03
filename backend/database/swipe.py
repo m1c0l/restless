@@ -63,3 +63,6 @@ class Swipe(db.Model):
     def __repr__(self):
         return "<Swipe user=%d project=%d id=%r>" % (self.user_id,
                                                      self.project_id, self.id)
+                                                     
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
