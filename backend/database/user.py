@@ -7,6 +7,7 @@ class User(db.Model):
     """
     This class is the database model for the users of Restless. Users are both
     Developers and Project Managers.
+    @note: if you change a field in here, make sure to change the corresponding field in the to_dict() function at the bottom!
     """
 
     id = db.Column(db.Integer, primary_key=True)

@@ -47,8 +47,16 @@ def delete(obj):
     db.session.delete(obj)
     db.session.commit()
 
+def get_user_by_username(username):
+    """
+    Get a User by username
 
-# TODO: use *_or_404 for stuff
+    @param username: The user's username
+    @type username: C{string}
+    @return: The C{User} with the username C{username}, or C{None}
+    @rtype: L{User}
+    """
+    return User.query.filter_by(username=username).first()
 
 def get_user_by_id(id):
     """
