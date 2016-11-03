@@ -9,3 +9,6 @@ class Skill(db.Model):
 
     def __repr__(self):
         return "<Skill '%s' id=%r>" % (self.skill_name, self.id)
+
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}

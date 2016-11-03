@@ -37,9 +37,9 @@ def retrieve(type,id): # todo: find stuff with the id
     if type.lower() in database_commands:
         try:
             id = int(id)
-            response = database_commands[type.lower()](id)
+            response_dict = database_commands[type.lower()](id).to_dict()
             return flask.jsonify(**response_dict)
-        except:
+        except ValueError:
             return error(msg='Invalid ID')
     else:
         return error(msg='Invalid type.')

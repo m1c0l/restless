@@ -17,3 +17,6 @@ class Project(db.Model):
 
     def __repr__(self):
         return "<Project '%s' id=%r>" % (self.title, self.id)
+
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
