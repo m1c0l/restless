@@ -104,4 +104,23 @@ class User(db.Model):
         return "<User '%s' id=%r>" % (self.username, self.id)
 
     def to_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        """
+        Return a dictionary to be returned by the API.
+        @type: dictionary
+        """
+        
+        ret = {
+            'id' : id,
+            'username' : username,
+            'first_name' : first_name,
+            'last_name' : last_name,
+            'email' : email,
+            'LinkedIn_profile_id' : LinkedIn_profile_id,
+            'bio' : bio,
+            'signup_time' : signup_time,
+            ''''projects_managing' : projects_managing,
+            'projects_developing' : projects_developing,
+            'skill_sets' : skill_sets,'''
+        }
+        #return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        return ret

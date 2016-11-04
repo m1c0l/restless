@@ -11,4 +11,14 @@ class Skill(db.Model):
         return "<Skill '%s' id=%r>" % (self.skill_name, self.id)
 
     def to_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        """
+        Return a dictionary to be returned by the API.
+        @type: dictionary
+        """
+        
+        ret = {
+            'id' : id,
+            'skill_name', skill_name,
+        }
+        return ret
+        #return {c.name: getattr(self, c.name) for c in self.__table__.columns}

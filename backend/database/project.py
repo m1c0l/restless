@@ -19,4 +19,18 @@ class Project(db.Model):
         return "<Project '%s' id=%r>" % (self.title, self.id)
 
     def to_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        """
+        Return a dictionary to be returned by the API.
+        @type: dictionary
+        """
+        
+        ret = {
+            'id' : id,
+            'title' : title,
+            'current_state' : current_state,
+            'description' : description,
+            'pm_id' : pm_id,
+            #'skills_needed' : skills_needed,
+        }
+        #return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        return ret
