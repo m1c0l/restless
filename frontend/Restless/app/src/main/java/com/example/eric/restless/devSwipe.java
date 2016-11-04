@@ -53,6 +53,7 @@ public class devSwipe extends AppCompatActivity {
 
             boolean horizontal_move = ((abs(horizontal) > minFling) && abs(velocityX)>minVelocity && abs(horizontal)>abs(vertical) && abs(velocityX)>abs(velocityY));
             boolean vertical_move = (abs(vertical)>minFling && abs(velocityY)>minVelocity && abs(vertical)>abs(horizontal) && abs(velocityY)>abs(velocityX));
+
             if(horizontal_move){
                 a_pos = (horizontal > 0)? a_pos-1:a_pos+1;
                 if(a_pos==-1)
@@ -60,6 +61,7 @@ public class devSwipe extends AppCompatActivity {
                 a_pos=a_pos%3;
                 ((TextView) findViewById(R.id.BioBody)).setText(a[a_pos]);
             }
+
             if(vertical_move){
                 String match= (vertical < 0)? "I want you":"I will send you a rejection letter in 3 months";
                 Toast.makeText(getApplicationContext(),match,Toast.LENGTH_SHORT).show();
