@@ -22,6 +22,7 @@ public class SignIn extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Button signIn = (Button) findViewById(R.id.signIn);
         Button linkedinSignIn = (Button) findViewById(R.id.linkedinSign);
         setContentView(R.layout.activity_sign_in);

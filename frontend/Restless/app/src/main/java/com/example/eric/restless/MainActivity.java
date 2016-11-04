@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         Button signIn = (Button) findViewById(R.id.signInButton);
         Button register = (Button) findViewById(R.id.registerButton);
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(transfer);
     }
     public void registerMethod(View v){
-        Intent transfer=new Intent(MainActivity.this,SignIn.class);
+        Intent transfer=new Intent(MainActivity.this,signUp.class);
         startActivity(transfer);
     }
     public Action getIndexApiAction() {
