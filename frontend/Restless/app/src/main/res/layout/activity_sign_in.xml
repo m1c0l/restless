@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -11,14 +12,14 @@
     tools:context="com.example.eric.restless.MainActivity">
 
     <TextView
-        android:text="@string/email"
+        android:text="Username:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="19dp"
         android:layout_marginStart="19dp"
         android:id="@+id/email"
-        android:layout_alignBaseline="@+id/emailText"
-        android:layout_alignBottom="@+id/emailText"
+        android:layout_alignBaseline="@+id/usernameText"
+        android:layout_alignBottom="@+id/usernameText"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:textSize="20sp"
@@ -30,7 +31,7 @@
         android:inputType="textEmailAddress"
         android:ems="10"
         android:layout_marginTop="70dp"
-        android:id="@+id/emailText"
+        android:id="@+id/usernameText"
         android:backgroundTintMode="src_atop"
         android:background="@drawable/rounded_text"
         android:layout_alignParentTop="true"
@@ -64,30 +65,26 @@
         android:layout_alignStart="@+id/email" />
 
     <Button
-        android:text="Sign in with LinkedIn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="215dp"
+        android:background="@drawable/signinlargedefault"
+        android:layout_marginBottom="34dp"
         android:id="@+id/linkedinSign"
-        android:layout_marginBottom="87dp"
-        android:background="@drawable/roundedbutton"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:onClick="linkedInLogin"
-        />
+        android:layout_height="41dp" />
 
     <Button
         android:text="Sign In"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/signIn"
-
         android:background="@drawable/roundedbutton"
+        android:onClick="signIn"
+        android:layout_marginBottom="45dp"
         android:layout_above="@+id/linkedinSign"
         android:layout_alignLeft="@+id/linkedinSign"
         android:layout_alignStart="@+id/linkedinSign"
-        android:layout_marginBottom="20dp"
         android:layout_alignRight="@+id/linkedinSign"
-        android:layout_alignEnd="@+id/linkedinSign"
-        android:onClick="signIn"
-        />
+        android:layout_alignEnd="@+id/linkedinSign" />
+
 </RelativeLayout>

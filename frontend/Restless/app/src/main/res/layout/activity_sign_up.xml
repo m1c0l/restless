@@ -214,14 +214,36 @@
         android:paddingRight="3dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView11"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="33dp"
         android:id="@+id/Continue"
         android:background="@drawable/roundedbutton"
         android:onClick="next"
 
-        />
+        android:layout_below="@+id/wage"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:text="Desired Wage:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:textSize="16dp"
+        android:id="@+id/wage"
+        android:layout_below="@+id/textView11"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:background="@drawable/rounded_text"
+        android:id="@+id/editText"
+        android:layout_alignBaseline="@+id/wage"
+        android:layout_alignBottom="@+id/wage"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 
 </RelativeLayout>

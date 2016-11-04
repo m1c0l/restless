@@ -35,4 +35,14 @@
         android:onClick="signInMethod"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:text="Insert some sort of non-janky logo"
+        android:layout_width="200dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="97dp"
+        android:id="@+id/textView3"
+        android:background="@drawable/rounded_text"
+        android:layout_height="200dp" />
 </RelativeLayout>
