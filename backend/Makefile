@@ -7,7 +7,10 @@ createdb:
 docs:
 	epydoc --html -v .
 
+test:
+	python -m unittest discover -v tests
+
 clean:
 	rm -f *.pyc **/*.pyc
 
-.PHONY: docs
+.PHONY: run createdb docs test clean
