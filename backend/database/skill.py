@@ -30,12 +30,12 @@ class Skill(db.Model):
     def to_dict(self):
         """
         Return a dictionary to be returned by the API.
-        @type: dictionary
+        @rtype: C{dict}
         """
-        
+
         ret = {
-            'id' : id,
-            'skill_name', skill_name,
+            'id': self.id,
+            'skill_name': self.skill_name,
         }
         return ret
         #return {c.name: getattr(self, c.name) for c in self.__table__.columns}

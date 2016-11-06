@@ -106,21 +106,21 @@ class User(db.Model):
     def to_dict(self):
         """
         Return a dictionary to be returned by the API.
-        @type: dictionary
+        @rtype: C{dict}
         """
-        
+
         ret = {
-            'id' : id,
-            'username' : username,
-            'first_name' : first_name,
-            'last_name' : last_name,
-            'email' : email,
-            'LinkedIn_profile_id' : LinkedIn_profile_id,
-            'bio' : bio,
-            'signup_time' : signup_time,
-            ''''projects_managing' : projects_managing,
-            'projects_developing' : projects_developing,
-            'skill_sets' : skill_sets,'''
+            'id': self.id,
+            'username': self.username,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'email': self.email,
+            'LinkedIn_profile_id': self.LinkedIn_profile_id,
+            'bio': self.bio,
+            'signup_time': self.signup_time,
+            'projects_managing': self.projects_managing,
+            'projects_developing': self.projects_developing,
+            'skill_sets': self.skill_sets,
         }
         #return {c.name: getattr(self, c.name) for c in self.__table__.columns}
         return ret

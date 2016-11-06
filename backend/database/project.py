@@ -62,16 +62,16 @@ class Project(db.Model):
     def to_dict(self):
         """
         Return a dictionary to be returned by the API.
-        @type: dictionary
+        @rtype: C{dict}
         """
-        
+
         ret = {
-            'id' : id,
-            'title' : title,
-            'current_state' : current_state,
-            'description' : description,
-            'pm_id' : pm_id,
-            #'skills_needed' : skills_needed,
+            'id': self.id,
+            'title': self.title,
+            'current_state': self.current_state,
+            'description': self.description,
+            'pm_id': self.pm_id,
+            'skills_needed': self.skills_needed,
         }
         #return {c.name: getattr(self, c.name) for c in self.__table__.columns}
         return ret
