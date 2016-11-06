@@ -6,14 +6,10 @@ app = Flask(__name__)
 app.config.from_pyfile('../config.py')
 db.init_app(app)
 
-from user import User 
-from project import Project
-from skill import Skill
+from models import User, Project, Skill, Swipe, Login
 from devs_to_projects import devs_to_projects
 from project_skills import project_skills
 from user_skills import user_skills
-from swipe import Swipe
-from login import Login
 
 app.app_context().push()
 
