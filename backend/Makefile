@@ -10,7 +10,12 @@ docs:
 test:
 	python -m unittest discover -v tests
 
-clean:
-	rm -f *.pyc **/*.pyc
+coverage:
+	coverage run -m unittest discover -v tests
+	@#coverage html **/*.py
+	coverage report -m **/*.py
 
-.PHONY: run createdb docs test clean
+clean:
+	rm -f *.pyc **/*.pyc .coverage
+
+.PHONY: run createdb docs test coverage clean
