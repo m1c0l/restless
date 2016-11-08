@@ -4,7 +4,8 @@
         <item name="android:colorBackground">#ffffffff</item>
         <item name="android:statusBarColor">#ffffffff</item>
         <item name="android:navigationBarColor">@color/PrimaryGreen</item>
-        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="android:windowBackground">@drawable/fulllight</item>
         <item name="colorPrimary">#f7f6f6</item>
+        <item name="android:textColorPrimary">@color/primary_text_material_light</item>
     </style>
 </resources>

@@ -46,13 +46,22 @@ public class devSwipe extends AppCompatActivity {
 
             return true;
         }
+        @Override
+        public void onLongPress(MotionEvent event){
+        }
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY){
+            return false;
+        }
+        @Override
         public boolean onFling(MotionEvent event1, MotionEvent event2,
                                float velocityX, float velocityY) {
             float horizontal=event2.getX()-event1.getX();
             float vertical=event2.getY()-event1.getY();
-
-            boolean horizontal_move = ((abs(horizontal) > minFling) && abs(velocityX)>minVelocity && abs(horizontal)>abs(vertical) && abs(velocityX)>abs(velocityY));
-            boolean vertical_move = (abs(vertical)>minFling && abs(velocityY)>minVelocity && abs(vertical)>abs(horizontal) && abs(velocityY)>abs(velocityX));
+            if(!onSingleTapConfirmed(event1))
+                return false;
+            boolean horizontal_move = ((abs(horizontal) > minFling) && abs(velocityX)>minVelocity && abs(horizontal)>abs(vertical)*2 && abs(velocityX)>abs(velocityY)*2);
+            boolean vertical_move = (abs(vertical)>minFling && abs(velocityY)>minVelocity && abs(vertical)>abs(horizontal)*2 && abs(velocityY)>abs(velocityX)*2);
 
             if(horizontal_move){
                 a_pos = (horizontal > 0)? a_pos-1:a_pos+1;
@@ -69,6 +78,32 @@ public class devSwipe extends AppCompatActivity {
 
             return true;
         }
+        @Override
+        public void onShowPress(MotionEvent event){
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent event) {
+            return true;
+        }
+
+        @Override
+        public boolean onDoubleTap(MotionEvent event) {
+            return true;
+        }
+
+        @Override
+        public boolean onDoubleTapEvent(MotionEvent event) {
+
+            return true;
+        }
+
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent event) {
+
+            return true;
+        }
+
     }
     @Override
     public boolean onTouchEvent(MotionEvent event){

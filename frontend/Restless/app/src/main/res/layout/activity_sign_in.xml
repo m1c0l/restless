@@ -23,7 +23,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:textSize="20sp"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"
+        android:textColor="#222028"
+        />
 
     <EditText
         android:layout_width="wrap_content"
@@ -46,6 +48,7 @@
         android:ems="10"
         android:layout_marginTop="140dp"
         android:id="@+id/passwordText"
+
         android:backgroundTintMode="src_atop"
         android:background="@drawable/rounded_text"
         android:layout_alignParentTop="true"
@@ -59,6 +62,7 @@
         android:id="@+id/password"
         android:textSize="20sp"
         android:textAllCaps="false"
+        android:textColor="#222028"
         android:layout_alignBaseline="@+id/passwordText"
         android:layout_alignBottom="@+id/passwordText"
         android:layout_alignLeft="@+id/email"
@@ -75,6 +79,7 @@
 
     <Button
         android:text="Sign In"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/signIn"

@@ -8,41 +8,31 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/titlepage"
     tools:context="com.example.eric.restless.MainActivity">
 
     <Button
         android:text="Register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/signInButton"
-        android:layout_alignLeft="@+id/signInButton"
-        android:layout_alignStart="@+id/signInButton"
-        android:layout_marginTop="61dp"
         android:id="@+id/registerButton"
         android:background="@drawable/roundedbutton"
         android:textSize="14sp"
         android:onClick="registerMethod"
         android:fontFamily="sans-serif-medium"
-        />
+        android:layout_marginBottom="65dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/signInButton"
+        android:layout_alignStart="@+id/signInButton" />
 
     <Button
         android:text="Sign In"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="146dp"
+        android:layout_marginBottom="22dp"
         android:id="@+id/signInButton"
         android:background="@drawable/roundedbutton"
         android:onClick="signInMethod"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/registerButton"
         android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:text="Insert some sort of non-janky logo"
-        android:layout_width="200dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="97dp"
-        android:id="@+id/textView3"
-        android:background="@drawable/rounded_text"
-        android:layout_height="200dp" />
 </RelativeLayout>
