@@ -9,7 +9,11 @@
         android:supportsRtl="true"
         android:theme="@style/NoActionBar">
         <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
@@ -31,17 +35,11 @@
         <activity android:name=".pendingMatchActivity" />
         <activity android:name=".editProjectActivity" />
         <activity android:name=".selectDevelopersActivity" />
-        <activity android:name=".dev_main" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            </activity>
+        <activity android:name=".dev_main" />
         <activity android:name=".devSwipe" />
         <activity android:name=".devMatches" />
         <activity android:name=".devEdit" />
-        <activity android:name=".devEdit2"></activity>
+        <activity android:name=".devEdit2" />
     </application>
 
 </manifest>

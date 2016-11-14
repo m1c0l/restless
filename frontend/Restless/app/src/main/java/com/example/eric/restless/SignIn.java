@@ -1,5 +1,6 @@
 package com.example.eric.restless;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +33,13 @@ public class SignIn extends AppCompatActivity {
     }
     public void signIn(View v){
 
+        //make login request!
+        boolean successful_login=true;
+
+        if(successful_login){
+            Intent transfer=new Intent(SignIn.this,DevPMSelectionActivity.class);
+            startActivity(transfer);
+        }
     }
     public void linkedinLogin(View v){
 
