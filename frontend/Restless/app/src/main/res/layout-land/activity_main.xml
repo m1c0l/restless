@@ -12,22 +12,7 @@
     tools:context="com.example.eric.restless.MainActivity">
 
     <Button
-        android:text="S i g n   I n"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="21dp"
-        android:id="@+id/signInButton"
-        android:background="@drawable/roundedbutton"
-        android:onClick="signInMethod"
-        android:layout_above="@+id/registerButton"
-        android:padding="3dp"
-        android:layout_alignLeft="@+id/registerButton"
-        android:layout_alignStart="@+id/registerButton"
-        android:layout_alignRight="@+id/registerButton"
-        android:layout_alignEnd="@+id/registerButton" />
-
-    <Button
-        android:text="R e g i s t e r"
+        android:text="Register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/registerButton"
@@ -35,8 +20,19 @@
         android:textSize="14sp"
         android:onClick="registerMethod"
         android:fontFamily="sans-serif-medium"
-        android:layout_marginBottom="66dp"
-        android:padding="3dp"
+        android:layout_marginBottom="65dp"
         android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/signInButton"
+        android:layout_alignStart="@+id/signInButton" />
+
+    <Button
+        android:text="Sign In"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="21dp"
+        android:id="@+id/signInButton"
+        android:background="@drawable/roundedbutton"
+        android:onClick="signInMethod"
+        android:layout_above="@+id/registerButton"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>

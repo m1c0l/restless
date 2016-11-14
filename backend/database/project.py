@@ -71,7 +71,7 @@ class Project(db.Model):
             'current_state': self.current_state,
             'description': self.description,
             'pm_id': self.pm_id,
-            'skills_needed': self.skills_needed,
+            'skills_needed': [skill.id for skill in self.skills_needed]
         }
         #return {c.name: getattr(self, c.name) for c in self.__table__.columns}
         return ret
