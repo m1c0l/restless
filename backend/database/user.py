@@ -118,9 +118,9 @@ class User(db.Model):
             'LinkedIn_profile_id': self.LinkedIn_profile_id,
             'bio': self.bio,
             'signup_time': self.signup_time,
-            'projects_managing': self.projects_managing,
-            'projects_developing': self.projects_developing,
-            'skill_sets': self.skill_sets,
+            'projects_managing': [project.id for project in self.projects_managing],
+            'projects_developing': [project.id for project in self.projects_developing],
+            'skill_sets': [skill.id for skill in self.skill_sets]
         }
         #return {c.name: getattr(self, c.name) for c in self.__table__.columns}
         return ret
