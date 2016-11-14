@@ -21,7 +21,7 @@
 
         <activity android:name=".SignIn" />
         <activity android:name=".signUp" />
-        <activity android:name=".enterSkills" />
+        <activity android:name=".dev_main" />
         <activity android:name=".DevPMSelectionActivity" />
         <activity android:name=".PMActivity" />
         <activity android:name=".editProfileActivity" />
@@ -31,7 +31,7 @@
         <activity android:name=".pendingMatchActivity" />
         <activity android:name=".editProjectActivity" />
         <activity android:name=".selectDevelopersActivity" />
-        <activity android:name=".dev_main" >
+        <activity android:name=".enterSkills" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

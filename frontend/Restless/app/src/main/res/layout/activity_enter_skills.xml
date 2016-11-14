@@ -37,11 +37,12 @@
         android:text="Add New Skill"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/button3"
+        android:id="@+id/newSkill"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:background="@drawable/roundedbutton"
         android:padding="5dp"
+        android:onClick="addNewSkill"
         />
 </RelativeLayout>
