@@ -10,7 +10,7 @@
     </style>
 
     <style name="NoActionBar" parent="Theme.AppCompat.Light.NoActionBar" >
-        <item name="android:colorBackground">@color/colorAccent</item>
+
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@drawable/fulllight</item>

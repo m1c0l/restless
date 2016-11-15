@@ -64,6 +64,7 @@ public class enterSkills extends AppCompatActivity {
         //push data to server
 
         //push skills and rating array
+
         Intent transfer=new Intent(enterSkills.this,MainActivity.class);
         startActivity(transfer);
     }

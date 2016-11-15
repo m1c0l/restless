@@ -22,7 +22,7 @@
         android:layout_height="41dp" />
 
     <Button
-        android:text="Sign In"
+        android:text="S i g n   I n"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
