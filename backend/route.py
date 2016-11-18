@@ -46,6 +46,12 @@ def index():
 def login():
     """
     Handles login requests from the mobile app.
+    @param username: Username from input.
+    @type username: C(str)
+    @param password: Password from input.
+    @type password: C(str)
+    @return: Integer describing the ID of the user with specified username/password, or -1 if none.
+    @rtype: C(int)
     """
     username = request.form.get("username")
     password = request.form.get("password")
