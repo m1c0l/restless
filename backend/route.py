@@ -1,6 +1,7 @@
 import json, flask
 from flask import Flask, request
 from database import database
+from database.login import Login
 app = Flask(__name__)
 
 def init_app():
@@ -40,6 +41,19 @@ def index():
     @return: A default error message
     """
     return error(msg='There is no index!')
+
+@app.route("/api/login/", methods=['POST'])
+def login():
+    """
+    Handles login requests from the mobile app.
+    """
+    username = request.form.get("username")
+    password = request.form.get("password")
+    creds = Login(username, password)
+    if database.validate_login(creds):
+        return database.get_user_by_username.id
+    else:
+        return -1
 
 @app.route("/api/<type>/<id>", methods=['GET', 'POST'])
 def retrieve(type,id): # todo: find stuff with the id
