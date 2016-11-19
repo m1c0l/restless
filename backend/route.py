@@ -1,8 +1,16 @@
-import json, flask
+import json, flask, time
 from flask import Flask, request
 from database import database
 from database.login import Login
 app = Flask(__name__)
+
+def current_time():
+    """
+    Get current time, Unix Epoch style.
+    @return: Integer of current time
+    @rtype: C{int}
+    """
+    return int(time.time())
 
 def init_app():
     """
@@ -42,27 +50,49 @@ def index():
     """
     return error(msg='There is no index!')
 
+@app.route("/api/update/<id>", methods=['POST'])
+def update_info(id=None):
+    """
+    Updates user data from the mobile app if valid. All other parameters are sent via POST request.
+    @param id: User ID.
+    @type id: C{int}
+    @return: New user data if successfully updated, or JSON error
+    @rtype: C{str}
+    """
+    try:
+        id = int(id)
+        if id:
+            user = database.get_user_by_id(id)
+            database.update(user, **request.form)
+            return retrieve('user', id)
+    except ValueError:
+        return error(msg='Invalid ID')
+    except AttributeError as e:
+        return repr(e)
+    
 @app.route("/api/login/", methods=['POST'])
-def login():
+def login(username=None, password=None):
     """
     Handles login requests from the mobile app.
     @param username: Username from input.
-    @type username: C(str)
+    @type username: C{str}
     @param password: Password from input.
-    @type password: C(str)
+    @type password: C{str}
     @return: Integer describing the ID of the user with specified username/password, or -1 if none.
-    @rtype: C(int)
+    @rtype: C{int}
     """
-    username = request.form.get("username")
-    password = request.form.get("password")
+    if not username:
+        username = request.form.get("username")
+    if not password:
+        password = request.form.get("password")
     creds = Login(username, password)
     if database.validate_login(creds):
         return database.get_user_by_username.id
     else:
         return -1
 
-@app.route("/api/<type>/<id>", methods=['GET', 'POST'])
-def retrieve(type,id): # todo: find stuff with the id
+@app.route("/api/<type>/<id>")
+def retrieve(type,id):
     """
     Handles API requests from the mobile app.
     @param type: The type of data to get (eg. C{user}, C{project}, C{skill})
