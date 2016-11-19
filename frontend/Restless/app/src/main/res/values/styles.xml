@@ -9,13 +9,24 @@
         <item name="android:windowBackground">@drawable/botgreen</item>
     </style>
 
-    <style name="NoActionBar" parent="Theme.AppCompat.Light.NoActionBar" >
-
+    <style name="NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@drawable/fulllight</item>
         <item name="colorPrimary">#f7f6f6</item>
         <item name="android:textColorPrimary">#FFF8D3</item>
     </style>
+
+    <style name="NoActionBarDark" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/lightbot</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="colorPrimary">#f7f6f6</item>
+        <item name="android:textColorPrimary">#222028</item>
+    </style>
+
+    <style name="NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

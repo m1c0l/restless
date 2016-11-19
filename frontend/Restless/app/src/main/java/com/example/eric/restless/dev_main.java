@@ -21,12 +21,15 @@ public class dev_main extends AppCompatActivity {
         Intent transfer=new Intent(dev_main.this,devSwipe.class);
         startActivity(transfer);
     }
+
     public void matches_transition(View v){
         Intent transfer=new Intent(dev_main.this,devMatches.class);
         startActivity(transfer);
     }
+
     public void profile_transition(View v){
         Intent transfer=new Intent(dev_main.this, devEdit.class);
         startActivity(transfer);
     }
+
 }
