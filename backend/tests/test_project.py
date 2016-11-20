@@ -37,6 +37,19 @@ class ProjectTestCase(unittest.TestCase):
         """
         db.session.remove()
 
+    def test_init(self):
+        """
+        The Project is constructed correctly.
+        """
+        attrs = {
+            'title': 'title',
+            'description': 'description',
+            'pm_id': self.pm_arr[0]
+        }
+        project = Project(**attrs)
+        for attr, value in attrs.iteritems():
+            self.assertEqual(getattr(project, attr), value)
+
     def test_id_unique(self):
         """
         Two projects should have unique id's.
@@ -85,6 +98,25 @@ class ProjectTestCase(unittest.TestCase):
         db.session.add(p1)
         db.session.commit()
         self.assertIsNotNone(p1.current_state)
+
+    def test_insert_db(self):
+        """
+        The Users are inserted into the database correctly.
+        """
+        count = 10
+        for i in range(count):
+            p = Project(title=str(i), description="blah", pm_id=self.pm_arr[0].id)
+            db.session.add(p)
+        db.session.commit()
+
+        # all users are inserted
+        projects = Project.query.all()
+        self.assertEqual(count, len(projects))
+
+        # check the username
+        for i in range(count):
+            q = Project.query.filter_by(title=str(i)).all()
+            self.assertEqual(len(q), 1)
 
     def test_serializable(self):
         """
