@@ -101,7 +101,7 @@ class ProjectTestCase(unittest.TestCase):
 
     def test_insert_db(self):
         """
-        The Users are inserted into the database correctly.
+        The Projects are inserted into the database correctly.
         """
         count = 10
         for i in range(count):
@@ -109,11 +109,11 @@ class ProjectTestCase(unittest.TestCase):
             db.session.add(p)
         db.session.commit()
 
-        # all users are inserted
+        # all projects are inserted
         projects = Project.query.all()
         self.assertEqual(count, len(projects))
 
-        # check the username
+        # check the title
         for i in range(count):
             q = Project.query.filter_by(title=str(i)).all()
             self.assertEqual(len(q), 1)
