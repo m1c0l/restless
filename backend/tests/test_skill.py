@@ -1,3 +1,4 @@
+import flask
 import unittest
 import setup
 from database.models import Skill
@@ -58,3 +59,13 @@ class SkillTestCase(unittest.TestCase):
         db.session.add(Skill('Skill'))
         with self.assertRaisesRegexp(Exception, 'IntegrityError'):
             db.session.commit()
+
+    def test_serializable(self):
+        """
+        A Skill can be represented as JSON.
+        """
+        s = Skill('Skill')
+        db.session.add(s)
+        db.session.commit()
+        with self.app.test_request_context():
+            flask.jsonify(**s.to_dict())

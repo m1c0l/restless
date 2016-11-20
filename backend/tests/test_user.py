@@ -1,3 +1,4 @@
+import flask
 import unittest
 import setup
 from database.models import User
@@ -106,3 +107,14 @@ class UserTestCase(unittest.TestCase):
         db.session.add(u1)
         db.session.commit()
         self.assertIsNotNone(u1.signup_time)
+
+    def test_serializable(self):
+        """
+        A User can be represented as JSON.
+        """
+        u1 = User(first_name='u', last_name='1', username='u1',
+            email='e1', bio='b')
+        db.session.add(u1)
+        db.session.commit()
+        with self.app.test_request_context():
+            flask.jsonify(**u1.to_dict())

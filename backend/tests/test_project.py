@@ -1,3 +1,4 @@
+import flask
 import unittest
 import setup
 from database.models import User, Project 
@@ -84,3 +85,13 @@ class ProjectTestCase(unittest.TestCase):
         db.session.add(p1)
         db.session.commit()
         self.assertIsNotNone(p1.current_state)
+
+    def test_serializable(self):
+        """
+        A Project can be represented as JSON.
+        """
+        p1 = Project(title="p1", description="blah", pm_id=self.pm_arr[0].id)
+        db.session.add(p1)
+        db.session.commit()
+        with self.app.test_request_context():
+            flask.jsonify(**p1.to_dict())
