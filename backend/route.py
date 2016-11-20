@@ -1,3 +1,8 @@
+"""
+@newfield api: API Documentation
+@api: U{https://github.com/m1c0l/restless/blob/master/backend/README.md}
+"""
+
 import json, flask, time
 from flask import Flask, request
 from database import database
@@ -53,7 +58,8 @@ def index():
 @app.route("/api/update/<id>", methods=['POST'])
 def update_info(id=None):
     """
-    Updates user data from the mobile app if valid. All other parameters are sent via POST request.
+    Updates user data from the mobile app if valid. All other parameters are
+    sent via POST request.
     @param id: User ID.
     @type id: C{int}
     @return: New user data if successfully updated, or JSON error
@@ -78,7 +84,8 @@ def login(username=None, password=None):
     @type username: C{str}
     @param password: Password from input.
     @type password: C{str}
-    @return: Integer describing the ID of the user with specified username/password, or -1 if none.
+    @return: Integer describing the ID of the user with specified
+             username/password, or -1 if none.
     @rtype: C{int}
     """
     if not username:
