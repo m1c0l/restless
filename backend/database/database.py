@@ -117,14 +117,14 @@ def add_new_user(username, password):
     @type username: C{str}
     @param password: The new user's password
     @type password: C{str}
-    @return: True if user was created, False if username already exists
+    @return: User id if user was created, -1 if username already exists
     @rtype: C{bool}
     """
     if get_user_by_username(username):
-        return False
+        return -1
     new_user = User(username)
     add_user_object(new_user, password)
-    return True
+    return get_user_by_username(username).id
     
     
 def add_user_object(user_obj, password):
