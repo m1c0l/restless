@@ -109,7 +109,25 @@ def get_projects_by_pm_id(pm_id):
     """
     return Project.query.filter_by(pm_id=pm_id).all()
 
-def add_new_user(user_obj, password):
+def add_new_user(username, password):
+    """
+    Creates a new user with blank information
+    
+    @param username: The username of the new user. Should be distinct
+    @type username: C{str}
+    @param password: The new user's password
+    @type password: C{str}
+    @return: True if user was created, False if username already exists
+    @rtype: C{bool}
+    """
+    if get_user_by_username(username):
+        return False
+    new_user = User(username)
+    add_user_object(new_user, password)
+    return True
+    
+    
+def add_user_object(user_obj, password):
     """
     Creates a new user with a login
 

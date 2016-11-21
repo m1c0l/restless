@@ -56,27 +56,46 @@ def index():
     """
     return error(msg='There is no index!')
 
-@app.route("/api/update/<id>", methods=['POST'])
+@app.route("/api/update/<type>/<id>", methods=['POST'])
 def update_info(id=None):
     """
     Updates user data from the mobile app if valid. All other parameters are
     sent via POST request.
-    @param id: User ID.
+    @param id: ID of our data.
     @type id: C{int}
-    @return: New user data if successfully updated, or JSON error
+    @param type: The type of data to get (eg. C{user}, C{project}, C{skill})
+    @type type: C{str}
+    @return: New data if successfully updated, or JSON error
     @rtype: C{str}
     """
+    commands = {
+        'user' : database.get_user_by_id,
+        'project' : database.get_project_by_id,
+        'skill' : database.get_skill_by_id,
+    }
+    if type not in commands:
+        return error(msg='Invalid type')
     try:
         id = int(id)
         if id:
-            user = database.get_user_by_id(id)
-            database.update(user, **request.form)
-            return retrieve('user', id)
+            obj = commands[type.lower()](id)
+            database.update(obj, **request.form)
+            return retrieve(type, id)
     except ValueError:
         return error(msg='Invalid ID')
     except AttributeError as e:
         return repr(e)
-    
+
+@app.route("/api/new_user/", methods=['POST'])
+def new_user(username=None, password=None):
+    """
+    """
+    if not username:
+        username = request.form.get("username")
+    if not password:
+        password = request.form.get("password")
+    return database.add_new_user(username, password)
+
 @app.route("/api/login/", methods=['POST'])
 def login(username=None, password=None):
     """
