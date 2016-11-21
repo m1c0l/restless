@@ -3,7 +3,7 @@ Flask app that runs its builtin server on port 80. Run `python route.py` to star
 ##API usage
 
 ###GET requests
-/api/get/<type>/<id>
+`/api/get/<type>/<id>`
 <type> is one of 'user', 'project', or 'skill' (no quotes). <id> is the id of the object you want.
 Will return a JSON of the object from the database.
 
