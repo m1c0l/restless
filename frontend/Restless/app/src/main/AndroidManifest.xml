@@ -7,7 +7,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/NoActionBar">
+        android:theme="@style/NoActionBarDark">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,25 +28,31 @@
         <activity android:name=".dev_main" />
         <activity android:name=".DevPMSelectionActivity" />
         <activity android:name=".PMActivity" />
-        <activity android:name=".editProfileActivity" />
         <activity android:name=".createProjectActivity" />
         <activity android:name=".selectProjectActivity" />
         <activity android:name=".projectActivity" />
         <activity android:name=".pendingMatchActivity" />
         <activity android:name=".editProjectActivity" />
         <activity android:name=".selectDevelopersActivity" />
-        <activity android:name=".enterSkills" >
+        <activity android:name=".enterSkills">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            </activity>
+        </activity>
         <activity android:name=".dev_main" />
         <activity android:name=".devSwipe" />
         <activity android:name=".devMatches" />
         <activity android:name=".devEdit" />
         <activity android:name=".devEdit2" />
+        <activity android:name=".editProfileMainScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

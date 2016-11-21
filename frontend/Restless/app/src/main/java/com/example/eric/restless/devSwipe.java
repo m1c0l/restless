@@ -10,9 +10,12 @@ import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import static java.lang.Math.abs;
 
@@ -20,7 +23,9 @@ public class devSwipe extends AppCompatActivity {
 
 
     private GestureDetectorCompat gdetect;
-
+    private ImageView profile_pic;
+    private TextView body1,body2,body3;
+    private ViewFlipper textflip, profileflip;
     String[] a= {"Populate field with GET API Overview 0","Populate field with GET API Skills  1","Populate field with GET API background/past projects 2"};
     int a_pos = 0;
     @Override
@@ -29,16 +34,21 @@ public class devSwipe extends AppCompatActivity {
         setContentView(R.layout.activity_dev_swipe);
 
         //populate stack with GET query
-
-        ImageView profile_pic = (ImageView) findViewById(R.id.dev_profile_pic);
+        profileflip= (ViewFlipper) findViewById(R.id.view_flipper_main);
+        profile_pic = (ImageView) findViewById(R.id.dev_profile_pic);
+        textflip= (ViewFlipper) findViewById(R.id.textFlipper);
         //populate page with stack information
-        TextView body = (TextView) findViewById(R.id.BioBody);
+        body1 = (TextView) findViewById(R.id.Text1);
+        body2= (TextView) findViewById(R.id.Text2);
+        body3= (TextView) findViewById(R.id.Text3);
         gdetect = new GestureDetectorCompat(this, new GestureListener());
-        body.setText(a[0]);
+        body1.setText(a[0]);
+        body2.setText(a[1]);
+        body3.setText(a[2]);
     }
     public class GestureListener extends GestureDetector.SimpleOnGestureListener{
-        private float minFling = 100;
-        private float minVelocity = 100;
+        private float minFling = 50;
+        private float minVelocity = 50;
         @Override
         public boolean onDown(MotionEvent event){
             Context s=getApplicationContext();
@@ -60,20 +70,40 @@ public class devSwipe extends AppCompatActivity {
             float vertical=event2.getY()-event1.getY();
             if(!onSingleTapConfirmed(event1))
                 return false;
-            boolean horizontal_move = ((abs(horizontal) > minFling) && abs(velocityX)>minVelocity && abs(horizontal)>abs(vertical)*2 && abs(velocityX)>abs(velocityY)*2);
-            boolean vertical_move = (abs(vertical)>minFling && abs(velocityY)>minVelocity && abs(vertical)>abs(horizontal)*2 && abs(velocityY)>abs(velocityX)*2);
+            boolean horizontal_move = ((abs(horizontal) > minFling) && abs(velocityX)>minVelocity && abs(horizontal)>abs(vertical)*1.5 && abs(velocityX)>abs(velocityY)*1.5);
+            boolean vertical_move = (abs(vertical)>minFling && abs(velocityY)>minVelocity && abs(vertical)>abs(horizontal)*1.5 && abs(velocityY)>abs(velocityX)*1.5);
 
             if(horizontal_move){
-                a_pos = (horizontal > 0)? a_pos-1:a_pos+1;
-                if(a_pos==-1)
-                    a_pos = 2;
-                a_pos=a_pos%3;
-                ((TextView) findViewById(R.id.BioBody)).setText(a[a_pos]);
+
+                if(horizontal > 0){
+                    textflip.setInAnimation(devSwipe.this, R.anim.in_from_left);
+                    textflip.setOutAnimation(devSwipe.this, R.anim.out_to_right);
+                    textflip.showPrevious();
+                }
+                else {
+
+                    textflip.setInAnimation(devSwipe.this, R.anim.in_from_right);
+                    textflip.setOutAnimation(devSwipe.this, R.anim.out_to_left);
+                    textflip.showNext();
+                }
             }
 
             if(vertical_move){
                 String match= (vertical < 0)? "I want you":"I will send you a rejection letter in 3 months";
                 Toast.makeText(getApplicationContext(),match,Toast.LENGTH_SHORT).show();
+                //switch to next guy!
+                if(vertical < 0) {
+                    profileflip.setInAnimation(devSwipe.this,R.anim.in_from_bot);
+                    profileflip.setOutAnimation(devSwipe.this,R.anim.out_to_top);
+                    profileflip.showNext();
+                }
+                else{
+                    profileflip.setInAnimation(devSwipe.this,R.anim.in_from_top);
+                    profileflip.setOutAnimation(devSwipe.this,R.anim.out_to_bot);
+                    profileflip.showNext();
+                }
+
+
             }
 
             return true;

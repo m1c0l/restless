@@ -1,3 +1,4 @@
+import flask
 import unittest
 import setup
 from database.models import Skill
@@ -31,6 +32,17 @@ class SkillTestCase(unittest.TestCase):
         """
         db.session.remove()
 
+    def test_init(self):
+        """
+        The Skill is constructed correctly.
+        """
+        attrs = {
+            'skill_name': 'Skill'
+        }
+        skill = Skill(**attrs)
+        for attr, value in attrs.iteritems():
+            self.assertEqual(getattr(skill, attr), value)
+
     def test_id_unique(self):
         """
         Two skills should have unique id's.
@@ -58,3 +70,31 @@ class SkillTestCase(unittest.TestCase):
         db.session.add(Skill('Skill'))
         with self.assertRaisesRegexp(Exception, 'IntegrityError'):
             db.session.commit()
+
+    def test_insert_db(self):
+        """
+        The Skills are inserted into the database correctly.
+        """
+        names = [str(i) for i in range(10)]
+        for name in names:
+            db.session.add(Skill(name))
+        db.session.commit()
+
+        # all skills are inserted
+        skills = Skill.query.all()
+        self.assertEqual(len(names), len(skills))
+
+        # check the skill names
+        for name in names:
+            q = Skill.query.filter_by(skill_name=name).all()
+            self.assertEqual(len(q), 1)
+
+    def test_serializable(self):
+        """
+        A Skill can be represented as JSON.
+        """
+        s = Skill('Skill')
+        db.session.add(s)
+        db.session.commit()
+        with self.app.test_request_context():
+            flask.jsonify(**s.to_dict())

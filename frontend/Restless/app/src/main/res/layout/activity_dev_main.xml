@@ -11,30 +11,7 @@
     tools:context="com.example.eric.restless.dev_main">
 
     <Button
-        android:text="View Matches"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/matches_button"
-        android:background="@drawable/roundedbutton"
-        android:padding="3dp"
-        android:layout_marginBottom="204dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="matches_transition"/>
-
-    <Button
-        android:text="Swipe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/swipe_button"
-        android:background="@drawable/roundedbutton"
-        android:layout_marginBottom="39dp"
-        android:layout_above="@+id/matches_button"
-        android:layout_centerHorizontal="true"
-        android:onClick="swipe_transition"/>
-
-    <Button
-        android:text="Edit Profile"
+        android:text="E d i t\nP r o f i l e"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/edit_button"
@@ -44,7 +21,10 @@
         android:layout_alignLeft="@+id/swipe_button"
         android:layout_alignStart="@+id/swipe_button"
         android:padding="3dp"
-        android:onClick="profile_transition"/>
+        android:onClick="profile_transition"
+        android:layout_alignRight="@+id/matches_button"
+        android:lines="2"
+        android:layout_alignEnd="@+id/matches_button" />
 
     <TextView
         android:text="D e v e l o p e r   p r o f i l e"
@@ -61,4 +41,31 @@
         android:textStyle="bold"
         android:paddingLeft="20dp"
         />
+
+    <Button
+        android:text="S w i p e"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/swipe_button"
+        android:background="@drawable/roundedbutton"
+        android:layout_marginBottom="39dp"
+        android:onClick="swipe_transition"
+
+        android:layout_above="@+id/edit_button"
+        android:layout_alignLeft="@+id/matches_button"
+        android:layout_alignStart="@+id/matches_button"
+        android:layout_alignRight="@+id/matches_button"
+        android:layout_alignEnd="@+id/matches_button" />
+
+    <Button
+        android:text="V i e w\nM a t c h e s"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/matches_button"
+        android:background="@drawable/roundedbutton"
+        android:padding="3dp"
+        android:onClick="matches_transition"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="232dp" />
 </RelativeLayout>

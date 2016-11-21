@@ -8,6 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+
     tools:context="com.example.eric.restless.signUp">
 
     <TextView
@@ -40,7 +41,9 @@
         android:background="@drawable/rounded_text"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:maxLength="30"
+        />
 
 
     <TextView
@@ -80,7 +83,9 @@
         android:layout_alignBaseline="@+id/textView6"
         android:layout_alignBottom="@+id/textView6"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:maxLength="25"
+        />
 
     <TextView
         android:text="Password:"
@@ -93,7 +98,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="15dp"
-        android:id="@+id/textView7" />
+        android:id="@+id/textView7"
+        android:maxLength="16"
+        />
 
     <EditText
         android:layout_width="wrap_content"
@@ -105,7 +112,7 @@
         android:layout_alignBaseline="@+id/textView7"
         android:layout_alignBottom="@+id/textView7"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"/>
 
     <TextView
         android:text="Confirm Password:"
@@ -198,7 +205,7 @@
         android:layout_alignParentEnd="true" />
 
     <TextView
-        android:text="Desired Wage:"
+        android:text="Wage ($) /hr:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="22dp"
@@ -218,7 +225,9 @@
         android:layout_alignBaseline="@+id/wage"
         android:layout_alignBottom="@+id/wage"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:maxLength="3"
+        />
 
     <Button
         android:text="C o n t i n u e"

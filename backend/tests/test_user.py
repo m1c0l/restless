@@ -1,3 +1,4 @@
+import flask
 import unittest
 import setup
 from database.models import User
@@ -30,6 +31,21 @@ class UserTestCase(unittest.TestCase):
         Close the database session.
         """
         db.session.remove()
+
+    def test_init(self):
+        """
+        The User is constructed correctly.
+        """
+        attrs = {
+            'first_name': 'u',
+            'last_name': '1',
+            'username': 'u1',
+            'email': 'e1',
+            'bio': 'b'
+        }
+        user = User(**attrs)
+        for attr, value in attrs.iteritems():
+            self.assertEqual(getattr(user, attr), value)
 
     def test_id_unique(self):
         """
@@ -106,3 +122,39 @@ class UserTestCase(unittest.TestCase):
         db.session.add(u1)
         db.session.commit()
         self.assertIsNotNone(u1.signup_time)
+
+    def test_insert_db(self):
+        """
+        The Users are inserted into the database correctly.
+        """
+        count = 10
+        for i in range(count):
+            n = str(i)
+            user = User(first_name = 'fn' + n,
+                        last_name = 'ln' + n,
+                        username = 'un' + n,
+                        email = 'e' + n,
+                        bio = 'b' + n)
+            db.session.add(user)
+        db.session.commit()
+
+        # all users are inserted
+        users = User.query.all()
+        self.assertEqual(count, len(users))
+
+        # check the username
+        for i in range(count):
+            username = 'un' + str(i)
+            q = User.query.filter_by(username=username).all()
+            self.assertEqual(len(q), 1)
+
+    def test_serializable(self):
+        """
+        A User can be represented as JSON.
+        """
+        u1 = User(first_name='u', last_name='1', username='u1',
+            email='e1', bio='b')
+        db.session.add(u1)
+        db.session.commit()
+        with self.app.test_request_context():
+            flask.jsonify(**u1.to_dict())
