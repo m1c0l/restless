@@ -25,7 +25,7 @@ public class devSwipe extends AppCompatActivity {
     private GestureDetectorCompat gdetect;
     private ImageView profile_pic;
     private TextView body1,body2,body3;
-    private ViewFlipper textflip;
+    private ViewFlipper textflip, profileflip;
     String[] a= {"Populate field with GET API Overview 0","Populate field with GET API Skills  1","Populate field with GET API background/past projects 2"};
     int a_pos = 0;
     @Override
@@ -34,7 +34,7 @@ public class devSwipe extends AppCompatActivity {
         setContentView(R.layout.activity_dev_swipe);
 
         //populate stack with GET query
-
+        profileflip= (ViewFlipper) findViewById(R.id.view_flipper_main);
         profile_pic = (ImageView) findViewById(R.id.dev_profile_pic);
         textflip= (ViewFlipper) findViewById(R.id.textFlipper);
         //populate page with stack information
@@ -92,7 +92,18 @@ public class devSwipe extends AppCompatActivity {
                 String match= (vertical < 0)? "I want you":"I will send you a rejection letter in 3 months";
                 Toast.makeText(getApplicationContext(),match,Toast.LENGTH_SHORT).show();
                 //switch to next guy!
-                
+                if(vertical < 0) {
+                    profileflip.setInAnimation(devSwipe.this,R.anim.in_from_bot);
+                    profileflip.setOutAnimation(devSwipe.this,R.anim.out_to_top);
+                    profileflip.showNext();
+                }
+                else{
+                    profileflip.setInAnimation(devSwipe.this,R.anim.in_from_top);
+                    profileflip.setOutAnimation(devSwipe.this,R.anim.out_to_bot);
+                    profileflip.showNext();
+                }
+
+
             }
 
             return true;

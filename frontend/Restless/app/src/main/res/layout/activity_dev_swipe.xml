@@ -18,7 +18,9 @@
         android:layout_height="fill_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:background="@drawable/rounded_text"
+        android:backgroundTint="#F0808080">
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -58,7 +60,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/TextFieldTitle"
-                android:id="@+id/textFlipper">
+                android:id="@+id/textFlipper"
+                android:padding="7dp">
                 <RelativeLayout
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent">
@@ -68,6 +71,7 @@
                     android:layout_marginTop="20dp"
                     android:background="@drawable/rounded_text"
                     android:id="@+id/Text1"
+
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
