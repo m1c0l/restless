@@ -90,9 +90,9 @@ def update_info(type=None, id=None):
 def new_user(username=None, password=None):
     """
     Creates a new user with specified username and password.
-    @param username: Username from input.
+    @param username: Username from input, cannot be blank.
     @type username: C{str}
-    @param password: Password from input.
+    @param password: Password from input, cannot be blank.
     @type password: C{str}
     @return: Integer describing the ID of the newly created user with specified
              username/password, or -1 if username was already in the database.
@@ -102,6 +102,8 @@ def new_user(username=None, password=None):
         username = request.form.get("username")
     if not password:
         password = request.form.get("password")
+    if not username or not password:
+        return -1
     return database.add_new_user(username, password)
 
 @app.route("/api/login/", methods=['POST'])

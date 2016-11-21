@@ -78,13 +78,13 @@ class User(db.Model):
     @type: list of L{Skill}
     """
 
-    def __init__(self, username, first_name=None, last_name=None, email=None, bio=None):
+    def __init__(self, username, first_name, last_name=None, email=None, bio=None):
         """
         Construct a User
 
-        @param username: A unique username
+        @param username: A unique username, not null
         @type username: C{str}
-        @param first_name: First name
+        @param first_name: First name, not null
         @type first_name: C{str}
         @param last_name: last name
         @type last_name: C{str}
