@@ -91,7 +91,7 @@ def login(username=None, password=None):
     else:
         return -1
 
-@app.route("/api/<type>/<id>")
+@app.route("/api/get/<type>/<id>")
 def retrieve(type,id):
     """
     Handles API requests from the mobile app.
