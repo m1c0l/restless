@@ -1,9 +1,10 @@
 from flask import Flask
 from db import db
 import database
+import os
 
 app = Flask(__name__)
-app.config.from_pyfile('../config.py')
+app.config.from_pyfile(os.path.realpath(__file__) + '/config.py')
 db.init_app(app)
 
 from models import User, Project, Skill, Swipe, Login

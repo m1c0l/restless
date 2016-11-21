@@ -3,7 +3,7 @@
 @api: U{https://github.com/m1c0l/restless/blob/master/backend/README.md}
 """
 
-import json, flask, time
+import json, flask, time, os
 from flask import Flask, request
 from database import database
 from database.login import Login
@@ -22,7 +22,8 @@ def init_app():
     Initializes the app
     @note: only call this one time
     """
-    app.config.from_pyfile("config.py")
+    config = os.path.dirname(os.path.realpath(__file__)) + '/config.py'
+    app.config.from_pyfile(config)
     from database import database
     database.db.init_app(app)
 
