@@ -57,7 +57,7 @@ def index():
     return error(msg='There is no index!')
 
 @app.route("/api/update/<type>/<id>", methods=['POST'])
-def update_info(id=None):
+def update_info(type=None, id=None):
     """
     Updates user data from the mobile app if valid. All other parameters are
     sent via POST request.
