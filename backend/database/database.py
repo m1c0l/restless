@@ -124,7 +124,7 @@ def add_new_user(username, password, first_name=None):
         first_name = username
     if get_user_by_username(username):
         return -1
-    new_user = User(username, first_name)
+    new_user = User(username, first_name, "", "", "")
     add_user_object(new_user, password)
     return get_user_by_username(username).id
     

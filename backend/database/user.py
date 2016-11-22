@@ -78,7 +78,7 @@ class User(db.Model):
     @type: list of L{Skill}
     """
 
-    def __init__(self, username, first_name, last_name=None, email=None, bio=None):
+    def __init__(self, username, first_name, last_name, email, bio):
         """
         Construct a User
 
