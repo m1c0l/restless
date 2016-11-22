@@ -118,7 +118,7 @@ def add_new_user(username, password, first_name=None):
     @param password: The new user's password
     @type password: C{str}
     @return: User id if user was created, -1 if username already exists
-    @rtype: C{bool}
+    @rtype: C{int}
     """
     if not first_name:
         first_name = username

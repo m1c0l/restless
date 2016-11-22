@@ -104,7 +104,7 @@ def new_user(username=None, password=None):
         password = request.form.get("password")
     if not username or not password:
         return -1
-    return database.add_new_user(username, password)
+    return str(database.add_new_user(username, password))
 
 @app.route("/api/login/", methods=['POST'])
 def login(username=None, password=None):
