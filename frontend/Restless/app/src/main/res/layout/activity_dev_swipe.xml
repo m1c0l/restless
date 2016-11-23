@@ -19,13 +19,17 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:background="@drawable/rounded_text"
-        android:backgroundTint="#F0808080">
+        >
 
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:theme="@style/NoActionBarDark">
+            android:theme="@style/NoActionBarDark"
+            android:background="@drawable/rounded_text"
+
+            android:backgroundTint="#F0808080"
+            >
+
             <TextView
             android:text="Name goes here"
             android:layout_width="wrap_content"

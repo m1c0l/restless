@@ -4,7 +4,8 @@ import database
 import os
 
 app = Flask(__name__)
-app.config.from_pyfile(os.path.realpath(__file__) + '/config.py')
+config_file = os.path.dirname(os.path.realpath(__file__)) + '/../config.py'
+app.config.from_pyfile(config_file)
 db.init_app(app)
 
 from models import User, Project, Skill, Swipe, Login
