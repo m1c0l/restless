@@ -156,6 +156,61 @@ def retrieve(type,id):
     else:
         return error(msg='Invalid type.')
 
+@app.route("/api/skill/add/<type>/<skill_name>")
+def add_skill(who, skill_name):
+    """
+    Add a skill to this user or project.
+    If user, it will indicate that the user has this skill.
+    If project, it will indicate that the project wants this skill.
+    @param type: 'user' or 'project'.
+    @type type: C{str}
+    @param skill_name: The skill name.
+    @type skill_name: C{str}
+    """
+    if type == 'user':
+        pass
+    elif type == 'project':
+        pass
+@app.route("/api/skill/delete/<type>/<skill_name>")
+def delete_skill(who, skill_name):
+    """
+    Delete this skill from the user/project.
+    """
+    if type == 'user':
+        pass
+    elif type == 'project':
+        pass
+@app.route("/api/swipe/<type>/<int:swiper_id>/<int:swipee_id>/<int:direction>")
+def swipe(type, user_id, project_id, direction):
+    """
+    Performs a swipe.
+    Direction is 0 for down (negative swipe), 1 for up (positive swipe).
+    If it is a yes swipe, returns 1 if there is a match, 0 if there is not (just a normal swipe).
+    """
+    if type == 'user':
+        swipe_obj = database.Swipe(swiper_id, swipee_id, direction, 1)
+    elif type == 'project':
+        swipe_obj = database.Swipe(swipee_id, swiper_id, direction, 0)
+    database.insert_obj(swipe_obj)
+
+@app.route("/api/stack/<type>/<int:id>"):
+def get_stack_for(type, id):
+    """
+    """
+    if type == 'user':
+        pass
+    elif type == 'pm':
+        pass
+
+@app.route("/api/matches/<type>/<int:id>")
+def get_matches_for(type, id):
+    """
+    """
+    if type == 'user':
+        pass
+    elif type == 'pm':
+        pass
+
 @app.route("/docs/")
 def docs_index():
     """

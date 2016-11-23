@@ -109,6 +109,20 @@ def get_projects_by_pm_id(pm_id):
     """
     return Project.query.filter_by(pm_id=pm_id).all()
 
+def get_swipes_for(who, id):
+    """
+    currently unused
+    """
+    pass    
+def get_matches_for(who, id):
+    """
+    Get the matches for an ID. Matches are when both parties have swiped each other.
+    @param who: 0 for pm, 1 for dev.
+    @type who: C{int}
+    @param id: The id of this person.
+    @type id: C{int}
+    @return: List of IDs of people who we have matched with.
+    """
 def add_new_user(username, password, first_name=None):
     """
     Creates a new user with blank information

@@ -29,19 +29,19 @@ class Swipe(db.Model):
 
     result = db.Column(db.Integer, nullable=False)
     """
-    The result of the swipe. Whether the dev or PM likes the project or developer.
+    The result of the swipe. Whether the dev or PM likes the project or developer. 0 means no, 1 means yes.
     @type: C{int}
     @todo: Make an enum for the possible values
     """
 
     who_swiped = db.Column(db.Integer, nullable=False)
     """
-    Which party did the swipe.
+    Which party did the swipe. 0 means pm, 1 means dev.
     @type: C{int}
     @todo: Make an enum
     """
 
-    def __init__(self, user_id, project_id, who_swiped):
+    def __init__(self, user_id, project_id, result, who_swiped):
         """
         Construct a Swipe
 
@@ -51,12 +51,14 @@ class Swipe(db.Model):
         @param project_id: The Project involved in the swipe
         @type project_id: C{int}
         @see: L{Project}
+        @param result: Result of swipe. 0 no, 1 yes
+        @type result: C{int}
         @param who_swiped: Which party did the swipe
         @type who_swiped: C{int}
         """
         self.user_id = user_id
         self.project_id = project_id
-        self.result = 0
+        self.result = result
         self.who_swiped = who_swiped
 
     def __repr__(self):
