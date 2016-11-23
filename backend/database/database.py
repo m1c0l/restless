@@ -76,6 +76,17 @@ def get_project_by_id(id):
     """
     return Project.query.get(id)
 
+def get_project_by_title(title):
+    """
+    Get a Project by title
+
+    @param title: The project's title
+    @type title: C{string}
+    @return: The C{Project} with the title C{title}, or C{None}
+    @rtype: L{Project}
+    """
+    return Project.query.filter_by(title=title).first()
+
 def get_skill_by_id(id):
     """
     Get a Skill by id
@@ -86,6 +97,17 @@ def get_skill_by_id(id):
     @rtype: L{Skill}
     """
     return Skill.query.get(id)
+
+def get_skill_by_name(skill_name):
+    """
+    Get a Skill by username
+
+    @param skill_name: The user's username
+    @type skill_name: C{string}
+    @return: The C{Skill} with the skill_name C{skill_name}, or C{None}
+    @rtype: L{Skill}
+    """
+    return Skill.query.filter_by(skill_name=skill_name).first()
 
 def get_swipe_by_id(id):
     """
@@ -141,8 +163,27 @@ def add_new_user(username, password, first_name=None):
     new_user = User(username, first_name, "", "", "")
     add_user_object(new_user, password)
     return get_user_by_username(username).id
-    
-    
+
+def add_new_project(title, description, pm_id):
+    """
+    Creates a new project with description.
+    @param title: The title of the new project
+    @type title: C{str}
+    @param description: The new project's description
+    @type description: C{str}
+    @param pm_id: User ID of the project manager that manages this project.
+    @type pm_id: C{int}
+    @return: Project id if user was created, -1 if username already exists
+    @rtype: C{int}
+    """
+    if not title or not descripion or not pm_id:
+        return -1
+    if get_project_by_title(title):
+        return -1
+    new_project = Project(title, description, pm_id)
+    insert_obj(new_project)
+    return get_project_by_title(title).id
+
 def add_user_object(user_obj, password):
     """
     Creates a new user with a login

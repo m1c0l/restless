@@ -18,7 +18,7 @@ class Project(db.Model):
     current_state = db.Column(db.Integer, nullable=False)
     """
     The project's current state, i.e., if it's recruiting, starting work,
-    or finished.
+    or finished. 0 = recruiting, 1 = starting work, 2 = finished.
     @type: C{int}
     @todo: make an enum for this
     """

@@ -96,14 +96,14 @@ def new_user(username=None, password=None):
     @type password: C{str}
     @return: Integer describing the ID of the newly created user with specified
              username/password, or -1 if username was already in the database.
-    @rtype: C{int}
+    @rtype: C{str}
     """
     if not username:
         username = request.form.get("username")
     if not password:
         password = request.form.get("password")
     if not username or not password:
-        return -1
+        return str(-1)
     return str(database.add_new_user(username, password))
 
 @app.route("/api/login/", methods=['POST'])
@@ -124,9 +124,9 @@ def login(username=None, password=None):
         password = request.form.get("password")
     creds = Login(username, password)
     if database.validate_login(creds):
-        return database.get_user_by_username.id
+        return str(database.get_user_by_username.id)
     else:
-        return -1
+        return str(-1)
 
 @app.route("/api/get/<type>/<id>")
 def retrieve(type,id):
@@ -156,8 +156,31 @@ def retrieve(type,id):
     else:
         return error(msg='Invalid type.')
 
-@app.route("/api/skill/add/<type>/<skill_name>")
-def add_skill(who, skill_name):
+@app.route("/api/new_project/", methods=['POST'])
+def new_project(title=None, description="", pm_id = None):
+    """
+    Creates a new project
+    @param title: The title of the new project
+    @type title: C{str}
+    @param description: The new project's description
+    @type description: C{str}
+    @param pm_id: User ID of the project manager that manages this project.
+    @type pm_id: C{int}
+    @return: Project id if user was created, -1 if username already exists
+    @rtype: C{str}
+    """
+    if not title:
+        title = request.form.get("title")
+    if not pm_id:
+        pm_id = request.form.get("pm_id")
+    if not description:
+        description = request.form.get("description")
+    if not pm_id or not title:
+        return -1
+    return str(database.add_new_project(title=title, description=description, pm_id=pm_id))
+
+@app.route("/api/skill/add/<type>/<skill_name>/<int:id>")
+def add_skill(who, skill_name, id):
     """
     Add a skill to this user or project.
     If user, it will indicate that the user has this skill.
@@ -166,20 +189,65 @@ def add_skill(who, skill_name):
     @type type: C{str}
     @param skill_name: The skill name.
     @type skill_name: C{str}
+    @param id: user or pm id.
+    @type id: C{int}
+    @return: skill id if successful, or -1 if fail.
     """
+    if not type or not skill_name or not id:
+        return str(-1)
+    skill_obj = database.get_skill_by_name(skill_name):
+    if not skill_obj:
+        skill_obj = Skill(skill_name)
+        database.insert_obj(skill_obj)
     if type == 'user':
-        pass
+        user = database.get_user_by_id(id)
+        if not user:
+            return str(-1)
+        sets = user.skill_sets
+        sets.append(skill_obj)
+        database.update(user, skill_sets=sets)
+        return skill_obj.id
     elif type == 'project':
-        pass
-@app.route("/api/skill/delete/<type>/<skill_name>")
+        project = database.get_project_by_id(id)
+        if not user:
+            return str(-1)
+        sets = project.skills_needed
+        sets.append(skill_obj)
+        database.update(project, skills_needed = sets)
+        return skill.object_id
+@app.route("/api/skill/delete/<type>/<skill_name>/<int:id>")
 def delete_skill(who, skill_name):
     """
     Delete this skill from the user/project.
+    If user, it will delete from the corresponding user id.
+    If project, it will delete from the corresponding project id.
+    @param type: 'user' or 'project'.
+    @type type: C{str}
+    @param skill_name: The skill name.
+    @type skill_name: C{str}
+    @param id: user or pm id.
+    @type id: C{int}
+    @return: skill id if successful, or -1 if fail.
     """
+    if not type or not skill_name or not id:
+        return str(-1)
+    skill_obj = database.get_skill_by_name(skill_name):
+    if not skill_obj:
+        return str(-1)
     if type == 'user':
-        pass
+        user = database.get_user_by_id(id)
+        if not user:
+            return str(-1)
+        sets = [s for s in user.skill_sets if s.id != skill_obj.id]
+        database.update(user, skill_sets=sets)
+        return skill_obj.id
     elif type == 'project':
-        pass
+        project = database.get_project_by_id(id)
+        if not user:
+            return str(-1)
+        sets = [s for s in user.skill_sets if s.id != skill_obj.id]
+        database.update(project, skills_needed = sets)
+        return skill.object_id
 @app.route("/api/swipe/<type>/<int:swiper_id>/<int:swipee_id>/<int:direction>")
 def swipe(type, user_id, project_id, direction):
     """
