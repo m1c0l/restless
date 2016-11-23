@@ -6,3 +6,4 @@ from project_skills import project_skills
 from user_skills import user_skills
 from swipe import Swipe
 from login import Login
+from match import Match
