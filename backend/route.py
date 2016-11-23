@@ -249,7 +249,7 @@ def delete_skill(who, skill_name):
         database.update(project, skills_needed = sets)
         return skill.object_id
 @app.route("/api/swipe/<type>/<int:swiper_id>/<int:swipee_id>/<int:direction>")
-def swipe(type, user_id, project_id, direction):
+def swipe(type, swiper_id, swipee_id, direction):
     """
     Performs a swipe.
     Direction is 0 for down (negative swipe), 1 for up (positive swipe).
