@@ -2,6 +2,7 @@ package com.example.eric.restless;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Looper;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.GestureDetectorCompat;
@@ -28,6 +29,22 @@ public class devSwipe extends AppCompatActivity {
     private ViewFlipper textflip, profileflip;
     String[] a= {"Populate field with GET API Overview 0","Populate field with GET API Skills  1","Populate field with GET API background/past projects 2"};
     int a_pos = 0;
+    String output;
+    public class HTTPThread implements Runnable {
+
+        public HTTPThread(int a) {
+            // store parameter for later user
+            id=a;
+        }
+
+        public void run() {
+            output= (id == 0)? "I want you":"I will send you a rejection letter in 3 months";
+
+        }
+        private int id;
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +62,7 @@ public class devSwipe extends AppCompatActivity {
         body1.setText(a[0]);
         body2.setText(a[1]);
         body3.setText(a[2]);
+
     }
     public class GestureListener extends GestureDetector.SimpleOnGestureListener{
         private float minFling = 50;
@@ -89,21 +107,26 @@ public class devSwipe extends AppCompatActivity {
             }
 
             if(vertical_move){
-                String match= (vertical < 0)? "I want you":"I will send you a rejection letter in 3 months";
-                Toast.makeText(getApplicationContext(),match,Toast.LENGTH_SHORT).show();
+
                 //switch to next guy!
                 if(vertical < 0) {
+                    HTTPThread thread_demo= new HTTPThread(0);
                     profileflip.setInAnimation(devSwipe.this,R.anim.in_from_bot);
                     profileflip.setOutAnimation(devSwipe.this,R.anim.out_to_top);
+                    new Thread(thread_demo).start();
+                    Toast.makeText(getApplicationContext(),output, Toast.LENGTH_SHORT).show();
                     profileflip.showNext();
                 }
                 else{
+                    HTTPThread thread_demo = new HTTPThread(1);
                     profileflip.setInAnimation(devSwipe.this,R.anim.in_from_top);
                     profileflip.setOutAnimation(devSwipe.this,R.anim.out_to_bot);
+                    new Thread(thread_demo).start();
+                    Toast.makeText(getApplicationContext(),output, Toast.LENGTH_SHORT).show();
                     profileflip.showNext();
                 }
-
-
+                textflip.clearAnimation();
+                textflip.setDisplayedChild(0);
             }
 
             return true;
