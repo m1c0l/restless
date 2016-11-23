@@ -195,7 +195,7 @@ def add_skill(who, skill_name, id):
     """
     if not type or not skill_name or not id:
         return str(-1)
-    skill_obj = database.get_skill_by_name(skill_name):
+    skill_obj = database.get_skill_by_name(skill_name)
     if not skill_obj:
         skill_obj = Skill(skill_name)
         database.insert_obj(skill_obj)
@@ -231,7 +231,7 @@ def delete_skill(who, skill_name):
     """
     if not type or not skill_name or not id:
         return str(-1)
-    skill_obj = database.get_skill_by_name(skill_name):
+    skill_obj = database.get_skill_by_name(skill_name)
     if not skill_obj:
         return str(-1)
     if type == 'user':
@@ -256,12 +256,12 @@ def swipe(type, user_id, project_id, direction):
     If it is a yes swipe, returns 1 if there is a match, 0 if there is not (just a normal swipe).
     """
     if type == 'user':
-        swipe_obj = database.Swipe(swiper_id, swipee_id, direction, 1)
+        swipe_obj = database.add_swipe(swiper_id, swipee_id, direction, 1)
     elif type == 'project':
-        swipe_obj = database.Swipe(swipee_id, swiper_id, direction, 0)
+        swipe_obj = database.add_swipe(swipee_id, swiper_id, direction, 0)
     database.insert_obj(swipe_obj)
 
-@app.route("/api/stack/<type>/<int:id>"):
+@app.route("/api/stack/<type>/<int:id>")
 def get_stack_for(type, id):
     """
     """

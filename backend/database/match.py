@@ -1,6 +1,6 @@
 from db import db
 
-class Match(db.model):
+class Match(db.Model):
     """
     This class is the database model for the Match between a L{User} and a L{Project}.
     """

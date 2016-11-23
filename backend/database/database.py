@@ -133,11 +133,12 @@ def get_projects_by_pm_id(pm_id):
 
 def get_swipes_for(who, id):
     """
-    currently unused
+    currently unused, TODO
     """
     pass    
 def get_matches_for(who, id):
     """
+    TODO
     Get the matches for an ID. Matches are when both parties have swiped each other.
     @param who: 0 for pm, 1 for dev.
     @type who: C{int}
@@ -145,6 +146,14 @@ def get_matches_for(who, id):
     @type id: C{int}
     @return: List of IDs of people who we have matched with.
     """
+
+def add_swipe(user_id, project_id, result, who_swiped):
+    """
+    Add a swipe.
+    @see: L{Swipe}
+    """
+    return Swipe(user_id, project_id, result, who_swiped)
+
 def add_new_user(username, password, first_name=None):
     """
     Creates a new user with blank information
