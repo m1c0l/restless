@@ -260,7 +260,7 @@ def swipe(type, swiper_id, swipee_id, direction):
     elif type == 'project':
         swipe_obj = database.add_swipe(swipee_id, swiper_id, direction, 0)
     database.insert_obj(swipe_obj)
-    return swipe_obj.__repr__
+    return swipe_obj.id
 @app.route("/api/stack/<type>/<int:id>")
 def get_stack_for(type, id):
     """
