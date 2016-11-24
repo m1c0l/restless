@@ -15,12 +15,29 @@ class Project(db.Model):
     The project's title, which is its name.
     @type: C{str}
     """
+    STATE_RECRUITING = 0
+    """
+    Enum indicating that the project is in the Recruiting state
+    @type: C{int}
+    """
+    STATE_STARTED = 1
+    """
+    Enum indicating that the project is in the Started state
+    @type: C{int}
+    """
+    STATE_FINISHED = 2
+    """
+    Enum indicating that the project is in the Finished state
+    @type: C{int}
+    """
     current_state = db.Column(db.Integer, nullable=False)
     """
     The project's current state, i.e., if it's recruiting, starting work,
-    or finished. 0 = recruiting, 1 = starting work, 2 = finished.
-    @type: C{int}
-    @todo: make an enum for this
+    or finished.
+    @type: C{enum}
+    @enum: L{Project.STATE_RECRUITING}
+    @enum: L{Project.STATE_STARTED}
+    @enum: L{Project.STATE_FINISHED}
     """
     description = db.Column(db.Text(), nullable=False)
     """
@@ -37,7 +54,7 @@ class Project(db.Model):
     skills_needed = db.relationship('Skill', secondary=project_skills, backref='skills_needed', lazy='select')
     """
     A set of skills needed to develop the project.
-    @type: list of L{skill}
+    @type: list of L{Skill}
     """
 
     def __init__(self, title, description, pm_id):
@@ -54,7 +71,7 @@ class Project(db.Model):
         self.title = title
         self.description = description
         self.pm_id = pm_id
-        self.current_state = 0
+        self.current_state = Project.STATE_RECRUITING
 
     def __repr__(self):
         return "<Project '%s' id=%r>" % (self.title, self.id)

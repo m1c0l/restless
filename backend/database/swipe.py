@@ -27,18 +27,44 @@ class Swipe(db.Model):
     @see: L{Project.id}
     """
 
+    RESULT_NO = 0
+    """
+    Enum indicating that the swipe was a no
+    @type: C{int}
+    """
+
+    RESULT_YES = 1
+    """
+    Enum indicating that the swipe was a yes
+    @type: C{int}
+    """
+
     result = db.Column(db.Integer, nullable=False)
     """
-    The result of the swipe. Whether the dev or PM likes the project or developer. 0 means no, 1 means yes.
+    The result of the swipe. Whether the swiper likes the project or developer.
+    @type: C{enum}
+    @enum: L{Swipe.RESULT_NO}
+    @enum: L{Swipe.RESULT_YES}
+    """
+
+    SWIPER_PM = 0
+    """
+    Enum indicating that the swipe was made by a Project Manager
     @type: C{int}
-    @todo: Make an enum for the possible values
+    """
+
+    SWIPER_DEV = 1
+    """
+    Enum indicating that the swipe was made by a Developer
+    @type: C{int}
     """
 
     who_swiped = db.Column(db.Integer, nullable=False)
     """
-    Which party did the swipe. 0 means pm, 1 means dev.
-    @type: C{int}
-    @todo: Make an enum
+    Which party did the swipe.
+    @type: C{enum}
+    @enum: L{Swipe.SWIPER_PM}
+    @enum: L{Swipe.SWIPER_DEV}
     """
 
     def __init__(self, user_id, project_id, result, who_swiped):
@@ -51,10 +77,10 @@ class Swipe(db.Model):
         @param project_id: The Project involved in the swipe
         @type project_id: C{int}
         @see: L{Project}
-        @param result: Result of swipe. 0 no, 1 yes
-        @type result: C{int}
+        @param result: Result of swipe
+        @type result: L{Swipe.RESULT_NO} or L{Swipe.RESULT_YES}
         @param who_swiped: Which party did the swipe
-        @type who_swiped: C{int}
+        @type who_swiped: L{Swipe.SWIPER_PM} or L{Swipe.SWIPER_DEV}
         """
         self.user_id = user_id
         self.project_id = project_id
