@@ -64,15 +64,15 @@ def handle_404(e):
         'See https://github.com/m1c0l/restless/blob/master/backend/README.md for API usage',
         'NOT_FOUND', 404)
 
-@app.route("/api/update/<type>/<id>", methods=['POST'])
-def update_info(type=None, id=None):
+@app.route("/api/update/<type>/<int:id>", methods=['POST'])
+def update_info(type, id):
     """
     Updates user data from the mobile app if valid. All other parameters are
     sent via POST request.
-    @param id: ID of our data.
-    @type id: C{int}
     @param type: The type of data to get (eg. C{user}, C{project}, C{skill})
     @type type: C{str}
+    @param id: ID of our data.
+    @type id: C{int}
     @return: New data if successfully updated, or JSON error
     @rtype: C{str}
     """
@@ -84,7 +84,6 @@ def update_info(type=None, id=None):
     if type not in commands:
         return error(msg='Invalid type')
     try:
-        id = int(id)
         obj = commands[type.lower()](id)
         database.update(obj, **request.form)
         return retrieve(type, id)
@@ -136,7 +135,7 @@ def login(username=None, password=None):
         id = database.get_user_by_username(username).id
     return flask.jsonify(id=id)
 
-@app.route("/api/get/<type>/<id>")
+@app.route("/api/get/<type>/<int:id>")
 def retrieve(type,id):
     """
     Handles API requests from the mobile app.
@@ -147,8 +146,6 @@ def retrieve(type,id):
     @return: A JSON response, or a JSON error
     @rtype: C{str}
     """
-    if type == "" or id == "":
-        return error(msg='Please fill in your parameters!')
     database_commands = {
         'user' : database.get_user_by_id,
         'project' : database.get_project_by_id,
@@ -156,7 +153,6 @@ def retrieve(type,id):
     }
     if type.lower() in database_commands:
         try:
-            id = int(id)
             response_dict = database_commands[type.lower()](id).to_dict()
             return flask.jsonify(**response_dict)
         except ValueError:
@@ -204,6 +200,7 @@ def add_skill(who, skill_name, id):
     @type id: C{int}
     @return: JSON with skill id if successful, or error JSON
     @rtype: C{str}
+    @todo: make this a post request
     """
     if not type or not skill_name or not id:
         return error(msg='missing a parameter')
@@ -241,6 +238,7 @@ def delete_skill(who, skill_name):
     @param id: user or pm id.
     @type id: C{int}
     @return: skill id if successful, or error JSON
+    @todo: make this a post request
     """
     if not type or not skill_name or not id:
         return error(msg='missing a parameter')
@@ -274,7 +272,7 @@ def swipe(type, swiper_id, swipee_id, direction):
         swipe_obj = database.add_swipe(swiper_id, swipee_id, direction, Swipe.SWIPER_DEV)
     elif type == 'project':
         swipe_obj = database.add_swipe(swipee_id, swiper_id, direction, Swipe.SWIPER_PM)
-    else
+    else:
         return error(msg='invalid type')
     database.insert_obj(swipe_obj)
     return flask.jsonify(id=swipe_obj.id)
