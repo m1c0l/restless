@@ -41,30 +41,38 @@ def error(msg='Bad Request', status='BAD_REQUEST', code=400): #todo: add logging
     """
     try:
         err = {
-            'error_message' : msg,
+            'error_message': msg,
             'status': status
         }
         return flask.jsonify(**err), code
     except:
-        return 'Internal server error...', 500
-        
-@app.route("/")
-def index():
-    """
-    Returns a default error message
-    @return: A default error message
-    """
-    return error(msg='There is no index!')
+        err = {
+            'error_message': 'Internal Server Error',
+            'status': 'Internal Server Error'
+        }
+        return flask.jsonify(**err), 500
 
-@app.route("/api/update/<type>/<id>", methods=['POST'])
-def update_info(type=None, id=None):
+@app.errorhandler(404)
+def handle_404(e):
+    """
+    Handles 404 errors
+    @param: the werkzeug response
+    @return: A 404 error
+    @rtype: (C{str}. C{int})
+    """
+    return error(
+        'See https://github.com/m1c0l/restless/blob/master/backend/README.md for API usage',
+        'NOT_FOUND', 404)
+
+@app.route("/api/update/<type>/<int:id>", methods=['POST'])
+def update_info(type, id):
     """
     Updates user data from the mobile app if valid. All other parameters are
     sent via POST request.
-    @param id: ID of our data.
-    @type id: C{int}
     @param type: The type of data to get (eg. C{user}, C{project}, C{skill})
     @type type: C{str}
+    @param id: ID of our data.
+    @type id: C{int}
     @return: New data if successfully updated, or JSON error
     @rtype: C{str}
     """
@@ -76,15 +84,13 @@ def update_info(type=None, id=None):
     if type not in commands:
         return error(msg='Invalid type')
     try:
-        id = int(id)
-        if id:
-            obj = commands[type.lower()](id)
-            database.update(obj, **request.form)
-            return retrieve(type, id)
+        obj = commands[type.lower()](id)
+        database.update(obj, **request.form)
+        return retrieve(type, id)
     except ValueError:
         return error(msg='Invalid ID')
     except AttributeError as e:
-        return repr(e)
+        return error(msg=str(e))
 
 @app.route("/api/new_user/", methods=['POST'])
 def new_user(username=None, password=None):
@@ -94,17 +100,18 @@ def new_user(username=None, password=None):
     @type username: C{str}
     @param password: Password from input, cannot be blank.
     @type password: C{str}
-    @return: Integer describing the ID of the newly created user with specified
+    @return: JSON with the ID of the newly created user with specified
              username/password, or -1 if username was already in the database.
     @rtype: C{str}
     """
     if not username:
-        username = request.form.get("username")
+        username = request.form.get('username')
     if not password:
-        password = request.form.get("password")
-    if not username or not password:
-        return str(-1)
-    return str(database.add_new_user(username, password))
+        password = request.form.get('password')
+    id = -1
+    if username and password:
+        id = database.add_new_user(username, password)
+    return flask.jsonify(id=id)
 
 @app.route("/api/login/", methods=['POST'])
 def login(username=None, password=None):
@@ -119,16 +126,16 @@ def login(username=None, password=None):
     @rtype: C{int}
     """
     if not username:
-        username = request.form.get("username")
+        username = request.form.get('username')
     if not password:
-        password = request.form.get("password")
+        password = request.form.get('password')
+    id = -1
     creds = Login(username, password)
     if database.validate_login(creds):
-        return str(database.get_user_by_username.id)
-    else:
-        return str(-1)
+        id = database.get_user_by_username(username).id
+    return flask.jsonify(id=id)
 
-@app.route("/api/get/<type>/<id>")
+@app.route("/api/get/<type>/<int:id>")
 def retrieve(type,id):
     """
     Handles API requests from the mobile app.
@@ -139,8 +146,6 @@ def retrieve(type,id):
     @return: A JSON response, or a JSON error
     @rtype: C{str}
     """
-    if type == "" or id == "":
-        return error(msg='Please fill in your parameters!')
     database_commands = {
         'user' : database.get_user_by_id,
         'project' : database.get_project_by_id,
@@ -148,13 +153,14 @@ def retrieve(type,id):
     }
     if type.lower() in database_commands:
         try:
-            id = int(id)
             response_dict = database_commands[type.lower()](id).to_dict()
             return flask.jsonify(**response_dict)
-        except (AttributeError, ValueError):
+        except ValueError:
             return error(msg='Invalid ID')
+        except AttributeError as e:
+            return error(msg=str(e))
     else:
-        return error(msg='Invalid type.')
+        return error(msg='Invalid type')
 
 @app.route("/api/new_project/", methods=['POST'])
 def new_project(title=None, description="", pm_id = None):
@@ -175,9 +181,10 @@ def new_project(title=None, description="", pm_id = None):
         pm_id = request.form.get("pm_id")
     if not description:
         description = request.form.get("description")
-    if not pm_id or not title:
-        return -1
-    return str(database.add_new_project(title=title, description=description, pm_id=pm_id))
+    id = -1
+    if pm_id and title:
+        id = database.add_new_project(title=title, description=description, pm_id=pm_id)
+    return flask.jsonify(id=id)
 
 @app.route("/api/skill/add/<type>/<skill_name>/<int:id>")
 def add_skill(who, skill_name, id):
@@ -191,10 +198,12 @@ def add_skill(who, skill_name, id):
     @type skill_name: C{str}
     @param id: user or pm id.
     @type id: C{int}
-    @return: skill id if successful, or -1 if fail.
+    @return: JSON with skill id if successful, or error JSON
+    @rtype: C{str}
+    @todo: make this a post request
     """
     if not type or not skill_name or not id:
-        return str(-1)
+        return error(msg='missing a parameter')
     skill_obj = database.get_skill_by_name(skill_name)
     if not skill_obj:
         skill_obj = Skill(skill_name)
@@ -202,19 +211,20 @@ def add_skill(who, skill_name, id):
     if type == 'user':
         user = database.get_user_by_id(id)
         if not user:
-            return str(-1)
+            return error(msg='Invalid user id')
         sets = user.skill_sets
         sets.append(skill_obj)
         database.update(user, skill_sets=sets)
-        return skill_obj.id
+        return flask.jsonify(id=skill_obj.id)
     elif type == 'project':
         project = database.get_project_by_id(id)
-        if not user:
-            return str(-1)
+        if not project:
+            return error(msg='Invalid project id')
         sets = project.skills_needed
         sets.append(skill_obj)
         database.update(project, skills_needed = sets)
-        return skill.object_id
+        return flask.jsonify(id=skill_object.id)
+
 @app.route("/api/skill/delete/<type>/<skill_name>/<int:id>")
 def delete_skill(who, skill_name):
     """
@@ -227,27 +237,29 @@ def delete_skill(who, skill_name):
     @type skill_name: C{str}
     @param id: user or pm id.
     @type id: C{int}
-    @return: skill id if successful, or -1 if fail.
+    @return: skill id if successful, or error JSON
+    @todo: make this a post request
     """
     if not type or not skill_name or not id:
-        return str(-1)
+        return error(msg='missing a parameter')
     skill_obj = database.get_skill_by_name(skill_name)
     if not skill_obj:
-        return str(-1)
+        return error(msg='skill name does not exist')
     if type == 'user':
         user = database.get_user_by_id(id)
         if not user:
-            return str(-1)
+            return error(msg='Invalid user id')
         sets = [s for s in user.skill_sets if s.id != skill_obj.id]
         database.update(user, skill_sets=sets)
-        return skill_obj.id
+        return flask.jsonify(id=skill_obj.id)
     elif type == 'project':
         project = database.get_project_by_id(id)
-        if not user:
-            return str(-1)
-        sets = [s for s in user.skill_sets if s.id != skill_obj.id]
-        database.update(project, skills_needed = sets)
-        return skill.object_id
+        if not project:
+            return error(msg='Invalid project id')
+        sets = [s for s in project.skills_needed if s.id != skill_obj.id]
+        database.update(project, skills_needed=sets)
+        return flask.jsonify(id=skill_object.id)
+
 @app.route("/api/swipe/<type>/<int:swiper_id>/<int:swipee_id>/<int:direction>")
 def swipe(type, swiper_id, swipee_id, direction):
     """
@@ -255,11 +267,14 @@ def swipe(type, swiper_id, swipee_id, direction):
     Direction is 0 for down (negative swipe), 1 for up (positive swipe).
     """
     if type == 'user':
-        swipe_obj = database.add_swipe(swiper_id, swipee_id, direction, 1)
+        swipe_obj = database.add_swipe(swiper_id, swipee_id, direction, Swipe.SWIPER_DEV)
     elif type == 'project':
-        swipe_obj = database.add_swipe(swipee_id, swiper_id, direction, 0)
+        swipe_obj = database.add_swipe(swipee_id, swiper_id, direction, Swipe.SWIPER_PM)
+    else:
+        return error(msg='invalid type')
     database.insert_obj(swipe_obj)
-    return str(swipe_obj.id)
+    return flask.jsonify(id=swipe_obj.id)
+
 @app.route("/api/stack/<type>/<int:id>")
 def get_stack_for(type, id):
     """
@@ -301,5 +316,5 @@ def serve_docs(filename):
 if __name__ == "__main__":
     init_app()
     app.app_context().push()
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=app.config['PORT'])
 

@@ -73,10 +73,10 @@ if __name__ == '__main__':
             db.session.commit()
 
         swipe_arr = [
-            Swipe(user_id=user_arr[1].id, project_id=project_arr[0].id, who_swiped=0),
-            Swipe(user_id=user_arr[2].id, project_id=project_arr[1].id, who_swiped=0),
-            Swipe(user_id=user_arr[0].id, project_id=project_arr[2].id, who_swiped=0),
-            Swipe(user_id=user_arr[3].id, project_id=project_arr[3].id, who_swiped=0)
+            Swipe(user_id=user_arr[1].id, project_id=project_arr[0].id, result=Swipe.RESULT_YES, who_swiped=Swipe.SWIPER_PM),
+            Swipe(user_id=user_arr[2].id, project_id=project_arr[1].id, result=Swipe.RESULT_YES, who_swiped=Swipe.SWIPER_DEV),
+            Swipe(user_id=user_arr[0].id, project_id=project_arr[2].id, result=Swipe.RESULT_NO, who_swiped=Swipe.SWIPER_DEV),
+            Swipe(user_id=user_arr[3].id, project_id=project_arr[3].id, result=Swipe.RESULT_NO, who_swiped=Swipe.SWIPER_PM)
         ]
         for sw in swipe_arr:
             database.insert_obj(sw)
