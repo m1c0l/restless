@@ -170,4 +170,5 @@ Registers a swipe. Type is one of `user` or `project`, and corresponds to the ty
 
 For example, if *user* with ID 3 swipes *up* on the project with ID *2*, we can register that as follows:
 http://159.203.243.194/api/swipe/user/3/2/1
-The server will respond with the ID of the swipe in the database (not particularly useful for the front-end).
+The server will respond with the ID of the complement swipe in the database. If there is a match, this will return a positive number.
+Otherwise, it will return -1 which indicates that the other party has not swiped positively yet.

@@ -269,9 +269,9 @@ def swipe(type, swiper_id, swipee_id, direction):
     A complement swipe represents a swipe between the same user and PM, but with the other party swiping.
     """
     if type == 'user':
-        swipe_ret = database.add_swipe(swiper_id, swipee_id, direction, Swipe.SWIPER_DEV)
+        swipe_ret = database.add_swipe(swiper_id, swipee_id, direction, database.Swipe.SWIPER_DEV)
     elif type == 'project':
-        swipe_ret = database.add_swipe(swipee_id, swiper_id, direction, Swipe.SWIPER_PM)
+        swipe_ret = database.add_swipe(swipee_id, swiper_id, direction, database.Swipe.SWIPER_PM)
     else:
         return error(msg='invalid type')
     complement_id = swipe_ret.id if swipe_ret else -1
