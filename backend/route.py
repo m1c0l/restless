@@ -265,15 +265,17 @@ def swipe(type, swiper_id, swipee_id, direction):
     """
     Performs a swipe.
     Direction is 0 for down (negative swipe), 1 for up (positive swipe).
+    Returns the ID of the swipe's complement if it exists, or -1 if no complement swipe has been found yet.
+    A complement swipe represents a swipe between the same user and PM, but with the other party swiping.
     """
     if type == 'user':
-        swipe_obj = database.add_swipe(swiper_id, swipee_id, direction, Swipe.SWIPER_DEV)
+        swipe_ret = database.add_swipe(swiper_id, swipee_id, direction, Swipe.SWIPER_DEV)
     elif type == 'project':
-        swipe_obj = database.add_swipe(swipee_id, swiper_id, direction, Swipe.SWIPER_PM)
+        swipe_ret = database.add_swipe(swipee_id, swiper_id, direction, Swipe.SWIPER_PM)
     else:
         return error(msg='invalid type')
-    database.insert_obj(swipe_obj)
-    return flask.jsonify(id=swipe_obj.id)
+    complement_id = swipe_ret.id if swipe_ret else -1
+    return flask.jsonify(id=complement_id)
 
 @app.route("/api/stack/<type>/<int:id>")
 def get_stack_for(type, id):
