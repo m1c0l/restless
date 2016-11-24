@@ -47,14 +47,16 @@ def error(msg='Bad Request', status='BAD_REQUEST', code=400): #todo: add logging
         return flask.jsonify(**err), code
     except:
         return 'Internal server error...', 500
-        
-@app.route("/")
-def index():
+
+@app.errorhandler(404)
+def handle_404(e):
     """
-    Returns a default error message
-    @return: A default error message
+    Handles 404 errors
+    @param: the werkzeug response
+    @return: A 404 error
+    @rtype: (C{str}. C{int})
     """
-    return error(msg='There is no index!')
+    return error('Not Found', 'NOT_FOUND', 404)
 
 @app.route("/api/update/<type>/<id>", methods=['POST'])
 def update_info(type=None, id=None):
