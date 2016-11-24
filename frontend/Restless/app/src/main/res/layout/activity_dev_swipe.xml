@@ -31,13 +31,13 @@
             >
 
             <TextView
-            android:text="Name goes here"
+            android:text="Primary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/TextFieldTitle"
+            android:id="@+id/TextFieldTitle1"
             android:textAllCaps="true"
             android:background="@drawable/roundedheader"
-            android:layout_below="@+id/dev_profile_pic"
+            android:layout_below="@+id/dev_profile_pic1"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginTop="11dp"
@@ -55,7 +55,7 @@
             <ImageView
                 android:layout_width="150dp"
                 app:srcCompat="@drawable/common_full_open_on_phone"
-                android:id="@+id/dev_profile_pic"
+                android:id="@+id/dev_profile_pic1"
                 android:layout_height="150dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true" />
@@ -63,8 +63,8 @@
             <ViewFlipper
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/TextFieldTitle"
-                android:id="@+id/textFlipper"
+                android:layout_below="@+id/TextFieldTitle1"
+                android:id="@+id/textFlipper1"
                 android:padding="7dp">
                 <RelativeLayout
                     android:layout_width="fill_parent"
@@ -104,6 +104,97 @@
                         android:layout_marginTop="20dp"
                         android:background="@drawable/rounded_text"
                         android:id="@+id/Text3"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        />
+                </RelativeLayout>
+            </ViewFlipper>
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:theme="@style/NoActionBarDark"
+            android:background="@drawable/rounded_text"
+
+            android:backgroundTint="#F0808080"
+            >
+
+            <TextView
+                android:text="Secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/TextFieldTitle2"
+                android:textAllCaps="true"
+                android:background="@drawable/roundedheader"
+                android:layout_below="@+id/dev_profile_pic2"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="11dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:textAlignment="center"
+                android:textStyle="bold"
+
+                android:padding="4dp"
+                android:textSize="20dp"
+                />
+
+
+
+            <ImageView
+                android:layout_width="150dp"
+                app:srcCompat="@drawable/common_full_open_on_phone"
+                android:id="@+id/dev_profile_pic2"
+                android:layout_height="150dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+            <ViewFlipper
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/TextFieldTitle2"
+                android:id="@+id/textFlipper2"
+                android:padding="7dp">
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rounded_text"
+                        android:id="@+id/Text4"
+
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rounded_text"
+                        android:id="@+id/Text5"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rounded_text"
+                        android:id="@+id/Text6"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"

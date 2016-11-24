@@ -18,30 +18,69 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import org.w3c.dom.Text;
+
 import static java.lang.Math.abs;
 
 public class devSwipe extends AppCompatActivity {
 
 
     private GestureDetectorCompat gdetect;
-    private ImageView profile_pic;
-    private TextView body1,body2,body3;
-    private ViewFlipper textflip, profileflip;
+    private ImageView profile_pic, profile_pic_reserve;
+    private TextView body1,body2,body3, body1_reserve, body2_reserve, body3_reserve;
+    private ViewFlipper textflip, profileflip, textflip_reserve;
+    private TextView primary_text, reserve_text;
+    private ViewAssociation first_page, second_page;
     String[] a= {"Populate field with GET API Overview 0","Populate field with GET API Skills  1","Populate field with GET API background/past projects 2"};
+    String[] b={"reserve 1", "reserve 2", "reserve 3"};
     int a_pos = 0;
     String output;
+    public class Container{
+        public Container(ViewAssociation a, ViewAssociation b){
+            curr=a;
+            following=b;
+        }
+        public ViewAssociation curr;
+        public ViewAssociation following;
+    }
+    public class ViewAssociation{
+        public ViewAssociation(ViewFlipper text, TextView body_1, TextView body_2, TextView body_3, ImageView picture){
+            textswitcher = text;
+            one=body_1;
+            two=body_2;
+            three=body_3;
+            this.picture=picture;
+        }
+        public void update(String body_1, String body_2, String body_3){
+            one.setText(body_1);
+            two.setText(body_2);
+            three.setText(body_3);
+        }
+        public TextView one,two,three;
+        public ViewFlipper textswitcher;
+        public ImageView picture;
+    }
     public class HTTPThread implements Runnable {
 
-        public HTTPThread(int a) {
+        public HTTPThread(Container a) {
             // store parameter for later user
-            id=a;
+            first = a.curr;
+            second = a.following;
         }
 
         public void run() {
-            output= (id == 0)? "I want you":"I will send you a rejection letter in 3 months";
+            String one,two,three;
+
+
+            one=(String)first.one.getText();
+            two=(String) first.two.getText();
+            three=(String) first.three.getText();
+            first.update((String)second.one.getText(),(String)second.two.getText(),(String)second.three.getText());
+            second.update(one,two,three);
 
         }
-        private int id;
+        private ViewAssociation first;
+        private ViewAssociation second;
     }
 
 
@@ -52,16 +91,33 @@ public class devSwipe extends AppCompatActivity {
 
         //populate stack with GET query
         profileflip= (ViewFlipper) findViewById(R.id.view_flipper_main);
-        profile_pic = (ImageView) findViewById(R.id.dev_profile_pic);
-        textflip= (ViewFlipper) findViewById(R.id.textFlipper);
+        profile_pic = (ImageView) findViewById(R.id.dev_profile_pic1);
+        profile_pic_reserve = (ImageView) findViewById(R.id.dev_profile_pic2);
+        textflip= (ViewFlipper) findViewById(R.id.textFlipper1);
+        textflip_reserve = (ViewFlipper) findViewById(R.id.textFlipper2);
+        primary_text = (TextView) findViewById(R.id.TextFieldTitle1);
+        reserve_text = (TextView) findViewById(R.id.TextFieldTitle2);
         //populate page with stack information
         body1 = (TextView) findViewById(R.id.Text1);
         body2= (TextView) findViewById(R.id.Text2);
         body3= (TextView) findViewById(R.id.Text3);
-        gdetect = new GestureDetectorCompat(this, new GestureListener());
+        body1_reserve= (TextView) findViewById(R.id.Text4);
+        body2_reserve= (TextView) findViewById(R.id.Text5);
+        body3_reserve= (TextView) findViewById(R.id.Text6);
         body1.setText(a[0]);
         body2.setText(a[1]);
         body3.setText(a[2]);
+        body1_reserve.setText(b[0]);
+        body2_reserve.setText(b[1]);
+        body3_reserve.setText(b[2]);
+
+        first_page= new ViewAssociation(textflip,body1,body2,body3,profile_pic);
+        second_page = new ViewAssociation(textflip_reserve,body1_reserve,body2_reserve,body3_reserve,profile_pic_reserve);
+
+
+
+
+        gdetect = new GestureDetectorCompat(this, new GestureListener());
 
     }
     public class GestureListener extends GestureDetector.SimpleOnGestureListener{
@@ -92,39 +148,53 @@ public class devSwipe extends AppCompatActivity {
             boolean vertical_move = (abs(vertical)>minFling && abs(velocityY)>minVelocity && abs(vertical)>abs(horizontal)*1.5 && abs(velocityY)>abs(velocityX)*1.5);
 
             if(horizontal_move){
-
+                ViewFlipper a = (profileflip.getDisplayedChild()==0) ? textflip : textflip_reserve;
                 if(horizontal > 0){
-                    textflip.setInAnimation(devSwipe.this, R.anim.in_from_left);
-                    textflip.setOutAnimation(devSwipe.this, R.anim.out_to_right);
-                    textflip.showPrevious();
+                    a.setInAnimation(devSwipe.this, R.anim.in_from_left);
+                    a.setOutAnimation(devSwipe.this, R.anim.out_to_right);
+                    a.showPrevious();
                 }
                 else {
 
-                    textflip.setInAnimation(devSwipe.this, R.anim.in_from_right);
-                    textflip.setOutAnimation(devSwipe.this, R.anim.out_to_left);
-                    textflip.showNext();
+                    a.setInAnimation(devSwipe.this, R.anim.in_from_right);
+                    a.setOutAnimation(devSwipe.this, R.anim.out_to_left);
+                    a.showNext();
                 }
             }
 
             if(vertical_move){
-
+                output= (profileflip.getDisplayedChild()== 0)? "I want you":"I will send you a rejection letter in 3 months";
                 //switch to next guy!
+                Container a;
+                if(profileflip.getDisplayedChild()==0)
+                    a=new Container(first_page,second_page);
+                else
+                    a=new Container(second_page,first_page);
+                HTTPThread thread_demo = new HTTPThread(a);
+                Thread updater;
                 if(vertical < 0) {
-                    HTTPThread thread_demo= new HTTPThread(0);
+
+
                     profileflip.setInAnimation(devSwipe.this,R.anim.in_from_bot);
                     profileflip.setOutAnimation(devSwipe.this,R.anim.out_to_top);
-                    new Thread(thread_demo).start();
-                    Toast.makeText(getApplicationContext(),output, Toast.LENGTH_SHORT).show();
+                    (updater = new Thread(thread_demo)).start();
+
                     profileflip.showNext();
+
                 }
                 else{
-                    HTTPThread thread_demo = new HTTPThread(1);
+
                     profileflip.setInAnimation(devSwipe.this,R.anim.in_from_top);
                     profileflip.setOutAnimation(devSwipe.this,R.anim.out_to_bot);
-                    new Thread(thread_demo).start();
-                    Toast.makeText(getApplicationContext(),output, Toast.LENGTH_SHORT).show();
+                    (updater = new Thread(thread_demo)).start();
+
                     profileflip.showNext();
+
                 }
+                while(updater.isAlive())
+                    continue;
+
+                Toast.makeText(getApplicationContext(),output, Toast.LENGTH_SHORT).show();
                 textflip.clearAnimation();
                 textflip.setDisplayedChild(0);
             }
