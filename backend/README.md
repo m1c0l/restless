@@ -2,7 +2,6 @@ Flask app that runs its builtin server on port 80. Run `python route.py` to
 start server if it's not up.
 
 # API usage
-
 ## GET requests
 ```
 /api/get/<type>/<id>
@@ -96,12 +95,12 @@ Response:
 }
 ```
 
-### Updating stuff
+### Creating users
 ```
 POST /api/new_user/
 ```
 POST data should be the `username` and `password` of the new user. Returns a
-JSON with the new user's id.
+JSON with the new user's id. Returns -1 if the username was already in the database.
 
 #### Example
 ##### Adding a user with username `user123` and password `pass123`
@@ -116,8 +115,59 @@ POST data:
 }
 ```
 Response:
-```json
+```
 {
-  "id": 5
+    "id": 2
 }
 ```
+
+### Logging in
+```
+POST /api/login/
+```
+POST data should be the username and password of the login. Will return (in json format) the ID of the user if successful or -1 if it fails.
+POST data:
+```json
+{
+  "username": "user123",
+  "password": "pass123"
+}
+```
+Response:
+```
+{
+    "id": 2
+}
+```
+
+### Add a new project
+```
+POST /api/new_project/
+```
+Three fields are required: title, pm_id (id of the project manager creating the project), and description. Returns (as json) the project ID if created or -1 if the project title already exists.
+POST data:
+```json
+{
+  "title": "Restless",
+  "pm_id": "1",
+  "description": "Tindr for developers"
+}
+```
+Response:
+```
+{
+    "id": 1
+}
+```
+### Adding and removing skills to a user/project
+Implemented, docs coming soon...
+
+### Swiping
+```
+GET /api/swipe/<type>/<swiper_id>/<swipee_id>/<direction>
+```
+Registers a swipe. Type is one of `user` or `project`, and corresponds to the type of account that is doing the swiping. `swiper_id` is the integer ID of this account. `swipee_id` is the integer ID of the *other* account, a.k.a. the one being swiped on. `direction` indicates whether the account swiped *up* (positive swipe) or *down* (negative swipe). 0 corresponds to *down*, and 1 corresponds to *up*.
+
+For example, if *user* with ID 3 swipes *up* on the project with ID *2*, we can register that as follows:
+http://159.203.243.194/api/swipe/user/3/2/1
+The server will respond with the ID of the swipe in the database (not particularly useful for the front-end).

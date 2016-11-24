@@ -131,6 +131,9 @@ def get_projects_by_pm_id(pm_id):
     """
     return Project.query.filter_by(pm_id=pm_id).all()
 
+def get_open_projects(current_state):
+    return Project.query.filter_by(current_state=current_state).all()
+
 def get_swipes_for(who, id):
     """
     currently unused, TODO
@@ -182,7 +185,7 @@ def add_new_project(title, description, pm_id):
     @type description: C{str}
     @param pm_id: User ID of the project manager that manages this project.
     @type pm_id: C{int}
-    @return: Project id if user was created, -1 if username already exists
+    @return: Project id if user was created, -1 if project title already exists
     @rtype: C{int}
     """
     if not title or not descripion or not pm_id:

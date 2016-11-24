@@ -253,7 +253,6 @@ def swipe(type, swiper_id, swipee_id, direction):
     """
     Performs a swipe.
     Direction is 0 for down (negative swipe), 1 for up (positive swipe).
-    If it is a yes swipe, returns 1 if there is a match, 0 if there is not (just a normal swipe).
     """
     if type == 'user':
         swipe_obj = database.add_swipe(swiper_id, swipee_id, direction, 1)
@@ -272,7 +271,7 @@ def get_stack_for(type, id):
 
 @app.route("/api/matches/<type>/<int:id>")
 def get_matches_for(type, id):
-    """
+    """ TODO
     """
     if type == 'user':
         pass
