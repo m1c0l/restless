@@ -56,7 +56,9 @@ def handle_404(e):
     @return: A 404 error
     @rtype: (C{str}. C{int})
     """
-    return error('Not Found', 'NOT_FOUND', 404)
+    return error(
+        'See https://github.com/m1c0l/restless/blob/master/backend/README.md for API usage',
+        'NOT_FOUND', 404)
 
 @app.route("/api/update/<type>/<id>", methods=['POST'])
 def update_info(type=None, id=None):
@@ -304,5 +306,5 @@ def serve_docs(filename):
 if __name__ == "__main__":
     init_app()
     app.app_context().push()
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=app.config['PORT'])
 
