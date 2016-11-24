@@ -117,7 +117,7 @@ class User(db.Model):
             'email': self.email,
             'LinkedIn_profile_id': self.LinkedIn_profile_id,
             'bio': self.bio,
-            'signup_time': self.signup_time,
+            'signup_time': str(self.signup_time),
             'projects_managing': [project.id for project in self.projects_managing],
             'projects_developing': [project.id for project in self.projects_developing],
             'skill_sets': [skill.id for skill in self.skill_sets]
