@@ -69,7 +69,7 @@ def update_info(type, id):
     """
     Updates user data from the mobile app if valid. All other parameters are
     sent via POST request.
-    @param type: The type of data to get (eg. C{user}, C{project}, C{skill})
+    @param type: The type of data to get (eg. C{user}, C{project})
     @type type: C{str}
     @param id: ID of our data.
     @type id: C{int}
@@ -79,7 +79,7 @@ def update_info(type, id):
     commands = {
         'user' : database.get_user_by_id,
         'project' : database.get_project_by_id,
-        'skill' : database.get_skill_by_id,
+        #'skill' : database.get_skill_by_id,
     }
     if type not in commands:
         return error(msg='Invalid type')

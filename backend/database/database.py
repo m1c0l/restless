@@ -198,7 +198,7 @@ def add_new_project(title, description, pm_id):
     @return: Project id if user was created, -1 if project title already exists
     @rtype: C{int}
     """
-    if not title or not descripion or not pm_id:
+    if not title or not description or not pm_id:
         return -1
     if get_project_by_title(title):
         return -1
