@@ -1,7 +1,9 @@
 package com.example.eric.restless;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Looper;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -35,6 +37,7 @@ public class devSwipe extends AppCompatActivity {
     String[] b={"reserve 1", "reserve 2", "reserve 3"};
     int a_pos = 0;
     String output;
+
     public class Container{
         public Container(ViewAssociation a, ViewAssociation b){
             curr=a;
@@ -44,7 +47,7 @@ public class devSwipe extends AppCompatActivity {
         public ViewAssociation following;
     }
     public class ViewAssociation{
-        public ViewAssociation(ViewFlipper text, TextView body_1, TextView body_2, TextView body_3, ImageView picture){
+        public ViewAssociation(ViewFlipper text, TextView body_1, TextView body_2, TextView body_3, ImageView picture, TextView name){
             textswitcher = text;
             one=body_1;
             two=body_2;
@@ -52,14 +55,16 @@ public class devSwipe extends AppCompatActivity {
             this.picture=picture;
         }
         public void update(String body_1, String body_2, String body_3){
+
             one.setText(body_1);
             two.setText(body_2);
             three.setText(body_3);
         }
-        public TextView one,two,three;
+        public TextView one,two,three, name;
         public ViewFlipper textswitcher;
         public ImageView picture;
     }
+
     public class HTTPThread implements Runnable {
 
         public HTTPThread(Container a) {
@@ -67,17 +72,23 @@ public class devSwipe extends AppCompatActivity {
             first = a.curr;
             second = a.following;
         }
-
+        @Override
         public void run() {
-            String one,two,three;
 
 
-            one=(String)first.one.getText();
-            two=(String) first.two.getText();
-            three=(String) first.three.getText();
-            first.update((String)second.one.getText(),(String)second.two.getText(),(String)second.three.getText());
-            second.update(one,two,three);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    String one, two, three;
+                    one = (String) first.one.getText();
+                    two = (String) first.two.getText();
+                    three = (String) first.three.getText();
+                    first.update((String) second.one.getText(), (String) second.two.getText(), (String) second.three.getText());
+                    second.update(one, two, three);
+                }
+            });
 
+            //fetch next guy right here
         }
         private ViewAssociation first;
         private ViewAssociation second;
@@ -111,8 +122,8 @@ public class devSwipe extends AppCompatActivity {
         body2_reserve.setText(b[1]);
         body3_reserve.setText(b[2]);
 
-        first_page= new ViewAssociation(textflip,body1,body2,body3,profile_pic);
-        second_page = new ViewAssociation(textflip_reserve,body1_reserve,body2_reserve,body3_reserve,profile_pic_reserve);
+        first_page= new ViewAssociation(textflip,body1,body2,body3,profile_pic, primary_text);
+        second_page = new ViewAssociation(textflip_reserve,body1_reserve,body2_reserve,body3_reserve,profile_pic_reserve, reserve_text);
 
 
 
@@ -125,8 +136,6 @@ public class devSwipe extends AppCompatActivity {
         private float minVelocity = 50;
         @Override
         public boolean onDown(MotionEvent event){
-            Context s=getApplicationContext();
-            //Toast.makeText(s,"pushed",Toast.LENGTH_SHORT).show();
 
             return true;
         }
@@ -195,8 +204,14 @@ public class devSwipe extends AppCompatActivity {
                     continue;
 
                 Toast.makeText(getApplicationContext(),output, Toast.LENGTH_SHORT).show();
+
+                //reset text boxes to initial
+                if(profileflip.getDisplayedChild()==0)
+                    first_page.textswitcher.setDisplayedChild(0);
+                else
+                    second_page.textswitcher.setDisplayedChild(0);
                 textflip.clearAnimation();
-                textflip.setDisplayedChild(0);
+
             }
 
             return true;
@@ -234,5 +249,12 @@ public class devSwipe extends AppCompatActivity {
         return super.onTouchEvent(event);
     }
 
-
+    public void edit_transfer(View v){
+        Intent transfer=new Intent(devSwipe.this,editProfileMainScreen.class);
+        startActivity(transfer);
+    }
+    public void match_transfer(View v){
+        Intent transfer=new Intent(devSwipe.this,devMatches.class);
+        startActivity(transfer);
+    }
 }
