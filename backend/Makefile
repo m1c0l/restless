@@ -11,7 +11,7 @@ test:
 	python -m unittest discover -v tests
 
 .coverage: tests/*.py
-	coverage run -m unittest discover -v tests
+	coverage run -m unittest discover tests
 
 coverage: .coverage
 	@#coverage html **/*.py

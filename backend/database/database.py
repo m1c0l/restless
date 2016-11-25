@@ -157,10 +157,12 @@ def add_swipe(user_id, project_id, result, who_swiped):
     """
     swipe_obj = Swipe(user_id, project_id, result, who_swiped)
     insert_obj(swipe_obj)
+    if result == Swipe.RESULT_NO:
+        return None
     complement = {}
     complement[Swipe.SWIPER_DEV] = Swipe.SWIPER_PM
     complement[Swipe.SWIPER_PM] = Swipe.SWIPER_DEV
-    complement_swipe = Project.query.filter_by(user_id=user_id, project_id=project_id, result=Swipe.RESULT_YES, who_swiped=complement[who_swiped]).first()
+    complement_swipe = Swipe.query.filter_by(user_id=user_id, project_id=project_id, result=Swipe.RESULT_YES, who_swiped=complement[who_swiped]).first()
     if complement_swipe: #there is a match
         match_obj = Match(user_id, project_id)
         insert_obj(match_obj)
@@ -195,9 +197,10 @@ def add_new_project(title, description, pm_id):
     @param pm_id: User ID of the project manager that manages this project.
     @type pm_id: C{int}
     @return: Project id if user was created, -1 if project title already exists
+             or the pm_id does not exist
     @rtype: C{int}
     """
-    if not title or not description or not pm_id:
+    if not title or not get_user_by_id(pm_id):
         return -1
     if get_project_by_title(title):
         return -1
