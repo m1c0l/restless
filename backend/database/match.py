@@ -40,6 +40,6 @@ class Match(db.Model):
         """
         self.user_id = user_id
         self.project_id = project_id
-
+        self.result = 1
     def __repr__(self):
         return "<Match with id %r between user %r and project %r>" % (self.id, self.user_id, self.project_id)

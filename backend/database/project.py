@@ -44,6 +44,11 @@ class Project(db.Model):
     The project's longer description about what it does.
     @type: C{str}
     """
+    pay_range = db.Column(db.Integer, nullable=False, default=1)
+    """
+    The pay for this project (hourly?). Default to be free.
+    @type: C{int}
+    """
     pm_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     """
     The id of the project manager of this project, which is a L{User}.
