@@ -230,6 +230,88 @@ class RouteTestCase(unittest.TestCase):
         resp = self.client.post('/api/login/', data=data)
         self.assertEqual(json.loads(resp.data)['id'], -1)
 
+    def test_add_skill(self):
+        """
+        Tests that adding skills works.
+        """
+        self.populate_db()
+        # User
+        user_id = str(self.user.id)
+        resp = self.client.get('/api/skill/add/user/C++/' + user_id)
+        id_cpp = json.loads(resp.data)['id']
+        self.assertGreater(id_cpp, 0)
+        resp = self.client.get('/api/skill/add/user/Python/' + user_id)
+        id_py = json.loads(resp.data)['id']
+        self.assertGreater(id_py, 0)
+        self.assertNotEqual(id_cpp, id_py)
+
+        resp = self.client.get('/api/get/user/' + user_id)
+        user = json.loads(resp.data)
+        self.assertEqual(len(user['skill_sets']), 2)
+        self.assertIn(id_cpp, user['skill_sets'])
+        self.assertIn(id_py, user['skill_sets'])
+
+        self.client.get('/api/skill/add/user/C++/' + user_id)
+        resp = self.client.get('/api/get/user/' + user_id)
+        user = json.loads(resp.data)
+        self.assertEqual(len(user['skill_sets']), 2) # no duplicate skills
+
+        # Project
+        project_id = str(self.project.id)
+        resp = self.client.get('/api/skill/add/project/C++/' + project_id)
+        id_cpp2 = json.loads(resp.data)['id']
+        self.assertEqual(id_cpp, id_cpp2)
+        resp = self.client.get('/api/skill/add/project/Python/' + project_id)
+        id_py2 = json.loads(resp.data)['id']
+        self.assertEqual(id_py, id_py2)
+
+        resp = self.client.get('/api/get/project/' + project_id)
+        project = json.loads(resp.data)
+        self.assertEqual(len(project['skills_needed']), 2)
+        self.assertIn(id_cpp2, project['skills_needed'])
+        self.assertIn(id_py2, project['skills_needed'])
+
+        self.client.get('/api/skill/add/project/C++/' + project_id)
+        resp = self.client.get('/api/get/project/' + project_id)
+        project = json.loads(resp.data)
+        self.assertEqual(len(project['skills_needed']), 2) # no duplicate skills
+
+    def test_delete_skill(self):
+        """
+        Tests that deleting skills works.
+        """
+        self.populate_db()
+
+        # User
+        user_id = str(self.user.id)
+        resp = self.client.get('/api/skill/add/user/C++/' + user_id)
+        id_cpp = json.loads(resp.data)['id']
+        resp = self.client.get('/api/skill/add/user/Python/' + user_id)
+        id_py = json.loads(resp.data)['id']
+        resp = self.client.get('/api/skill/delete/user/Python/' + user_id)
+        self.assertEqual(json.loads(resp.data)['id'], id_py)
+
+        resp = self.client.get('/api/get/user/' + user_id)
+        user = json.loads(resp.data)
+        self.assertEqual(len(user['skill_sets']), 1)
+        self.assertIn(id_cpp, user['skill_sets'])
+        self.assertNotIn(id_py, user['skill_sets'])
+
+        # Project
+        project_id = str(self.project.id)
+        resp = self.client.get('/api/skill/add/project/C++/' + project_id)
+        id_cpp = json.loads(resp.data)['id']
+        resp = self.client.get('/api/skill/add/project/Python/' + project_id)
+        id_py = json.loads(resp.data)['id']
+        resp = self.client.get('/api/skill/delete/project/Python/' + project_id)
+        self.assertEqual(json.loads(resp.data)['id'], id_py)
+
+        resp = self.client.get('/api/get/project/' + project_id)
+        project = json.loads(resp.data)
+        self.assertEqual(len(project['skills_needed']), 1)
+        self.assertIn(id_cpp, project['skills_needed'])
+        self.assertNotIn(id_py, project['skills_needed'])
+
     def test_docs(self):
         """
         The docs should be served correctly.
