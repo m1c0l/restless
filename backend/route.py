@@ -3,7 +3,7 @@
 @api: U{https://github.com/m1c0l/restless/blob/master/backend/README.md}
 """
 
-import json, flask, time, os, magic
+import json, flask, time, os, magic, re
 from flask import Flask, request
 from database import database
 from database.db import db
@@ -298,7 +298,7 @@ def get_matches_for(type, id):
     elif type == 'pm':
         pass
 
-@app.route("/api/img/<type>/<int:id>")
+@app.route("/api/img/get/<type>/<int:id>")
 def get_image(type, id):
     """
     Serves the image for a given user or project.
@@ -313,10 +313,44 @@ def get_image(type, id):
         flask.abort(404)
     img_path = type + '/' + str(id)
     rootdir = os.path.dirname(os.path.realpath(__file__))
-    mime = magic.from_file(rootdir + '/img/' + img_path, mime=True)
+    abs_path = os.path.join(rootdir, app.config['IMG_PATH'], img_path)
+    mimetype = magic.from_file(abs_path, mime=True)
+    print('sending mimetype: ' + mimetype)
     return flask.send_from_directory(app.config['IMG_PATH'],
                                      img_path,
-                                     mimetype=mime)
+                                     mimetype=mimetype)
+
+@app.route("/api/img/upload/<type>/<int:id>", methods=['POST'])
+def upload_image(type, id):
+    """
+    Handles image uploads and saves them on the server. This overwrites the old
+    image if there is one.
+    @param type: One of C{user} or C{project}
+    @type type: C{str}
+    @param id: The id of the user or project
+    @type id: C{int}
+    @return: A HTTP response with status 200 if success, or an error code
+    @rtype: C{str}
+    @todo: set MAX_CONTENT_LENGTH in config.py?
+    """
+    if 'file' not in request.files:
+        return error("No file part on POST data")
+    file = request.files['file']
+    if file.filename == '':
+        return error("No image file selected")
+
+    # Check mimetype to make sure file is an image
+    mimetype = magic.from_buffer(file.read(1024), mime=True)
+    if not re.match(r'^image\/', mimetype):
+        return error("File is not an image")
+    file.seek(0)
+
+    # save the file
+    img_path = type + '/' + str(id)
+    rootdir = os.path.dirname(os.path.realpath(__file__))
+    abs_path = os.path.join(rootdir, app.config['IMG_PATH'], img_path)
+    file.save(abs_path)
+    return error("Success", status="OK", code=200)
 
 @app.route("/docs/")
 def docs_index():

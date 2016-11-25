@@ -1,4 +1,4 @@
-import urllib,urllib2
+import urllib,urllib2, requests
 
 def test1():
     url='http://159.203.243.194/api/update/user/1'
@@ -17,4 +17,10 @@ def test2():
     req = urllib2.Request(url,data)
     print urllib2.urlopen(req).read()
 
-test2()
+def test3():
+    url='http://159.203.243.194:8003/api/img/upload/user/3'
+    files = {'file': open('test.jpg')}
+    response = requests.post(url, files=files)
+    print(response.text)
+
+test3()
