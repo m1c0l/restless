@@ -1,4 +1,4 @@
-import unittest, json
+import unittest, json, os
 import route
 from database.db import db
 from database.models import *
@@ -326,6 +326,107 @@ class RouteTestCase(unittest.TestCase):
         self.assertEqual(len(project['skills_needed']), 1)
         self.assertIn(id_cpp, project['skills_needed'])
         self.assertNotIn(id_py, project['skills_needed'])
+
+    def test_images_bad_id(self):
+        """
+        Test uploading and getting images with bad id's
+        """
+        self.populate_db()
+        user_id = str(self.user.id)
+        project_id = str(self.project.id)
+        rootdir = os.path.dirname(os.path.realpath(__file__))
+
+        gif_file = os.path.join(rootdir, 'data/pic.gif')
+        png_file = os.path.join(rootdir, 'data/pic.png')
+        text_file = os.path.join(rootdir, 'data/text.txt')
+        gif_bad_ext = os.path.join(rootdir, 'data/actually-gif.unknown')
+
+        resp = self.client.post('/api/img/upload/user/-1',
+                                    data={'file': open(gif_file)})
+        self.assertGreaterEqual(resp.status_code, 400)
+        resp = self.client.post('/api/img/upload/project/-1',
+                                    data={'file': open(gif_file)})
+        self.assertGreaterEqual(resp.status_code, 400)
+
+        resp = self.client.get('/api/img/get/user/-1')
+        self.assertGreaterEqual(resp.status_code, 400)
+        resp = self.client.get('/api/img/get/project/-1')
+        self.assertGreaterEqual(resp.status_code, 400)
+
+    def test_images_no_pic(self):
+        """
+        Test getting images with no uploaded pictures
+        """
+        self.populate_db()
+        user_id = str(self.user.id)
+        project_id = str(self.project.id)
+
+        resp = self.client.get('/api/img/get/user/' + user_id)
+        self.assertGreaterEqual(resp.status_code, 400)
+        resp = self.client.get('/api/img/get/project/' + project_id)
+        self.assertGreaterEqual(resp.status_code, 400)
+
+    def test_images_bad_input(self):
+        """
+        Test uploading images with bad input
+        """
+        self.populate_db()
+        user_id = str(self.user.id)
+        project_id = str(self.project.id)
+        rootdir = os.path.dirname(os.path.realpath(__file__))
+
+        gif_file = os.path.join(rootdir, 'data/pic.gif')
+        png_file = os.path.join(rootdir, 'data/pic.png')
+        text_file = os.path.join(rootdir, 'data/text.txt')
+        gif_bad_ext = os.path.join(rootdir, 'data/actually-gif.unknown')
+
+        resp = self.client.post('/api/img/upload/user/' + user_id,
+                                    data={'file': 'not a file'})
+        self.assertGreaterEqual(resp.status_code, 400)
+        resp = self.client.post('/api/img/upload/project/' + project_id,
+                                    data={'nofiles': 0})
+        self.assertGreaterEqual(resp.status_code, 400)
+        resp = self.client.post('/api/img/upload/project/' + project_id,
+                                    data={'file': open(text_file)})
+        self.assertGreaterEqual(resp.status_code, 400)
+
+    def test_images_good_input(self):
+        """
+        Test uploading and getting images with good input
+        """
+        self.populate_db()
+        user_id = str(self.user.id)
+        project_id = str(self.project.id)
+        rootdir = os.path.dirname(os.path.realpath(__file__))
+
+        gif_file = os.path.join(rootdir, 'data/pic.gif')
+        png_file = os.path.join(rootdir, 'data/pic.png')
+        text_file = os.path.join(rootdir, 'data/text.txt')
+        gif_bad_ext = os.path.join(rootdir, 'data/actually-gif.unknown')
+
+        resp = self.client.post('/api/img/upload/user/' + user_id,
+                                data={'file': open(gif_file)})
+        self.assertEqual(resp.status_code, 200)
+        resp = self.client.get('/api/img/get/user/' + user_id)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.mimetype, 'image/gif')
+        self.assertEqual(resp.data, open(gif_file).read())
+
+        resp = self.client.post('/api/img/upload/project/' + project_id,
+                                data={'file': open(png_file)})
+        self.assertEqual(resp.status_code, 200)
+        resp = self.client.get('/api/img/get/project/' + project_id)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.mimetype, 'image/png')
+        self.assertEqual(resp.data, open(png_file).read())
+
+        resp = self.client.post('/api/img/upload/user/' + user_id,
+                                data={'file': open(gif_bad_ext)})
+        self.assertEqual(resp.status_code, 200)
+        resp = self.client.get('/api/img/get/user/' + user_id)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.mimetype, 'image/gif')
+        self.assertEqual(resp.data, open(gif_bad_ext).read())
 
     def test_debug(self):
         """

@@ -310,12 +310,16 @@ def get_image(type, id):
     @rtype: An image
     """
     if type not in ['user', 'project']:
+        return error('Invalid type')
+    if type == 'user' and not database.get_user_by_id(id):
         flask.abort(404)
+    if type == 'project' and not database.get_project_by_id(id):
+        flask.abort(404)
+
     img_path = type + '/' + str(id)
     rootdir = os.path.dirname(os.path.realpath(__file__))
     abs_path = os.path.join(rootdir, app.config['IMG_PATH'], img_path)
     mimetype = magic.from_file(abs_path, mime=True)
-    print('sending mimetype: ' + mimetype)
     return flask.send_from_directory(app.config['IMG_PATH'],
                                      img_path,
                                      mimetype=mimetype)
@@ -333,6 +337,14 @@ def upload_image(type, id):
     @rtype: C{str}
     @todo: set MAX_CONTENT_LENGTH in config.py?
     """
+    if type not in ['user', 'project']:
+        return error('Invalid type')
+    if type == 'user' and not database.get_user_by_id(id):
+        return error('Invalid user id')
+    if type == 'project' and not database.get_project_by_id(id):
+        return error('Invalid project id')
+
+    # Check that the file is sent
     if 'file' not in request.files:
         return error("No file part on POST data")
     file = request.files['file']
