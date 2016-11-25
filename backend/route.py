@@ -26,7 +26,7 @@ def init_app(testing=False):
     config = os.path.dirname(os.path.realpath(__file__)) + '/config.py'
     app.config.from_pyfile(config)
     if testing:
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://restless:r3stl355@localhost/restless_unittest'
+        app.config['SQLALCHEMY_DATABASE_URI'] = app.config['TESTING_DATABASE_URI']
     from database import database
     database.db.init_app(app)
 
