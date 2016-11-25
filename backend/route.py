@@ -6,6 +6,7 @@
 import json, flask, time, os
 from flask import Flask, request
 from database import database
+from database.db import db
 from database.models import *
 app = Flask(__name__)
 
@@ -17,13 +18,15 @@ def current_time():
     """
     return int(time.time())
 
-def init_app():
+def init_app(testing=False):
     """
     Initializes the app
     @note: only call this one time
     """
     config = os.path.dirname(os.path.realpath(__file__)) + '/config.py'
     app.config.from_pyfile(config)
+    if testing:
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://restless:r3stl355@localhost/restless_unittest'
     from database import database
     database.db.init_app(app)
 

@@ -17,7 +17,7 @@ class RouteTestCase(unittest.TestCase):
         """
         super(RouteTestCase, self).__init__(arg)
         self.app = route.app
-        route.init_app()
+        route.init_app(testing=True)
         self.app.app_context().push()
         self.app.testing = True
         self.client = self.app.test_client()
