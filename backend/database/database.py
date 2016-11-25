@@ -160,7 +160,7 @@ def add_swipe(user_id, project_id, result, who_swiped):
     complement = {}
     complement[Swipe.SWIPER_DEV] = Swipe.SWIPER_PM
     complement[Swipe.SWIPER_PM] = Swipe.SWIPER_DEV
-    complement_swipe = Project.query.filter_by(user_id=user_id, project_id=project_id, result=Swipe.RESULT_YES, who_swiped=complement[who_swiped])
+    complement_swipe = Project.query.filter_by(user_id=user_id, project_id=project_id, result=Swipe.RESULT_YES, who_swiped=complement[who_swiped]).first()
     if complement_swipe: #there is a match
         match_obj = Match(user_id, project_id)
         insert_obj(match_obj)
