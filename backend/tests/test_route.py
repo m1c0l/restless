@@ -353,6 +353,27 @@ class RouteTestCase(unittest.TestCase):
         resp = self.client.get('/api/img/get/project/-1')
         self.assertGreaterEqual(resp.status_code, 400)
 
+    def test_delete_image(self):
+        """
+        Tests that images are deleted correctly.
+        """
+        self.populate_db()
+        user_id = str(self.user.id)
+        rootdir = os.path.dirname(os.path.realpath(__file__))
+        png_file = os.path.join(rootdir, 'data/pic.png')
+
+        self.client.post('/api/img/upload/user/' + user_id,
+                            data={'file': open(png_file)})
+        resp = self.client.get('/api/img/get/user/' + user_id)
+        self.assertEqual(resp.status_code, 200)
+
+        resp = self.client.get('/api/img/delete/user/' + user_id)
+        self.assertEqual(resp.status_code, 200)
+        resp = self.client.get('/api/img/get/user/' + user_id)
+        self.assertGreaterEqual(resp.status_code, 400)
+        resp = self.client.get('/api/img/delete/user/' + user_id)
+        self.assertGreaterEqual(resp.status_code, 400)
+
     def test_images_no_pic(self):
         """
         Test getting images with no uploaded pictures
@@ -360,6 +381,9 @@ class RouteTestCase(unittest.TestCase):
         self.populate_db()
         user_id = str(self.user.id)
         project_id = str(self.project.id)
+
+        self.client.get('/api/img/delete/user/' + user_id)
+        self.client.get('/api/img/delete/project/' + project_id)
 
         resp = self.client.get('/api/img/get/user/' + user_id)
         self.assertGreaterEqual(resp.status_code, 400)
@@ -412,18 +436,18 @@ class RouteTestCase(unittest.TestCase):
         self.assertEqual(resp.mimetype, 'image/gif')
         self.assertEqual(resp.data, open(gif_file).read())
 
-        resp = self.client.post('/api/img/upload/project/' + project_id,
+        resp = self.client.post('/api/img/upload/user/' + user_id,
                                 data={'file': open(png_file)})
         self.assertEqual(resp.status_code, 200)
-        resp = self.client.get('/api/img/get/project/' + project_id)
+        resp = self.client.get('/api/img/get/user/' + user_id)
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.mimetype, 'image/png')
         self.assertEqual(resp.data, open(png_file).read())
 
-        resp = self.client.post('/api/img/upload/user/' + user_id,
+        resp = self.client.post('/api/img/upload/project/' + project_id,
                                 data={'file': open(gif_bad_ext)})
         self.assertEqual(resp.status_code, 200)
-        resp = self.client.get('/api/img/get/user/' + user_id)
+        resp = self.client.get('/api/img/get/project/' + project_id)
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.mimetype, 'image/gif')
         self.assertEqual(resp.data, open(gif_bad_ext).read())

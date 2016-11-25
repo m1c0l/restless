@@ -319,10 +319,12 @@ def get_image(type, id):
     img_path = type + '/' + str(id)
     rootdir = os.path.dirname(os.path.realpath(__file__))
     abs_path = os.path.join(rootdir, app.config['IMG_PATH'], img_path)
-    mimetype = magic.from_file(abs_path, mime=True)
-    return flask.send_from_directory(app.config['IMG_PATH'],
-                                     img_path,
-                                     mimetype=mimetype)
+    try:
+        mimetype = magic.from_file(abs_path, mime=True)
+        return flask.send_from_directory(app.config['IMG_PATH'],
+                                         img_path, mimetype=mimetype)
+    except IOError as e:
+        return error(msg=str(e))
 
 @app.route("/api/img/upload/<type>/<int:id>", methods=['POST'])
 def upload_image(type, id):
@@ -363,6 +365,26 @@ def upload_image(type, id):
     abs_path = os.path.join(rootdir, app.config['IMG_PATH'], img_path)
     file.save(abs_path)
     return error("Success", status="OK", code=200)
+
+@app.route("/api/img/delete/<type>/<int:id>")
+def delete_image(type, id):
+    """
+    Deletes an image from the server.
+    @param type: One of C{user} or C{project}
+    @type type: C{str}
+    @param id: The id of the user or project
+    @type id: C{int}
+    @return: A HTTP response with status 200 if success, or an error code
+    @rtype: C{str}
+    """
+    img_path = type + '/' + str(id)
+    rootdir = os.path.dirname(os.path.realpath(__file__))
+    abs_path = os.path.join(rootdir, app.config['IMG_PATH'], img_path)
+    try:
+        os.unlink(abs_path)
+        return error("Success", status="OK", code=200)
+    except OSError as e:
+        return error(msg=str(e))
 
 @app.route("/docs/")
 def docs_index():
