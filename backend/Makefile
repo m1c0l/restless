@@ -10,8 +10,10 @@ docs:
 test:
 	python -m unittest discover -v tests
 
-coverage:
+.coverage: tests/*.py
 	coverage run -m unittest discover -v tests
+
+coverage: .coverage
 	@#coverage html **/*.py
 	coverage report -m **/*.py
 
