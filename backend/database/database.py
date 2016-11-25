@@ -83,9 +83,33 @@ def get_project_by_title(title):
     @param title: The project's title
     @type title: C{string}
     @return: The C{Project} with the title C{title}, or C{None}
-    @rtype: L{Project}
+    @rtype: list of L{Project}
     """
     return Project.query.filter_by(title=title).first()
+
+def get_projects_with_any_skills(skill_list):
+    """
+    Get Projects that have at least one of the skills listed as required
+
+    @param skill_list: List of skills to search for
+    @type skill_list: L{Skill}
+    @return: C{Project}s that each have at least one of the skills
+    @rtype: L{Project}
+    """
+    #I know, the below code is really silly but I can't seem to query relationships
+    #properly with an in_ function...
+    #I would've tried querying the user_skills table directly but our code isn't set up to do that
+    skill_ids = []
+    project_list = []
+    for skill in skill_list:
+        #Get all projects with a specific skill, append to list of projects
+        proj = Project.query.filter(Project.skills_needed.any(id=skill.id)).all()
+        #merge lists to remove duplicates
+        project_list = list(set(project_list + proj))
+    return project_list
+    #flask sqlalchemy relationships are silly and don't support the in_ function
+    #which would've made life so much easier...
+    #return Project.query.filter(Project.skills_needed.in_(skill_list)).all()
 
 def get_skill_by_id(id):
     """
@@ -133,6 +157,18 @@ def get_projects_by_pm_id(pm_id):
 
 def get_open_projects(current_state):
     return Project.query.filter_by(current_state=current_state).all()
+
+def get_stack_for_user(user_id):
+    """
+    Get projects for user to swipe on.
+
+    @param user_id: User's id
+    @type user_id: C{int}
+    @return: L{Project}s to have the user to swipe on
+    @rtype: list of L{Project}
+    """
+    user_obj = get_user_by_id(user_id)
+    return get_projects_with_any_skills(user_obj.skill_sets)
 
 def get_swipes_for(who, id):
     """
