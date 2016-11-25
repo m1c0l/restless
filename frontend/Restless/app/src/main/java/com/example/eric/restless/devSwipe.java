@@ -171,7 +171,7 @@ public class devSwipe extends AppCompatActivity {
                 }
             }
 
-            if(vertical_move){
+            else if(vertical_move){
                 output= (profileflip.getDisplayedChild()== 0)? "I want you":"I will send you a rejection letter in 3 months";
                 //switch to next guy!
                 Container a;
