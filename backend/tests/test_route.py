@@ -1,7 +1,7 @@
 import unittest, json
 import route
 from database.db import db
-from database.models import Skill, User, Project
+from database.models import *
 
 class RouteTestCase(unittest.TestCase):
     """
@@ -48,14 +48,29 @@ class RouteTestCase(unittest.TestCase):
         db.session.add(user)
         db.session.commit()
 
+        login = Login(user.username, 'pass123')
+        db.session.add(login)
+        db.session.commit()
+
         project = Project(title="p1", description="blah", pm_id=user.id)
         db.session.add(project)
+        db.session.commit()
+
+        swipe = Swipe(user.id, project.id, Swipe.RESULT_YES, Swipe.SWIPER_DEV)
+        db.session.add(swipe)
+        db.session.commit()
+
+        match = Match(user.id, project.id)
+        db.session.add(match)
         db.session.commit()
 
         # Save copies of the objects
         self.skill = Skill.query.filter_by(id=skill.id).first()
         self.user = User.query.filter_by(id=user.id).first()
+        self.login = Login.query.filter_by(username=login.username).first()
         self.project = Project.query.filter_by(id=project.id).first()
+        self.swipe = Swipe.query.filter_by(user_id=user.id, project_id=project.id).first()
+        self.match = Match.query.filter_by(user_id=user.id, project_id=project.id).first()
 
     def assertJSON(self, endpoint):
         """
@@ -66,7 +81,7 @@ class RouteTestCase(unittest.TestCase):
         resp = self.client.get(endpoint)
         self.assertEqual('application/json', resp.mimetype)
         data = json.loads(resp.get_data())
-        if hasattr(data, 'id'):
+        if 'id' in data:
             self.assertEqual(type(data['id']), int)
 
     def test_4xx(self):
@@ -311,6 +326,16 @@ class RouteTestCase(unittest.TestCase):
         self.assertEqual(len(project['skills_needed']), 1)
         self.assertIn(id_cpp, project['skills_needed'])
         self.assertNotIn(id_py, project['skills_needed'])
+
+    def test_debug(self):
+        """
+        Just debug-only code for coverage
+        """
+        self.populate_db()
+        objs = [self.user, self.login, self.project, self.skill, self.swipe,
+                self.match]
+        for obj in objs:
+            obj.__repr__()
 
     def test_docs(self):
         """
