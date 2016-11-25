@@ -157,7 +157,10 @@ def add_swipe(user_id, project_id, result, who_swiped):
     """
     swipe_obj = Swipe(user_id, project_id, result, who_swiped)
     insert_obj(swipe_obj)
-    complement_swipe = Swipe.query.filter_by(user_id=user_id, project_id=project_id, result=1, who_swiped=int(not who_swiped))
+    complement = {}
+    complement[Swipe.SWIPER_DEV] = Swipe.SWIPER_PM
+    complement[Swipe.SWIPER_PM] = Swipe.SWIPER_DEV
+    complement_swipe = Project.query.filter_by(user_id=user_id, project_id=project_id, result=Swipe.RESULT_YES, who_swiped=complement[who_swiped])
     return complement_swipe
 
 def add_new_user(username, password, first_name=None):

@@ -6,7 +6,7 @@
 import json, flask, time, os
 from flask import Flask, request
 from database import database
-from database.login import Login
+from database.models import *
 app = Flask(__name__)
 
 def current_time():
@@ -187,7 +187,7 @@ def new_project(title=None, description="", pm_id = None):
     return flask.jsonify(id=id)
 
 @app.route("/api/skill/add/<type>/<skill_name>/<int:id>")
-def add_skill(who, skill_name, id):
+def add_skill(type, skill_name, id):
     """
     Add a skill to this user or project.
     If user, it will indicate that the user has this skill.
@@ -223,10 +223,10 @@ def add_skill(who, skill_name, id):
         sets = project.skills_needed
         sets.append(skill_obj)
         database.update(project, skills_needed = sets)
-        return flask.jsonify(id=skill_object.id)
+        return flask.jsonify(id=skill_obj.id)
 
 @app.route("/api/skill/delete/<type>/<skill_name>/<int:id>")
-def delete_skill(who, skill_name):
+def delete_skill(type, skill_name, id):
     """
     Delete this skill from the user/project.
     If user, it will delete from the corresponding user id.
@@ -258,7 +258,7 @@ def delete_skill(who, skill_name):
             return error(msg='Invalid project id')
         sets = [s for s in project.skills_needed if s.id != skill_obj.id]
         database.update(project, skills_needed=sets)
-        return flask.jsonify(id=skill_object.id)
+        return flask.jsonify(id=skill_obj.id)
 
 @app.route("/api/swipe/<type>/<int:swiper_id>/<int:swipee_id>/<int:direction>")
 def swipe(type, swiper_id, swipee_id, direction):
