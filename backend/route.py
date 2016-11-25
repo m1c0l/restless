@@ -3,7 +3,7 @@
 @api: U{https://github.com/m1c0l/restless/blob/master/backend/README.md}
 """
 
-import json, flask, time, os
+import json, flask, time, os, magic
 from flask import Flask, request
 from database import database
 from database.db import db
@@ -297,6 +297,26 @@ def get_matches_for(type, id):
         pass
     elif type == 'pm':
         pass
+
+@app.route("/api/img/<type>/<int:id>")
+def get_image(type, id):
+    """
+    Serves the image for a given user or project.
+    @param type: One of C{user} or C{project}
+    @type type: C{str}
+    @param id: The id of the user or project
+    @type id: C{int}
+    @return: The image for the user/project
+    @rtype: An image
+    """
+    if type not in ['user', 'project']:
+        flask.abort(404)
+    img_path = type + '/' + str(id)
+    rootdir = os.path.dirname(os.path.realpath(__file__))
+    mime = magic.from_file(rootdir + '/img/' + img_path, mime=True)
+    return flask.send_from_directory(app.config['IMG_PATH'],
+                                     img_path,
+                                     mimetype=mime)
 
 @app.route("/docs/")
 def docs_index():
