@@ -229,11 +229,10 @@
     <ImageView
         app:srcCompat="@drawable/banner"
         android:id="@+id/imageView2"
-        android:layout_width="210dp"
         android:layout_height="65dp"
+        android:layout_width="200dp"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/EditButton"
-        android:layout_toEndOf="@+id/EditButton" />
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
