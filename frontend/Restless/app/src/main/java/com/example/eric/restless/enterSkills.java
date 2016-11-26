@@ -11,12 +11,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RatingBar;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class enterSkills extends AppCompatActivity {
+public abstract class enterSkills extends AppCompatActivity {
     ListView list;
-    CustomAdapter adapter;
+    CustomSkillAdapter adapter;
     public enterSkills customListView = null;
     public ArrayList<SkillModel> CustomListViewValuesArr = new ArrayList<SkillModel>();
 
@@ -31,8 +32,8 @@ public class enterSkills extends AppCompatActivity {
 
         //adding data?
 
-        adapter = new CustomAdapter(customListView, CustomListViewValuesArr, res);
-        list.setAdapter(adapter);
+        adapter = new CustomSkillAdapter(customListView, CustomListViewValuesArr, res);
+        //list.setAdapter(adapter);
     }
 
     public void addNewSkill(View v){
@@ -46,6 +47,8 @@ public class enterSkills extends AppCompatActivity {
         dialog.show();
         submitBtn.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
+
+                //check for input?
                 SkillModel temp = new SkillModel(edit.getText().toString(), ratingBar.getRating());
                 CustomListViewValuesArr.add(temp);
                 adapter.notifyDataSetChanged();
@@ -60,13 +63,46 @@ public class enterSkills extends AppCompatActivity {
     }
 
 
-    public void returnToMain(View v){
-        //push data to server
+    /*****************  This function used by adapter ****************/
+    public void onItemClick(int mPosition)
+    {
+        SkillModel tempValues = ( SkillModel ) CustomListViewValuesArr.get(mPosition);
+        final int mPos = mPosition;
+        final Dialog dialog = new Dialog(enterSkills.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.edit_skill_popup);
+        Button confirmBtn = (Button)dialog.findViewById(R.id.confirm);
+        Button cancelBtn = (Button)dialog.findViewById(R.id.cancel);
+        Button deleteBtn = (Button)dialog.findViewById(R.id.delete);
 
-        //push skills and rating array
+        final EditText edit = (EditText) dialog.findViewById(R.id.skillText);
+        edit.setText(tempValues.getSkillString());
+        final RatingBar ratingBar = (RatingBar)dialog.findViewById(R.id.skillRating);
+        ratingBar.setRating(tempValues.getSkillRating());
+        dialog.show();
+        confirmBtn.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                //check for input?
+                (( SkillModel ) CustomListViewValuesArr.get(mPos)).setSkillRating(ratingBar.getRating());
+                (( SkillModel ) CustomListViewValuesArr.get(mPos)).setSkillString(edit.getText().toString());
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
 
-        Intent transfer=new Intent(enterSkills.this,MainActivity.class);
-        startActivity(transfer);
+        deleteBtn.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                CustomListViewValuesArr.remove(mPos);
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        cancelBtn.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                dialog.dismiss();
+            }
+        });
+
     }
-
+    public abstract void finishSkillsList(View v);
 }

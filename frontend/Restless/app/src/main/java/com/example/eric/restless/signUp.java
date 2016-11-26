@@ -22,7 +22,7 @@ public class signUp extends AppCompatActivity {
     public void next(View v){
         EditText pass1= (EditText) findViewById(R.id.password);
         EditText pass2= (EditText) findViewById(R.id.passwordconfirm);
-        if(pass1.getText().toString()!=pass2.getText().toString()) {
+        if(!pass1.getText().toString().equals(pass2.getText().toString())) {
             // tell user that passwords don't match!
             return;
         }
@@ -31,7 +31,7 @@ public class signUp extends AppCompatActivity {
             // tell user the error code from the server!
             return;
         }
-        Intent transfer=new Intent(signUp.this,enterSkills.class);
+        Intent transfer=new Intent(signUp.this,enterSkillsNewAccount.class);
         startActivity(transfer);
     }
 }

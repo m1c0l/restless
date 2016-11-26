@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/NoActionBarDark">
-        <activity android:name=".MainActivity">
+        <activity android:name=".PMActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,20 +26,22 @@
         <activity android:name=".SignIn" />
         <activity android:name=".signUp" />
         <activity android:name=".DevPMSelectionActivity" />
-        <activity android:name=".PMActivity" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".createProjectActivity" />
         <activity android:name=".selectProjectActivity" />
         <activity android:name=".projectActivity" />
         <activity android:name=".pendingMatchActivity" />
         <activity android:name=".editProjectActivity" />
         <activity android:name=".selectDevelopersActivity" />
-        <activity android:name=".enterSkills"/>
-
-
+        <activity android:name=".enterSkillsNewAccount"></activity>
+        <activity android:name=".enterSkillsNewProject"></activity>
         <activity android:name=".devSwipe" />
         <activity android:name=".devMatches" />
         <activity android:name=".editProfileMainScreen"/>
+
         <activity android:name=".profileDisplay"/>
+
+        <activity android:name=".skillsForProject"></activity>
 
     </application>
 

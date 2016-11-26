@@ -13,7 +13,7 @@
             <TableRow>
 
                 <TextView
-                    android:id="@id/skillText"
+                    android:id="@id/projectName"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:layout_weight="1" android:layout_gravity="left|center_vertical"
@@ -23,11 +23,6 @@
                     android:textColor="#000000"
                     android:layout_span="1"
                     />
-
-                <RatingBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/skillRating" />
             </TableRow>
         </TableLayout>
     </TableRow>
