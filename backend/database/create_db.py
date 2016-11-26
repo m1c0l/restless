@@ -25,12 +25,26 @@ if __name__ == '__main__':
 
     # If the flag is set in config.py
     if app.config['INSERT_TEST_DATA'] == True:
+        skill_arr = [
+            Skill(skill_name="Python"),
+            Skill(skill_name="Django"),
+            Skill(skill_name="MySQL"),
+            Skill(skill_name="SQLAlchemy"),
+        ]
+
+        for s in skill_arr:
+            database.insert_obj(s)
+            #user_arr[1].skill_sets.append(s)
+            #user_arr[2].skill_sets.append(s)
+            db.session.commit()
+
         user_arr = [
             User(first_name="John", last_name="Dough", email="xyz", username="jd", bio="m4st3r h4x0r"),
             User(first_name="Mike", last_name="Li", email="mail", username="mic", bio="admin"),
             User(first_name="Rich", last_name="Sun", email="rich", username="rich", bio="waffle the bunny"),
             User(first_name="Vince", last_name="Jin", email="jinir", username="vince", bio="flask dev")
         ]
+
         for i in range(25):
             fname = fake.first_name()
             lname = fake.last_name()
@@ -39,21 +53,19 @@ if __name__ == '__main__':
             bio = fake.sentence()
             user_arr.append(User(first_name=fname, last_name=lname, email=email, username=uname, bio=bio))
         for u in user_arr:
+            #generate few unique skills for the user
+            last_skill = -1
+            for j in range(2):
+                skill = random.randint(0, len(skill_arr) - 1)
+                while skill == last_skill:
+                    skill = random.randint(0, len(skill_arr) - 1)
+                u.skill_sets.append(skill_arr[skill])
+                last_skill = skill
+            
             database.insert_obj(u)
             login = Login(username=u.username, password="hunter2")
             database.insert_obj(login)
 
-        skill_arr = [
-            Skill(skill_name="Python"),
-            Skill(skill_name="Django"),
-            Skill(skill_name="MySQL"),
-            Skill(skill_name="SQLAlchemy"),
-        ]
-        for s in skill_arr:
-            database.insert_obj(s)
-            user_arr[1].skill_sets.append(s)
-            user_arr[2].skill_sets.append(s)
-            db.session.commit()
 
         project_arr = [
             Project(title="H4cks", description="M4st3r h4cks 4 dayz", pm_id=user_arr[0].id),
@@ -69,7 +81,14 @@ if __name__ == '__main__':
         for p in project_arr:
             database.insert_obj(p)
             user_arr[random.randint(0, len(user_arr) - 1)].projects_developing.append(p)
-            p.skills_needed.append(skill_arr[3])
+            # generate a few unique skills for each project
+            last_skill = -1
+            for j in range(2):
+                skill = random.randint(0, len(skill_arr) - 1)
+                while skill == last_skill:
+                    skill = random.randint(0, len(skill_arr) - 1)
+                p.skills_needed.append(skill_arr[skill])
+                last_skill = skill
             db.session.commit()
 
         swipe_arr = [

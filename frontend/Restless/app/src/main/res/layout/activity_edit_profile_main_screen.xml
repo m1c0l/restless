@@ -5,16 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
+
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.eric.restless.editProfileMainScreen">
 
     <Button
-        android:text="Change Password"
+        android:text="C h a n g e\nP a s s w o r d"
         android:padding="3dp"
         android:background="@drawable/roundedbutton"
-        android:backgroundTint="#C5C7B6"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="166dp"
@@ -25,23 +24,7 @@
         />
 
     <Button
-        android:text="Update Bio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="46dp"
-        android:id="@+id/button2"
-        android:background="@drawable/roundedbutton"
-        android:padding="3dp"
-        android:layout_below="@+id/button"
-        android:layout_alignLeft="@+id/button"
-        android:layout_alignStart="@+id/button"
-        android:layout_alignRight="@+id/button"
-        android:layout_alignEnd="@+id/button"
-        android:onClick="updateBio"
-        />
-
-    <Button
-        android:text="Update Skills"
+        android:text="U p d a t e\nS k i l l s"
         android:background="@drawable/roundedbutton"
         android:padding="3dp"
         android:layout_width="wrap_content"
@@ -55,4 +38,34 @@
         android:layout_alignEnd="@+id/button2"
         android:onClick="updateSkills"
         />
+
+    <Button
+        android:text="U p d a t e\nB i o"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="61dp"
+        android:id="@+id/button2"
+        android:background="@drawable/roundedbutton"
+        android:padding="3dp"
+        android:onClick="updateBio"
+        android:layout_below="@+id/button"
+        android:layout_alignLeft="@+id/button"
+        android:layout_alignStart="@+id/button"
+        android:layout_alignRight="@+id/button"
+        android:layout_alignEnd="@+id/button" />
+
+    <TextView
+        android:text="S E T T I N G S"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/textView3"
+        android:padding="5dp"
+        android:background="@drawable/roundedheader"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>

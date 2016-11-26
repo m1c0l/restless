@@ -52,6 +52,12 @@ class User(db.Model):
     A description about the user.
     @type: C{str}
     """
+    
+    desired_salary = db.Column(db.Integer, nullable=False, default=0)
+    """
+    The user's desired (hourly?) salary.
+    @type: C{int}
+    """
 
     signup_time = db.Column(db.DateTime, nullable=False)
     """
