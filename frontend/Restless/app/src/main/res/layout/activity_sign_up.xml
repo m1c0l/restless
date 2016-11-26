@@ -112,7 +112,8 @@
         android:layout_alignBaseline="@+id/textView7"
         android:layout_alignBottom="@+id/textView7"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentEnd="true"
+        android:maxLength="16"/>
 
     <TextView
         android:text="Confirm Password:"
@@ -253,7 +254,8 @@
         android:layout_alignTop="@+id/textView8"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="8dp"
+        android:maxLength="16"/>
 
 
 </RelativeLayout>
