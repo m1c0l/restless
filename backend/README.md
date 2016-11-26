@@ -291,3 +291,15 @@ POST data:
 > Currently, the server assumes the data is given as `multipart/form-data`. If
   it is easier to upload the image as raw data (eg. `binary/octet-stream`), ask
   Richard to change this.
+
+### Deleting an image
+```
+GET/POST /api/img/delete/<type>/<id>
+```
+- `<type>` is one of `user` or `project`
+- `<id>` is the id of the user/project
+#### Example
+Delete the image for the project with id 1:
+```
+GET /api/img/delete/project/1
+```
