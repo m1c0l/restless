@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_view_project"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.eric.restless.viewProject">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <TextView
+                android:text="N e w    P r o j e c t"
+                android:background="@drawable/roundedheader"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:textSize="20sp"
+                android:layout_marginTop="11dp"
+                android:radius="20dp"
+                android:id="@+id/projectName"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_height="30dp"
+                android:layout_width="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="114dp"
+                app:srcCompat="@drawable/common_google_signin_btn_icon_light_disabled"
+                android:id="@+id/projectImage"
+                android:layout_below="@+id/projectName"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:text="Description: "
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/projectDescription"
+                android:layout_marginTop="77dp"
+                android:layout_below="@+id/projectImage"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_weight="0.48" />
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="177dp"
+                android:id="@+id/teamList"
+                android:layout_weight="0.58" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:text="Swipe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/swipe" />
+
+                <Button
+                    android:text="Matches"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/matches"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@+id/swipe"
+                    android:layout_toEndOf="@+id/swipe" />
+
+                <Button
+                    android:text="Lock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lock"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@+id/matches"
+                    android:layout_toEndOf="@+id/matches" />
+
+                <Button
+                    android:text="Delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/Delete"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

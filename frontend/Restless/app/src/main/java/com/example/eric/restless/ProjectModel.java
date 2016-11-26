@@ -3,6 +3,7 @@ package com.example.eric.restless;
 import java.util.ArrayList;
 
 public class ProjectModel {
+    private int projectID;
     private String projectName;
     private String description;
     private float minIncome;

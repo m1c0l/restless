@@ -37,6 +37,8 @@ public class PMActivity extends AppCompatActivity {
     /*****************  This function used by adapter ****************/
     public void onItemClick(int mPosition)
     {
+        //goes to project view page with project id
+
     }
 
 

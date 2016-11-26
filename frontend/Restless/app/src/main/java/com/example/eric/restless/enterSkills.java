@@ -33,7 +33,7 @@ public abstract class enterSkills extends AppCompatActivity {
         //adding data?
 
         adapter = new CustomSkillAdapter(customListView, CustomListViewValuesArr, res);
-        //list.setAdapter(adapter);
+        list.setAdapter(adapter);
     }
 
     public void addNewSkill(View v){

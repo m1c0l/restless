@@ -68,6 +68,7 @@ public class createProjectActivity extends AppCompatActivity {
     public void next(View v){
         Intent transfer=new Intent(createProjectActivity.this,enterSkillsNewProject.class);
         //creating project object and passing it on
+        //get data from text field
         startActivity(transfer);
     }
 }

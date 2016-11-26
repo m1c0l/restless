@@ -19,7 +19,7 @@
         android:textSize="20sp"
         android:layout_marginTop="11dp"
         android:radius="20dp"
-        android:id="@+id/textView"
+        android:id="@+id/newProject"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -27,18 +27,33 @@
         android:layout_width="10dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
-
-
     <TextView
         android:text="Name:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:layout_alignTop="@+id/projectName"
+        android:id="@+id/nameField"
+        android:layout_below="@+id/newProject"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/projectNameflag" />
+        android:layout_marginTop="27dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="none"
+        android:background="@drawable/rounded_text"
+
+        android:ems="10"
+        android:id="@+id/projectName"
+        android:layout_alignBaseline="@+id/nameField"
+        android:layout_alignBottom="@+id/nameField"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:maxLength="25"
+        />
+
 
     <TextView
         android:text="Description:"
@@ -48,10 +63,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView6"
-        android:layout_marginTop="13dp"
-        android:layout_below="@+id/projectName"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/nameField"
+        android:layout_alignRight="@+id/textView8"
+        android:layout_alignEnd="@+id/textView8" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -114,7 +129,6 @@
         android:layout_height="wrap_content"
         android:inputType="none"
         android:background="@drawable/rounded_text"
-
         android:ems="10"
         android:id="@+id/projectSize"
         android:layout_alignBaseline="@+id/textView8"
@@ -123,6 +137,19 @@
         android:layout_alignParentEnd="true"
         android:maxLength="25"
         />
+
+    <Button
+        android:text="Select Image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView7"
+        android:layout_alignRight="@+id/textView7"
+        android:layout_alignEnd="@+id/textView7"
+        android:layout_marginTop="81dp"
+        android:onClick="selectImage"
+        android:id="@+id/projectImageButton" />
+
+
 
     <Button
         android:text="C o n t i n u e"
@@ -137,43 +164,14 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="none"
-        android:ems="10"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:layout_marginTop="80dp"
-        android:id="@+id/projectName"
-        android:backgroundTintMode="src_atop"
-        android:background="@drawable/rounded_text"
-        android:maxLength="30"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-
-
-
-    <Button
-        android:text="Select Image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView7"
-        android:layout_alignRight="@+id/textView7"
-        android:layout_alignEnd="@+id/textView7"
-        android:layout_marginTop="81dp"
-        android:onClick="selectImage"
-        android:id="@+id/projectImageButton" />
-
-    <ImageView
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@android:drawable/ic_menu_camera"
-        android:id="@+id/projectImage"
-        android:layout_alignBottom="@+id/projectImageButton"
-        android:layout_toRightOf="@+id/Continue" />
+        android:layout_alignTop="@+id/projectImageButton"
+        android:layout_toRightOf="@+id/Continue"
+        android:layout_toEndOf="@+id/Continue"
+        android:id="@+id/projectImage" />
 
 
 </RelativeLayout>
