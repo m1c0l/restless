@@ -164,7 +164,7 @@ public class devSwipe extends AppCompatActivity {
         });
 
     }
-    public class GestureListener extends GestureDetector.SimpleOnGestureListener{
+    private class GestureListener extends GestureDetector.SimpleOnGestureListener{
         private float minFling = 50;
         private float minVelocity = 50;
         @Override
@@ -284,7 +284,7 @@ public class devSwipe extends AppCompatActivity {
         startActivity(transfer);
     }
     public void match_transfer(View v){
-        Intent transfer=new Intent(devSwipe.this,devMatches.class);
+        Intent transfer=new Intent(devSwipe.this,profileDisplay.class);
         startActivity(transfer);
     }
 }

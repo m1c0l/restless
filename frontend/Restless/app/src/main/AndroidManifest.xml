@@ -39,6 +39,7 @@
         <activity android:name=".devSwipe" />
         <activity android:name=".devMatches" />
         <activity android:name=".editProfileMainScreen"/>
+        <activity android:name=".profileDisplay"/>
 
     </application>
 
