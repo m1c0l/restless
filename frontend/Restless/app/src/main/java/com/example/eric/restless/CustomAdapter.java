@@ -3,6 +3,7 @@ package com.example.eric.restless;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +17,20 @@ import java.util.ArrayList;
  * Created by minh on 11/13/16.
  */
 
-public class CustomAdapter extends BaseAdapter {
+public abstract class CustomAdapter extends BaseAdapter implements View.OnClickListener {
     private Activity activity;
     private ArrayList data;
     private static LayoutInflater inflater = null;
     public Resources res;
-    SkillModel tempSkill = null;
-    int i = 0;
+    //getters and setters
+    public ArrayList getData(){
+        return data;
+    }
+    public static LayoutInflater getInflater(){
+        return inflater;
+    }
+
+
 
     public CustomAdapter(Activity a, ArrayList d, Resources resLocal){
         activity = a;
@@ -49,55 +57,28 @@ public class CustomAdapter extends BaseAdapter {
         return position;
     }
 
-    /********* Create a holder Class to contain inflated xml file elements *********/
-    public static class ViewHolder{
-        public TextView skillText;
-        public RatingBar skillRating;
-    }
 
     /****** Depends upon data size called for each row , Create each ListView row *****/
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public abstract View getView(int position, View convertView, ViewGroup parent);
 
-        View vi = convertView;
-        ViewHolder holder;
+    @Override
+    public void onClick(View v) {
+        Log.v("CustomAdapter", "=====Row button clicked=====");
+    }
+    /********* Called when Item click in ListView ************/
+    protected class OnItemClickListener  implements View.OnClickListener{
+        private int mPosition;
 
-        if(convertView==null){
-
-            /****** Inflate tabitem.xml file for each row ( Defined below ) *******/
-            vi = inflater.inflate(R.layout.tabitem, null);
-
-            /****** View Holder Object to contain tabitem.xml file elements ******/
-
-            holder = new ViewHolder();
-            holder.skillText = (TextView) vi.findViewById(R.id.skillText);
-            holder.skillRating = (RatingBar)vi.findViewById(R.id.skillRating);
-
-            /************  Set holder with LayoutInflater ************/
-            vi.setTag( holder );
+        OnItemClickListener(int position){
+            mPosition = position;
         }
-        else
-            holder=(ViewHolder)vi.getTag();
 
-        if(data.size()<=0)
-        {
-            holder.skillText.setText("No skill");
-
+        @Override
+        public void onClick(View arg0) {
+            enterSkills sct = (enterSkills)activity;
+            /****  Call  onItemClick Method inside CustomListViewAndroidExample Class ( See Below )****/
+            sct.onItemClick(mPosition);
         }
-        else
-        {
-            /***** Get each Model object from Arraylist ********/
-            tempSkill=null;
-            tempSkill = ( SkillModel ) data.get( position );
-
-            /************  Set Model values in Holder elements ***********/
-
-            holder.skillText.setText( tempSkill.getSkillString() );
-            holder.skillRating.setRating(tempSkill.getSkillRating());
-            /******** Set Item Click Listner for LayoutInflater for each row *******/
-
-            //vi.setOnClickListener(new OnItemClickListener( position ));
-        }
-        return vi;
     }
 
 }

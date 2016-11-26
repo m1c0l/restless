@@ -8,20 +8,27 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-
     tools:context="com.example.eric.restless.enterSkills">
-    android:background="@drawable/topgreen"
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/skill_list"
-        android:layout_marginBottom="54dp"
-        android:layout_alignParentBottom="true"
+
+    <TextView
+        android:text="E n t e r    S k i l l s"
+        android:background="@drawable/roundedheader"
+        android:textStyle="bold"
+        android:textAllCaps="true"
+        android:textSize="20sp"
+        android:layout_marginTop="11dp"
+        android:radius="20dp"
+        android:id="@+id/textView"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_height="30dp"
+        android:layout_width="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <Button
-        android:text="Continue"
+        android:text="Finish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/Continue"
@@ -30,7 +37,7 @@
         android:layout_alignParentEnd="true"
         android:background="@drawable/roundedbutton"
         android:padding="3dp"
-        android:onClick="returnToMain"
+        android:onClick="finishSkillsList"
         />
 
     <Button
@@ -45,4 +52,16 @@
         android:padding="5dp"
         android:onClick="addNewSkill"
         />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/skill_list"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="43dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/Continue" />
 </RelativeLayout>

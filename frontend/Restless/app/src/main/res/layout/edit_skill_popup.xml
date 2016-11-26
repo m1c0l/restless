@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="20sp"
+        android:textColor="@color/dim_foreground_material_light"
+        android:text="Edit Skill"
+        android:id="@+id/rateHeader"
+        android:gravity="center"
+        android:layout_centerHorizontal="true" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/separator"
+        android:layout_below="@+id/rateHeader"
+        android:layout_marginTop="5dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="none"
+        android:ems="10"
+        android:layout_below="@+id/separator"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="106dp"
+        android:id="@+id/skillText"
+        android:hint="skill here" />
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/skillText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+
+        android:id="@+id/skillRating" />
+
+    <Button
+        android:text="Confirm Edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="118dp"
+        android:id="@+id/confirm"
+        android:layout_below="@+id/skillRating"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="Delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/delete"
+        android:layout_alignBaseline="@+id/confirm"
+        android:layout_alignBottom="@+id/confirm"
+        android:layout_toRightOf="@+id/confirm"
+
+        android:layout_toLeftOf="@+id/cancel"
+        android:layout_toEndOf="@+id/confirm" />
+
+
+    <Button
+        android:text="Cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cancel"
+        android:layout_toRightOf="@+id/skillText"
+        android:layout_toEndOf="@+id/skillText"
+        android:layout_alignBaseline="@+id/confirm"
+        android:layout_alignBottom="@+id/confirm"
+        android:layout_marginBottom="24dp" />
+
+
+</RelativeLayout>
