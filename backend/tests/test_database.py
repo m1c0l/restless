@@ -170,11 +170,16 @@ class DatabaseTestCase(unittest.TestCase):
         skill_arr = [skill]
         proj_set = get_projects_with_any_skills(skill_arr)
         self.assertEqual(len(proj_set), 2)
-        self.assertEqual(project in proj_set and project3 in proj_set, True)
+        self.assertIn(project, proj_set)
+        self.assertIn(project3, proj_set)
 
         skill_arr = [skill, skill2]
         proj_set = get_projects_with_any_skills(skill_arr)
         self.assertEqual(len(proj_set), 3)
+
+        skill_arr = []
+        proj_set = get_projects_with_any_skills(skill_arr)
+        self.assertEqual(len(proj_set), 0)
 
     def test_get_user_stack(self):
         """
@@ -204,6 +209,9 @@ class DatabaseTestCase(unittest.TestCase):
         stack = get_stack_for_user(user.id)
         self.assertEqual(len(stack), 1)
         self.assertEqual(stack[0].title, 'title3')
+
+        # bad id
+        get_stack_for_user(-1)
 
     def test_add_new_user(self):
         """
