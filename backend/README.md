@@ -28,7 +28,7 @@ GET /api/get/user/<user-id>
 Currently 29 users with ids 1 to 29
 #### Example
 Get user with id 1: http://159.203.243.194/api/get/user/1
-```json
+```js
 {
   "LinkedIn_profile_id": null,
   "bio": "m4st3r h4x0r",
@@ -37,22 +37,21 @@ Get user with id 1: http://159.203.243.194/api/get/user/1
   "id": 1,
   "last_name": "Dough",
   "projects_developing": [
-    12,
-    18
+    27
   ],
   "projects_managing": [
     1
   ],
-  "signup_time": "Sun, 20 Nov 2016 07:07:01 GMT",
+  "signup_time": "2016-11-26 10:26:03",
   "skill_sets": [
-    4,
-    2
+    "SQLAlchemy",
+    "MySQL"
   ],
   "username": "jd"
 }
 ```
 - `projects_developing` and `projects_managing` are arrays of project id's
-- `skill_sets` is an array of skill id's.
+- `skill_sets` is an array of skill names.
 
 ### Projects
 ```
@@ -68,13 +67,13 @@ Get project with id 1: http://159.203.243.194/api/get/project/1
   "id": 1,
   "pm_id": 1,
   "skills_needed": [
-    3,
-    1
+    "Django",
+    "MySQL"
   ],
   "title": "H4cks"
 }
 ```
-- `skills_needed` is an array of skill id's.
+- `skills_needed` is an array of skill names.
 - `current_state` is an enum with values:
     - `STATE_RECRUITING = 0`, the project is recruiting devs
     - `STATE_STARTED = 1`, the project is being worked on

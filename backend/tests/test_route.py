@@ -39,7 +39,7 @@ class RouteTestCase(unittest.TestCase):
         """
         Adds sample data into the database.
         """
-        skill = Skill('python')
+        skill = Skill('Python')
         db.session.add(skill)
         db.session.commit()
 
@@ -250,12 +250,13 @@ class RouteTestCase(unittest.TestCase):
         Tests that adding skills works.
         """
         self.populate_db()
+
         # User
         user_id = str(self.user.id)
-        resp = self.client.get('/api/skill/add/user/C++/' + user_id)
+        resp = self.client.get('/api/skill/add/user/C++/'+user_id)
         id_cpp = json.loads(resp.data)['id']
         self.assertGreater(id_cpp, 0)
-        resp = self.client.get('/api/skill/add/user/Python/' + user_id)
+        resp = self.client.get('/api/skill/add/user/Python/'+user_id)
         id_py = json.loads(resp.data)['id']
         self.assertGreater(id_py, 0)
         self.assertNotEqual(id_cpp, id_py)
@@ -263,17 +264,17 @@ class RouteTestCase(unittest.TestCase):
         resp = self.client.get('/api/get/user/' + user_id)
         user = json.loads(resp.data)
         self.assertEqual(len(user['skill_sets']), 2)
-        self.assertIn(id_cpp, user['skill_sets'])
-        self.assertIn(id_py, user['skill_sets'])
+        self.assertIn('C++', user['skill_sets'])
+        self.assertIn('Python', user['skill_sets'])
 
-        self.client.get('/api/skill/add/user/C++/' + user_id)
+        self.client.get('/api/skill/add/user/C++/'+user_id)
         resp = self.client.get('/api/get/user/' + user_id)
         user = json.loads(resp.data)
         self.assertEqual(len(user['skill_sets']), 2) # no duplicate skills
 
         # Project
         project_id = str(self.project.id)
-        resp = self.client.get('/api/skill/add/project/C++/' + project_id)
+        resp = self.client.get('/api/skill/add/project/C++/'+project_id)
         id_cpp2 = json.loads(resp.data)['id']
         self.assertEqual(id_cpp, id_cpp2)
         resp = self.client.get('/api/skill/add/project/Python/' + project_id)
@@ -283,10 +284,10 @@ class RouteTestCase(unittest.TestCase):
         resp = self.client.get('/api/get/project/' + project_id)
         project = json.loads(resp.data)
         self.assertEqual(len(project['skills_needed']), 2)
-        self.assertIn(id_cpp2, project['skills_needed'])
-        self.assertIn(id_py2, project['skills_needed'])
+        self.assertIn('C++', project['skills_needed'])
+        self.assertIn('Python', project['skills_needed'])
 
-        self.client.get('/api/skill/add/project/C++/' + project_id)
+        self.client.get('/api/skill/add/project/C++/'+project_id)
         resp = self.client.get('/api/get/project/' + project_id)
         project = json.loads(resp.data)
         self.assertEqual(len(project['skills_needed']), 2) # no duplicate skills
@@ -309,8 +310,8 @@ class RouteTestCase(unittest.TestCase):
         resp = self.client.get('/api/get/user/' + user_id)
         user = json.loads(resp.data)
         self.assertEqual(len(user['skill_sets']), 1)
-        self.assertIn(id_cpp, user['skill_sets'])
-        self.assertNotIn(id_py, user['skill_sets'])
+        self.assertIn('C++', user['skill_sets'])
+        self.assertNotIn('Python', user['skill_sets'])
 
         # Project
         project_id = str(self.project.id)
@@ -324,8 +325,8 @@ class RouteTestCase(unittest.TestCase):
         resp = self.client.get('/api/get/project/' + project_id)
         project = json.loads(resp.data)
         self.assertEqual(len(project['skills_needed']), 1)
-        self.assertIn(id_cpp, project['skills_needed'])
-        self.assertNotIn(id_py, project['skills_needed'])
+        self.assertIn('C++', project['skills_needed'])
+        self.assertNotIn('Python', project['skills_needed'])
 
     def test_images_bad_id(self):
         """

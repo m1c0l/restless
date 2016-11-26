@@ -126,7 +126,7 @@ class User(db.Model):
             'signup_time': str(self.signup_time),
             'projects_managing': [project.id for project in self.projects_managing],
             'projects_developing': [project.id for project in self.projects_developing],
-            'skill_sets': [skill.id for skill in self.skill_sets]
+            'skill_sets': [skill.skill_name for skill in self.skill_sets]
         }
         #return {c.name: getattr(self, c.name) for c in self.__table__.columns}
         return ret
