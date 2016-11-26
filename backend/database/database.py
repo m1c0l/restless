@@ -166,8 +166,11 @@ def get_stack_for_user(user_id):
     @type user_id: C{int}
     @return: L{Project}s to have the user to swipe on
     @rtype: list of L{Project}
+    @raise: ValueError: If C{user_id} isn't a valid user id
     """
     user_obj = get_user_by_id(user_id)
+    if not user_obj:
+        raise ValueError("Invalid user ID: %d" % user_id)
     #start the stack with projects with skills that match any of user's skills
     stack = get_projects_with_any_skills(user_obj.skill_sets)
     #subtract the projects the user is PM on

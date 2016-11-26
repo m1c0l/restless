@@ -211,7 +211,8 @@ class DatabaseTestCase(unittest.TestCase):
         self.assertEqual(stack[0].title, 'title3')
 
         # bad id
-        get_stack_for_user(-1)
+        with self.assertRaises(ValueError):
+            get_stack_for_user(-1)
 
     def test_add_new_user(self):
         """
