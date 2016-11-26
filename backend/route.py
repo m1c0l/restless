@@ -287,14 +287,20 @@ def get_stack_for(type, id):
     elif type == 'pm':
         pass
 
-@app.route("/api/matches/<type>/<int:id>")
-def get_matches_for(type, id):
-    """ TODO
+@app.route("/api/matches/<int:who>/<int:id>/<int:type>")
+def get_matches_for(who,id,type=1):
     """
-    if type == 'user':
-        pass
-    elif type == 'pm':
-        pass
+    Get the matches for an ID. Matches are when both parties have swiped each other.
+    @param who: 0 for project, 1 for dev.
+    @type who: C{int}
+    @param id: The id of this person or project.
+    @type id: C{int}
+    @param type: The type of match. 0 means match declined, 1 means match made, 2 means match accepted.
+    @type type: C{int}
+    @return: List of IDs of people or projects who we have matched with, with the certain type.
+    @rtype: list of L{int}
+    """
+    return database.get_matches_for(who,id,type)
 
 @app.route("/api/img/get/<type>/<int:id>")
 def get_image(type, id):

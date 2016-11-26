@@ -172,14 +172,14 @@ def get_stack_for_user(user_id):
 
 def get_swipes_for(who, id):
     """
-    Get a user's swipes as a PM or a developer.
+    Get swipes for a user or project.
     TODO: implement PM and error checking
 
-    @param who: 0 for pm, 1 for dev.
+    @param who: 0 for project, 1 for dev.
     @type who: C{int}
-    @param id: The id of this person.
+    @param id: The id of this obejct.
     @type id: C{int}
-    @return: L{Swipe}s that this person has done
+    @return: L{Swipe}s that this user/project has done
     @rtype: list of L{Swipe}
     """
     swipe_arr = []
@@ -193,16 +193,22 @@ def get_swipes_for(who, id):
         swipe_arr = []
     return swipe_arr
 
-def get_matches_for(who, id):
+def get_matches_for(who, id, type):
     """
-    TODO
     Get the matches for an ID. Matches are when both parties have swiped each other.
-    @param who: 0 for pm, 1 for dev.
+    @param who: 0 for project, 1 for dev.
     @type who: C{int}
-    @param id: The id of this person.
+    @param id: The id of this person or project.
     @type id: C{int}
-    @return: List of IDs of people who we have matched with.
+    @param type: The type of match. 0 means match declined, 1 means match made, 2 means match accepted.
+    @type type: C{int}
+    @return: List of IDs of people or projects who we have matched with, with the certain type.
+    @rtype: list of L{int}
     """
+    if who == 0:
+        return Match.query.filter_by(project_id=id, result=type).all()
+    else:
+        return Match.query.filter_by(user_id=id, result=type).all()
 
 def add_swipe(user_id, project_id, result, who_swiped):
     """
