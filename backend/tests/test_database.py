@@ -150,6 +150,15 @@ class DatabaseTestCase(unittest.TestCase):
         project = get_project_by_id(project_id)
         self.assertEqual(project.title, 'p1')
 
+    def test_add_new_skill(self):
+        """
+        Test adding a skill.
+        """
+        id = add_new_skill('s1')
+        self.assertGreater(id, 0)
+        id = add_new_skill(None)
+        self.assertEqual(id, -1)
+
     def test_login(self):
         """
         Test adding and validating logins

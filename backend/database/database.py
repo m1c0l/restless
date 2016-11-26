@@ -244,6 +244,21 @@ def add_new_project(title, description, pm_id):
     insert_obj(new_project)
     return get_project_by_title(title).id
 
+def add_new_skill(skill_name):
+    """
+    Creates a new skill with name.
+
+    @param skill_name: The name of the new skill
+    @type skill_name: C{str}
+    @return Skill id if skill was created, -1 if skill already exists
+    @rtype: C{int}
+    """
+    if not skill_name or get_skill_by_id(skill_name):
+        return -1
+    new_skill = Skill(skill_name)
+    insert_obj(new_skill)
+    return get_skill_by_name(skill_name).id
+
 def add_user_object(user_obj, password):
     """
     Creates a new user with a login
