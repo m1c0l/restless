@@ -452,6 +452,32 @@ class RouteTestCase(unittest.TestCase):
         self.assertEqual(resp.mimetype, 'image/gif')
         self.assertEqual(resp.data, open(gif_bad_ext).read())
 
+    def test_get_stack_for(self):
+        """
+        Tests API for stack algorithm.
+        """
+        self.populate_db()
+        user_id = str(self.user.id)
+        project_id = str(self.project.id)
+
+        resp = self.client.get('/api/stack/user/' + user_id)
+        stack = json.loads(resp.data)
+        self.assertGreaterEqual(len(stack), 1)
+
+        resp = self.client.get('/api/stack/project/' + project_id)
+        stack = json.loads(resp.data)
+        self.assertGreaterEqual(len(stack), 1)
+
+        # bad type
+        resp = self.client.get('/api/stack/badtype/' + project_id)
+        self.assertGreaterEqual(resp.status_code, 400)
+
+        # bad id
+        resp = self.client.get('/api/stack/user/0')
+        self.assertGreaterEqual(resp.status_code, 400)
+        resp = self.client.get('/api/stack/project/0')
+        self.assertGreaterEqual(resp.status_code, 400)
+
     def test_debug(self):
         """
         Just debug-only code for coverage
