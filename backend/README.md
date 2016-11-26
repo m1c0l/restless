@@ -2,7 +2,7 @@ Flask app that runs its builtin server on port 80. Run `python route.py` to
 start server if it's not up.
 
 # API usage
-## GET requests
+## Getting data
 ```
 /api/get/<type>/<id>
 ```
@@ -11,7 +11,7 @@ object you want.  Will return a JSON of the object from the database.
 
 ### Users
 ```
-/api/get/user/<user-id>
+GET /api/get/user/<user-id>
 ```
 Currently 29 users with ids 1 to 29
 #### Example
@@ -44,12 +44,12 @@ Get user with id 1: http://159.203.243.194/api/get/user/1
 
 ### Projects
 ```
-/api/get/project/<project-id>
+GET /api/get/project/<project-id>
 ```
 Currently 29 projects with ids 1 to 29
 #### Example
 Get project with id 1: http://159.203.243.194/api/get/project/1
-```json
+```js
 {
   "current_state": 0,
   "description": "M4st3r h4cks 4 dayz",
@@ -70,21 +70,19 @@ Get project with id 1: http://159.203.243.194/api/get/project/1
 
 ### Skills
 ```
-/api/get/skill/<skill-id>
+GET /api/get/skill/<skill-id>
 ```
 Currently 4 skills with ids 1 to 4
 #### Example
 Get skill with id 1: http://159.203.243.194/api/get/skill/1
-```json
+```js
 {
   "id": 1,
   "skill_name": "Python"
 }
 ```
 
-## POST requests
-
-### Updating stuff
+## Updating stuff
 ```
 POST /api/update/<type>/<id>
 ```
@@ -92,61 +90,61 @@ POST /api/update/<type>/<id>
 object you want to update. POST data should be the attributes to update on an
 object. Returns a JSON of the updated object.
 
-#### Examples
-##### Change the title of project with id 1:
+### Examples
+#### Change the title of project with id 1:
 ```
 POST /api/update/project/1
 ```
 POST data:
-```json
+```js
 {
   "title": "new title"
 }
 ```
 Response:
-```json
+```js
 {
   "id": 1,
-  ...
+  // ...
   "title": "new title"
 }
 ```
 
-##### Change the first and last name of user with id 1:
+#### Change the first and last name of user with id 1:
 ```
 POST /api/update/user/1
 ```
 POST data:
-```json
+```js
 {
   "first_name": "new first name",
   "last_name": "new last name"
 }
 ```
 Response:
-```json
+```js
 {
   "id": 1,
-  ...
+  // ...
   "first_name": "new first name",
   "last_name": "new last name"
 }
 ```
 
-### Creating users
+## Creating users
 ```
 POST /api/new_user/
 ```
 POST data should be the `username` and `password` of the new user. Returns a
 JSON with the new user's id. Returns -1 if the username was already in the database.
 
-#### Example
-##### Adding a user with username `user123` and password `pass123`
+### Example
+#### Adding a user with username `user123` and password `pass123`
 ```
 POST /api/new_user/
 ```
 POST data:
-```json
+```js
 {
   "username": "user123",
   "password": "pass123"
@@ -159,13 +157,13 @@ Response:
 }
 ```
 
-### Logging in
+## Logging in
 ```
 POST /api/login/
 ```
 POST data should be the username and password of the login. Will return (in json format) the ID of the user if successful or -1 if it fails.
 POST data:
-```json
+```js
 {
   "username": "user123",
   "password": "pass123"
@@ -178,13 +176,13 @@ Response:
 }
 ```
 
-### Add a new project
+## Add a new project
 ```
 POST /api/new_project/
 ```
 Three fields are required: title, pm_id (id of the project manager creating the project), and description. Returns (as json) the project ID if created or -1 if the project title already exists.
 POST data:
-```json
+```js
 {
   "title": "Restless",
   "pm_id": "1",
@@ -197,10 +195,10 @@ Response:
     "id": 1
 }
 ```
-### Adding and removing skills to a user/project
+## Adding and removing skills to a user/project
 Implemented, docs coming soon...
 
-### Swiping
+## Swiping
 ```
 GET /api/swipe/<type>/<swiper_id>/<swipee_id>/<direction>
 ```
