@@ -15,34 +15,72 @@ object you want.  Will return a JSON of the object from the database.
 ```
 Currently 29 users with ids 1 to 29
 #### Example
-Get user with id 1: http://159.203.243.194/api/user/1
+Get user with id 1: http://159.203.243.194/api/get/user/1
 ```json
 {
-  "LinkedIn_profile_id": null, 
-  "bio": "m4st3r h4x0r", 
-  "email": "xyz", 
-  "first_name": "John", 
-  "id": 1, 
-  "last_name": "Dough", 
+  "LinkedIn_profile_id": null,
+  "bio": "m4st3r h4x0r",
+  "email": "xyz",
+  "first_name": "John",
+  "id": 1,
+  "last_name": "Dough",
   "projects_developing": [
-    12, 
+    12,
     18
-  ], 
+  ],
   "projects_managing": [
     1
-  ], 
-  "signup_time": "Sun, 20 Nov 2016 07:07:01 GMT", 
-  "skill_sets": [], 
+  ],
+  "signup_time": "Sun, 20 Nov 2016 07:07:01 GMT",
+  "skill_sets": [
+    4,
+    2
+  ],
   "username": "jd"
 }
 ```
+- `projects_developing` and `projects_managing` are arrays of project id's
+- `skill_sets` is an array of skill id's.
 
 ### Projects
-Currently 29 projects with ids 1 to 29, access it like so: /api/project/[project-id], e.g., http://159.203.243.194/api/project/2
+```
+/api/get/project/<project-id>
+```
+Currently 29 projects with ids 1 to 29
+#### Example
+Get project with id 1: http://159.203.243.194/api/get/project/1
+```json
+{
+  "current_state": 0,
+  "description": "M4st3r h4cks 4 dayz",
+  "id": 1,
+  "pm_id": 1,
+  "skills_needed": [
+    3,
+    1
+  ],
+  "title": "H4cks"
+}
+```
+- `skills_needed` is an array of skill id's.
+- `current_state` is an enum with values:
+  - `STATE_RECRUITING = 0`, the project is recruiting devs
+  - `STATE_STARTED = 1`, the project is being worked on
+  - `STATE_FINISHED = 2`, the project is no longer active
 
 ### Skills
-Currently 4 projects with ids 1 to 4, access it like so: /api/skill/[skill-id], e.g., http://159.203.243.194/api/skill/3
-
+```
+/api/get/skill/<skill-id>
+```
+Currently 4 skills with ids 1 to 4
+#### Example
+Get skill with id 1: http://159.203.243.194/api/get/skill/1
+```json
+{
+  "id": 1,
+  "skill_name": "Python"
+}
+```
 
 ## POST requests
 
