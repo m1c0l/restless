@@ -172,9 +172,27 @@ def get_stack_for_user(user_id):
 
 def get_swipes_for(who, id):
     """
-    currently unused, TODO
+    Get a user's swipes as a PM or a developer.
+    TODO: implement PM and error checking
+
+    @param who: 0 for pm, 1 for dev.
+    @type who: C{int}
+    @param id: The id of this person.
+    @type id: C{int}
+    @return: L{Swipe}s that this person has done
+    @rtype: list of L{Swipe}
     """
-    pass    
+    swipe_arr = []
+    if who == Swipe.SWIPER_DEV:
+        swipe_arr = Swipe.query.filter_by(user_id=id).filter_by(who_swiped=Swipe.SWIPER_DEV).all()
+    elif who == Swipe.SWIPER_PM:
+        #TODO
+        swipe_arr = []
+    else:
+        #TODO error checking
+        swipe_arr = []
+    return swipe_arr
+
 def get_matches_for(who, id):
     """
     TODO
