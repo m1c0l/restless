@@ -158,10 +158,8 @@ def retrieve(type,id):
         try:
             response_dict = database_commands[type.lower()](id).to_dict()
             return flask.jsonify(**response_dict)
-        except ValueError:
+        except (AttributeError, ValueError):
             return error(msg='Invalid ID')
-        except AttributeError as e:
-            return error(msg=str(e))
     else:
         return error(msg='Invalid type')
 
