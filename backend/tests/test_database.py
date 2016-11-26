@@ -128,6 +128,91 @@ class DatabaseTestCase(unittest.TestCase):
         comp = add_swipe(user2.id, project.id, Swipe.RESULT_YES, Swipe.SWIPER_DEV)
         self.assertIsNone(comp)
 
+    def test_get_user_swipes(self):
+        """
+        Test getting a user's swipes.
+        TODO: get PM swipes
+        """
+        user = User('user1', '', '', '', '')
+        insert_obj(user)
+        user2 = User('user2', '', '', '', '')
+        insert_obj(user2)
+        project = Project('title', '', user.id)
+        insert_obj(project)
+
+        add_swipe(user2.id, project.id, Swipe.RESULT_YES, Swipe.SWIPER_DEV)
+        add_swipe(user2.id, project.id, Swipe.RESULT_NO, Swipe.SWIPER_PM)
+        dev_swipes = get_swipes_for(Swipe.SWIPER_DEV, user2.id)
+        self.assertEqual(len(dev_swipes), 1)
+        self.assertEqual(dev_swipes[0].who_swiped, Swipe.SWIPER_DEV)
+
+    def test_get_projects_with_skills(self):
+        """
+        Test getting projects that match any of a number of skills.
+        """
+        skill = Skill('s1')
+        insert_obj(skill)
+        skill2 = Skill('s2')
+        insert_obj(skill2)
+        user = User('user1', '', '', '', '')
+        insert_obj(user)
+        project = Project('title', '', user.id)
+        project.skills_needed.append(skill)
+        insert_obj(project)
+        project2 = Project('title2', '', user.id)
+        project2.skills_needed.append(skill2)
+        insert_obj(project2)
+        project3 = Project('title3', '', user.id)
+        project3.skills_needed.append(skill)
+        project3.skills_needed.append(skill2)
+        insert_obj(project3)
+
+        skill_arr = [skill]
+        proj_set = get_projects_with_any_skills(skill_arr)
+        self.assertEqual(len(proj_set), 2)
+        self.assertIn(project, proj_set)
+        self.assertIn(project3, proj_set)
+
+        skill_arr = [skill, skill2]
+        proj_set = get_projects_with_any_skills(skill_arr)
+        self.assertEqual(len(proj_set), 3)
+
+        skill_arr = []
+        proj_set = get_projects_with_any_skills(skill_arr)
+        self.assertEqual(len(proj_set), 0)
+
+    def test_get_user_stack(self):
+        """
+        Test getting a user's stack.
+        """
+        skill = Skill('s1')
+        insert_obj(skill)
+        user = User('user1', '', '', '', '')
+        user.skill_sets.append(skill)
+        insert_obj(user)
+        user2 = User('user2', '', '', '', '')
+        insert_obj(user2)
+        project = Project('title', '', user.id)
+        project.skills_needed.append(skill)
+        insert_obj(project)
+        project2 = Project('title2', '', user2.id)
+        project2.skills_needed.append(skill)
+        insert_obj(project2)
+        project3 = Project('title3', '', user2.id)
+        project3.skills_needed.append(skill)
+        insert_obj(project3)
+        add_swipe(user.id, project2.id, Swipe.RESULT_YES, Swipe.SWIPER_DEV)
+
+        #explanation: user1 has 1 skill that matches all 3 projects,
+        #but user1 owns first project and has swiped on project2 so the only
+        #thing in the stack should be project 3
+        stack = get_stack_for_user(user.id)
+        self.assertEqual(len(stack), 1)
+        self.assertEqual(stack[0].title, 'title3')
+
+        # bad id
+        get_stack_for_user(-1)
+
     def test_add_new_user(self):
         """
         Test adding a user.

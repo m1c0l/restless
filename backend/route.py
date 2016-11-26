@@ -281,20 +281,40 @@ def swipe(type, swiper_id, swipee_id, direction):
 @app.route("/api/stack/<type>/<int:id>")
 def get_stack_for(type, id):
     """
+    Gets the stack for a user or project.
+    @param type: One of C{user} or C{project}
+    @type type: C{str}
+    @param id: The id of the user or project
+    @type id: C{int}
+    @return: An array of user/project id's to swipe on
+    @rtype: list of C{int}
     """
     if type == 'user':
-        pass
-    elif type == 'pm':
-        pass
+        stack = database.get_stack_for_user(id)
+        return flask.jsonify([project.id for project in stack])
+    elif type == 'project':
+        stack = database.get_stack_for_project(id)
+        return flask.jsonify([user.id for user in stack])
+    else:
+        return error('Invalid type')
 
-@app.route("/api/matches/<type>/<int:id>")
-def get_matches_for(type, id):
-    """ TODO
+@app.route("/api/matches/<int:who>/<int:id>/<int:type>")
+def get_matches_for(who,id,type=1):
     """
-    if type == 'user':
-        pass
-    elif type == 'pm':
-        pass
+    Get the matches for an ID. Matches are when both parties have swiped each
+    other.
+    @param who: 0 for project, 1 for dev.
+    @type who: C{int}
+    @param id: The id of this person or project.
+    @type id: C{int}
+    @param type: The type of match. 0 means match declined, 1 means match made,
+    2 means match accepted.
+    @type type: C{int}
+    @return: List of IDs of people or projects who we have matched with, with
+    the certain type.
+    @rtype: list of L{int}
+    """
+    return database.get_matches_for(who,id,type)
 
 @app.route("/api/img/get/<type>/<int:id>")
 def get_image(type, id):

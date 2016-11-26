@@ -94,19 +94,19 @@ def get_projects_with_any_skills(skill_list):
     @param skill_list: List of skills to search for
     @type skill_list: L{Skill}
     @return: C{Project}s that each have at least one of the skills
-    @rtype: L{Project}
+    @rtype: set of L{Project}
     """
     #I know, the below code is really silly but I can't seem to query relationships
     #properly with an in_ function...
     #I would've tried querying the user_skills table directly but our code isn't set up to do that
     skill_ids = []
-    project_list = []
+    project_set = set()
     for skill in skill_list:
         #Get all projects with a specific skill, append to list of projects
-        proj = Project.query.filter(Project.skills_needed.any(id=skill.id)).all()
-        #merge lists to remove duplicates
-        project_list = list(set(project_list + proj))
-    return project_list
+        proj = set(Project.query.filter(Project.skills_needed.any(id=skill.id)).all())
+        #merge sets to remove duplicates
+        project_set = project_set.union(proj)
+    return project_set
     #flask sqlalchemy relationships are silly and don't support the in_ function
     #which would've made life so much easier...
     #return Project.query.filter(Project.skills_needed.in_(skill_list)).all()
@@ -168,18 +168,29 @@ def get_stack_for_user(user_id):
     @rtype: list of L{Project}
     """
     user_obj = get_user_by_id(user_id)
-    return get_projects_with_any_skills(user_obj.skill_sets)
+    #start the stack with projects with skills that match any of user's skills
+    stack = get_projects_with_any_skills(user_obj.skill_sets)
+    #subtract the projects the user is PM on
+    user_pm_projects = set(user_obj.projects_managing)
+    stack = stack.difference(user_pm_projects)
+    #subtract any projects the user has swiped on as developer
+    user_dev_swipes = get_swipes_for(Swipe.SWIPER_DEV, user_id)
+    #me trying to be pythonic
+    user_swiped_proj_ids = [s.project_id for s in user_dev_swipes]
+    stack = {proj for proj in stack if not proj.id in user_swiped_proj_ids} 
+    return list(stack)
+
 
 def get_swipes_for(who, id):
     """
-    Get a user's swipes as a PM or a developer.
+    Get swipes for a user or project.
     TODO: implement PM and error checking
 
-    @param who: 0 for pm, 1 for dev.
+    @param who: 0 for project, 1 for dev.
     @type who: C{int}
-    @param id: The id of this person.
+    @param id: The id of this obejct.
     @type id: C{int}
-    @return: L{Swipe}s that this person has done
+    @return: L{Swipe}s that this user/project has done
     @rtype: list of L{Swipe}
     """
     swipe_arr = []
@@ -193,16 +204,22 @@ def get_swipes_for(who, id):
         swipe_arr = []
     return swipe_arr
 
-def get_matches_for(who, id):
+def get_matches_for(who, id, type):
     """
-    TODO
     Get the matches for an ID. Matches are when both parties have swiped each other.
-    @param who: 0 for pm, 1 for dev.
+    @param who: 0 for project, 1 for dev.
     @type who: C{int}
-    @param id: The id of this person.
+    @param id: The id of this person or project.
     @type id: C{int}
-    @return: List of IDs of people who we have matched with.
+    @param type: The type of match. 0 means match declined, 1 means match made, 2 means match accepted.
+    @type type: C{int}
+    @return: List of IDs of people or projects who we have matched with, with the certain type.
+    @rtype: list of L{int}
     """
+    if who == 0:
+        return Match.query.filter_by(project_id=id, result=type).all()
+    else:
+        return Match.query.filter_by(user_id=id, result=type).all()
 
 def add_swipe(user_id, project_id, result, who_swiped):
     """

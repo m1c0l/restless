@@ -2,6 +2,18 @@ Flask app that runs its builtin server on port 80. Run `python route.py` to
 start server if it's not up.
 
 # API usage
+
+## Errors
+Any request that is an error will return a JSON like:
+```js
+{
+      "error_message": "Invalid ID",
+      "status": "BAD_REQUEST"
+}
+```
+If the API request is good, the response's status code will be `200`. If it is
+a bad request, the status code will be `4xx` or `5xx`.
+
 ## Getting data
 ```
 /api/get/<type>/<id>
@@ -64,9 +76,9 @@ Get project with id 1: http://159.203.243.194/api/get/project/1
 ```
 - `skills_needed` is an array of skill id's.
 - `current_state` is an enum with values:
-  - `STATE_RECRUITING = 0`, the project is recruiting devs
-  - `STATE_STARTED = 1`, the project is being worked on
-  - `STATE_FINISHED = 2`, the project is no longer active
+    - `STATE_RECRUITING = 0`, the project is recruiting devs
+    - `STATE_STARTED = 1`, the project is being worked on
+    - `STATE_FINISHED = 2`, the project is no longer active
 
 ### Skills
 ```
@@ -136,7 +148,10 @@ Response:
 POST /api/new_user/
 ```
 POST data should be the `username` and `password` of the new user. Returns a
-JSON with the new user's id. Returns -1 if the username was already in the database.
+JSON with the new user's id. Returns -1 if the username was already in the
+database.
+
+To set the rest of the User's data, [update the user](#updating-stuff).
 
 ### Example
 #### Adding a user with username `user123` and password `pass123`
@@ -151,9 +166,9 @@ POST data:
 }
 ```
 Response:
-```
+```js
 {
-    "id": 2
+  "id": 2
 }
 ```
 
@@ -161,7 +176,9 @@ Response:
 ```
 POST /api/login/
 ```
-POST data should be the username and password of the login. Will return (in json format) the ID of the user if successful or -1 if it fails.
+POST data should be the username and password of the login. Will return (in
+json format) the ID of the user if successful or -1 if it fails.
+
 POST data:
 ```js
 {
@@ -172,7 +189,7 @@ POST data:
 Response:
 ```
 {
-    "id": 2
+  "id": 2
 }
 ```
 
@@ -180,31 +197,109 @@ Response:
 ```
 POST /api/new_project/
 ```
-Three fields are required: title, pm_id (id of the project manager creating the project), and description. Returns (as json) the project ID if created or -1 if the project title already exists.
+Three fields are required:
+    - `title`
+    - `pm_id` (id of the project manager creating the project)
+    - `description`.
+Returns (as json) the project ID if created or -1 if the project title already
+exists.
+
 POST data:
 ```js
 {
   "title": "Restless",
-  "pm_id": "1",
+  "pm_id": 1,
   "description": "Tindr for developers"
 }
 ```
 Response:
 ```
 {
-    "id": 1
+  "id": 1
 }
 ```
+
 ## Adding and removing skills to a user/project
 Implemented, docs coming soon...
 
 ## Swiping
+Register a swipe:
 ```
 GET /api/swipe/<type>/<swiper_id>/<swipee_id>/<direction>
 ```
-Registers a swipe. Type is one of `user` or `project`, and corresponds to the type of account that is doing the swiping. `swiper_id` is the integer ID of this account. `swipee_id` is the integer ID of the *other* account, a.k.a. the one being swiped on. `direction` indicates whether the account swiped *up* (positive swipe) or *down* (negative swipe). 0 corresponds to *down*, and 1 corresponds to *up*.
+- `<type>` is one of `user` or `project`, and corresponds to the type of
+  account that is doing the swiping.
+- `swiper_id` is the integer ID of this account.
+- `swipee_id` is the integer ID of the *other* account, a.k.a. the one being
+  swiped on.
+- `direction` indicates whether the account swiped *up* (positive swipe) or
+  *down* (negative swipe).
+    - 0 corresponds to *down*
+    - 1 corresponds to *up*.
 
-For example, if *user* with ID 3 swipes *up* on the project with ID *2*, we can register that as follows:
+### Example
+If user with ID `3` swipes *up* on the project with ID `2`, we can register
+that as follows:
 http://159.203.243.194/api/swipe/user/3/2/1
-The server will respond with the ID of the complement swipe in the database. If there is a match, this will return a positive number.
-Otherwise, it will return -1 which indicates that the other party has not swiped positively yet.
+
+The server will respond with the ID of the complement swipe in the database. If
+there is a match, this will return a positive number.
+
+Otherwise, it will return -1 which indicates that the other party has not
+swiped positively yet.
+
+## Images
+### Getting an image
+```
+GET /api/img/get/<type>/<id>
+```
+- `<type>` is one of `user` or `project`
+- `<id>` is the id of the user/project
+
+The response's mimetype is set based on the image (eg. `image/png`), so you
+should be able to just this endpoint url as a normal image link.
+
+#### Example
+Get the image for the project with id 1:
+```
+GET /api/img/get/project/1
+```
+Response: The project's image
+
+### Uploading an image
+```
+POST /api/img/upload/<type>/<id>
+```
+- `<type>` is one of `user` or `project`
+- `<id>` is the id of the user/project
+
+Add the image file in the `file` field of the POST data. This request replaces
+the old image for that user/project if there is one. The server returns an error
+if `type` or `id` is invalid, or if the file is not an image.
+
+#### Example
+Upload an image for the project with id 1:
+```
+POST /api/img/get/project/1
+```
+POST data:
+```js
+{
+  "file": File('/path/to/file')
+}
+```
+> Currently, the server assumes the data is given as `multipart/form-data`. If
+  it is easier to upload the image as raw data (eg. `binary/octet-stream`), ask
+  Richard to change this.
+
+### Deleting an image
+```
+GET/POST /api/img/delete/<type>/<id>
+```
+- `<type>` is one of `user` or `project`
+- `<id>` is the id of the user/project
+#### Example
+Delete the image for the project with id 1:
+```
+GET /api/img/delete/project/1
+```

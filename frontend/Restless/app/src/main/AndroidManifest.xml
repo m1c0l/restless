@@ -8,25 +8,18 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/NoActionBarDark">
-        <activity android:name=".PMActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <!--
- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
-        -->
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+        <activity android:name=".PMActivity"/>
 
         <activity android:name=".SignIn" />
         <activity android:name=".signUp" />
         <activity android:name=".DevPMSelectionActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
         <activity android:name=".createProjectActivity" />
         <activity android:name=".selectProjectActivity" />
         <activity android:name=".pendingMatchActivity" />
@@ -39,6 +32,9 @@
         <activity android:name=".editProfileMainScreen" />
         <activity android:name=".skillsForProject" />
         <activity android:name=".viewProject"></activity>
+        <activity android:name=".profileDisplay" />
+        <activity android:name=".skillsForProject" />
+        <activity android:name=".changePassword"></activity>
     </application>
 
 </manifest>

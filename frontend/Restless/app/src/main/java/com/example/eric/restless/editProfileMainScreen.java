@@ -15,7 +15,7 @@ public class editProfileMainScreen extends AppCompatActivity {
 
 
     public void changePassword(View v){
-        Intent transfer = new Intent(editProfileMainScreen.this, DevPMSelectionActivity.class);
+        Intent transfer = new Intent(editProfileMainScreen.this, changePassword.class);
         startActivity(transfer);
     }
 
