@@ -28,7 +28,7 @@ tools:context="com.example.eric.restless.DevPMSelectionActivity">
         android:text="P r o j e c t\nM a n a g e r"
         android:padding="10dp"
         android:background="@drawable/roundedbutton"
-        
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/pmButton"
