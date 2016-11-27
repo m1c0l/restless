@@ -3,6 +3,28 @@ start server if it's not up.
 
 # API usage
 
+## Contents
+- [Errors](#errors)
+- [Getting data](#getting-data)
+    - [Users](#users)
+    - [Projects](#projects)
+    - [Skills](#skills)
+- [Updating stuff](#updating-stuff)
+- [Creating users](#creating-users)
+- [Logging in](#logging-in)
+- [Add a new project](#add-a-new-project)
+- [Adding/Deleting skills](#addingdeleting-skills)
+    - [Adding](#adding)
+    - [Deleting](#deleting)
+- [Swiping](#swiping)
+- [Images](#images)
+    - [Getting an image](#getting-an-image)
+    - [Uploading an image](#uploading-an-image)
+    - [Deleting an image](#deleting-an-image)
+- [Stack](#stack)
+    - [Get stack for a user](#get-stack-for-a-user)
+    - [Get stack for a project](#get-stack-for-a-project)
+
 ## Errors
 Any request that is an error will return a JSON like:
 ```js
@@ -247,7 +269,7 @@ Response:
 }
 ```
 
-## Adding/Deleting skills to a user/project
+## Adding/Deleting skills
 ### Adding
 ```
 GET /api/skill/add/<type>/<skill_name>/<id>
@@ -370,4 +392,47 @@ GET/POST /api/img/delete/<type>/<id>
 Delete the image for the project with id 1:
 ```
 GET /api/img/delete/project/1
+```
+
+## Stack
+### Get stack for a user
+```
+GET /api/stack/user/<id>
+```
+- `<id>` is the user id
+Returns an array of id's of projects in the stack.
+
+#### Example
+Get stack for user with id 1:
+```
+GET /api/stack/user/1
+```
+Response:
+```js
+[ 5,
+  3,
+  7,
+  // ...
+]
+```
+### Get stack for a project
+> Not implemented yet
+
+```
+GET /api/stack/project/<id>
+```
+- `<id>` is the project id
+
+#### Example
+Get stack for project with id 1:
+```
+GET /api/stack/project/1
+```
+Response:
+```js
+[ 1,
+  4,
+  2,
+  // ...
+]
 ```
