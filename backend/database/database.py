@@ -176,6 +176,8 @@ def get_stack_for_user(user_id):
     #subtract the projects the user is PM on
     user_pm_projects = set(user_obj.projects_managing)
     stack = stack.difference(user_pm_projects)
+    #keep projects with higher pay rate than desired by user
+    stack = [proj for proj in stack if proj.pay_range >= user_obj.desired_salary]
     #subtract any projects the user has swiped on as developer
     user_dev_swipes = get_swipes_for(Swipe.SWIPER_DEV, user_id)
     #me trying to be pythonic
@@ -200,6 +202,8 @@ def get_stack_for_user(user_id):
             total_proj_weight += skill_and_weight.skill_weight
             if skill_and_weight.skill_id in user_skill_ids:
                 user_matched_weight += skill_and_weight.skill_weight
+        if total_proj_weight == 0.0:
+            raise ValueError("Project %d: No skills or skill weights sum to 0!" % proj.id)
         user_skill_match_percent = user_matched_weight / total_proj_weight
         #calculate the weight that the project's pay satisfies
         proj_pay_match_percent = proj.pay_range / MAX_PAY

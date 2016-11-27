@@ -194,12 +194,15 @@ class DatabaseTestCase(unittest.TestCase):
         insert_obj(user2)
         project = Project('title', '', user.id)
         project.skills_needed.append(skill)
+        project.skill_weights.append(Weighted_Skill(project.id, skill.id, 5.0))
         insert_obj(project)
         project2 = Project('title2', '', user2.id)
         project2.skills_needed.append(skill)
+        project2.skill_weights.append(Weighted_Skill(project2.id, skill.id, 5.0))
         insert_obj(project2)
         project3 = Project('title3', '', user2.id)
         project3.skills_needed.append(skill)
+        project3.skill_weights.append(Weighted_Skill(project3.id, skill.id, 5.0))
         insert_obj(project3)
         add_swipe(user.id, project2.id, Swipe.RESULT_YES, Swipe.SWIPER_DEV)
 
@@ -209,6 +212,22 @@ class DatabaseTestCase(unittest.TestCase):
         stack = get_stack_for_user(user.id)
         self.assertEqual(len(stack), 1)
         self.assertEqual(stack[0].title, 'title3')
+
+        #user4 has the skill that matches all 3 projects but has a higher
+        #desired salary than their pay rate (which is 0 by default)
+        user4 = User('user4', '', '', '', '')
+        user4.skill_sets.append(skill)
+        user4.desired_salary = 100
+        insert_obj(user4)
+        stack = get_stack_for_user(user4.id)
+        self.assertEqual(len(stack), 0)
+
+        #normal case: user5 has skill matching 3 projects
+        user5 = User('user5', '', '', '', '')
+        user5.skill_sets.append(skill)
+        insert_obj(user5)
+        stack = get_stack_for_user(user5.id)
+        self.assertEqual(len(stack), 3)
 
         # bad id
         with self.assertRaises(ValueError):
