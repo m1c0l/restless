@@ -20,7 +20,7 @@ public class editProfileMainScreen extends AppCompatActivity {
     }
 
     public void updateBio(View v){
-        Intent transfer = new Intent(editProfileMainScreen.this, DevPMSelectionActivity.class);
+        Intent transfer = new Intent(editProfileMainScreen.this, updateBio.class);
         startActivity(transfer);
     }
 

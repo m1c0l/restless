@@ -72,29 +72,29 @@ public class signUp extends AppCompatActivity {
         User.getUser().setId(a[0]);
 
         final String url = new String("http://159.203.243.194/api/update/user/" + String.valueOf(a[0]));
-        final JSONObject obj = new JSONObject();
-        final httpInterface requester = new httpInterface();
-        if(email.getText().toString()!=null)
-            obj.put("email",email.getText().toString());
-        if(phone.getText().toString()!=null)
-            obj.put("phone", phone.getText().toString());
-        if(wage.getText().toString()!=null)
-            obj.put("desired_salary",Integer.valueOf(wage.getText().toString()));
-        if(github.getText().toString()!=null)
-            obj.put("github_link", github.getText().toString());
-        if(city.getText().toString()!=null)
-            obj.put("city",city.getText().toString());
-        if(name.getText().toString()!=null)
-            obj.put("first_name",name.getText().toString());
-        Thread thread=new Thread(new Runnable() {
-            public void run() {
-                JSONObject b=requester.request("POST", obj, url);
-            }
-        });
-        thread.start();
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
+            final JSONObject obj = new JSONObject();
+            final httpInterface requester = new httpInterface();
+            if(email.getText().toString()!=null)
+                obj.put("email",email.getText().toString());
+            if(phone.getText().toString()!=null)
+                obj.put("phone", phone.getText().toString());
+            if(wage.getText().toString()!=null)
+                obj.put("desired_salary",Integer.valueOf(wage.getText().toString()));
+            if(github.getText().toString()!=null)
+                obj.put("github_link", github.getText().toString());
+            if(city.getText().toString()!=null)
+                obj.put("city",city.getText().toString());
+            if(name.getText().toString()!=null)
+                obj.put("first_name",name.getText().toString());
+            Thread thread=new Thread(new Runnable() {
+                public void run() {
+                    JSONObject b=requester.request("POST", obj, url);
+                }
+            });
+            thread.start();
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
