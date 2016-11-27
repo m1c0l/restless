@@ -261,6 +261,27 @@ def get_stack_for_project(project_id):
     pm_swipes_user_ids = {swipe.user_id for swipe in pm_swipes}
     stack = list(stack.difference(pm_swipes_user_ids))
     stack = [get_user_by_id(id) for id in stack]
+    #calculate a score for each user to rank them by
+    user_score_dict = dict()
+    for user in stack:
+        total_proj_weight = 0.0
+        user_matched_weight = 0.0
+        user_skill_ids = [skill.id for skill in user.skill_sets]
+        #see how many skills the user matches and calculate what % of the total
+        #project weights the user satisfies
+        for skill_and_weight in project_obj.skill_weights:
+            total_proj_weight += skill_and_weight.skill_weight
+            if skill_and_weight.skill_id in user_skill_ids:
+                user_matched_weight += skill_and_weight.skill_weight
+        if total_proj_weight == 0.0:
+            raise ValueError("Project %d: No skills or skill weights sum to 0!" % proj.id)
+        user_skill_match_percent = user_matched_weight / total_proj_weight
+        user_score_dict[user] = user_skill_match_percent
+    user_score_list = user_score_dict.items()
+    #sort by user score descending
+    user_score_list.sort(key=lambda user_score: user_score[1], reverse=True)
+    print "user scores:", user_score_list
+    stack = [user_score[0] for user_score in user_score_list]
     return stack
 
 def get_swipes_for(who, id, who_swiped):
