@@ -93,7 +93,8 @@ Get users with id's 1 and 3: http://159.203.243.194/api/get/user/1,3
       "SQLAlchemy",
       "Django"
     ],
-    "username": "rich"
+    "username": "rich",
+    "desired_salary": "30"
   }
 ]
 ```
@@ -117,7 +118,8 @@ Get project with id 1: http://159.203.243.194/api/get/project/1
     "Django",
     "MySQL"
   ],
-  "title": "H4cks"
+  "title": "H4cks",
+  "pay_range": "29"
 }
 ```
 - `skills_needed` is an array of skill names.
