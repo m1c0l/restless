@@ -81,8 +81,6 @@ class RouteTestCase(unittest.TestCase):
         resp = self.client.get(endpoint)
         self.assertEqual('application/json', resp.mimetype)
         data = json.loads(resp.get_data())
-        if 'id' in data:
-            self.assertEqual(type(data['id']), int)
 
     def test_4xx(self):
         """
@@ -116,12 +114,29 @@ class RouteTestCase(unittest.TestCase):
         """
         def assert_vals(endpoint, obj):
             resp = self.client.get(endpoint)
-            self.assertDictContainsSubset(obj.to_dict(), json.loads(resp.get_data()))
+            data = json.loads(resp.get_data())[0]
+            self.assertDictContainsSubset(obj.to_dict(), data)
 
         self.populate_db()
         assert_vals('/api/get/skill/' + str(self.skill.id), self.skill)
         assert_vals('/api/get/user/' + str(self.user.id), self.user)
         assert_vals('/api/get/project/' + str(self.project.id), self.project)
+
+        s2 = Skill('s2')
+        db.session.add(s2)
+        db.session.commit()
+        u2 = User('u2','','','','')
+        db.session.add(u2)
+        db.session.commit()
+        p2 = Project('p2','',self.user.id)
+        db.session.add(p2)
+        db.session.commit()
+
+        resp = self.client.get('/api/get/user/'+str(self.user.id)+','+str(u2.id))
+        data = json.loads(resp.data)
+        self.assertEqual(len(data), 2)
+        self.assertTrue(data[0]['id'] == self.user.id or data[0]['id'] == u2.id)
+        self.assertTrue(data[1]['id'] == self.user.id or data[1]['id'] == u2.id)
 
     def test_error_json(self):
         """
@@ -149,7 +164,7 @@ class RouteTestCase(unittest.TestCase):
         self.assertGreater(id, 0)
 
         resp = self.client.get('/api/get/user/' + str(id))
-        user = json.loads(resp.data)
+        user = json.loads(resp.data)[0]
         self.assertEqual(user['id'], id)
         self.assertEqual(user['username'], data['username'])
 
@@ -173,7 +188,7 @@ class RouteTestCase(unittest.TestCase):
         self.assertGreater(id, 0)
 
         resp = self.client.get('/api/get/project/' + str(id))
-        project = json.loads(resp.data)
+        project = json.loads(resp.data)[0]
         self.assertEqual(project['id'], id)
         self.assertEqual(project['title'], data['title'])
         self.assertEqual(project['pm_id'], self.user.id)
@@ -262,14 +277,14 @@ class RouteTestCase(unittest.TestCase):
         self.assertNotEqual(id_cpp, id_py)
 
         resp = self.client.get('/api/get/user/' + user_id)
-        user = json.loads(resp.data)
+        user = json.loads(resp.data)[0]
         self.assertEqual(len(user['skill_sets']), 2)
         self.assertIn('C++', user['skill_sets'])
         self.assertIn('Python', user['skill_sets'])
 
         self.client.get('/api/skill/add/user/C++/'+user_id)
         resp = self.client.get('/api/get/user/' + user_id)
-        user = json.loads(resp.data)
+        user = json.loads(resp.data)[0]
         self.assertEqual(len(user['skill_sets']), 2) # no duplicate skills
 
         # Project
@@ -282,14 +297,14 @@ class RouteTestCase(unittest.TestCase):
         self.assertEqual(id_py, id_py2)
 
         resp = self.client.get('/api/get/project/' + project_id)
-        project = json.loads(resp.data)
+        project = json.loads(resp.data)[0]
         self.assertEqual(len(project['skills_needed']), 2)
         self.assertIn('C++', project['skills_needed'])
         self.assertIn('Python', project['skills_needed'])
 
         self.client.get('/api/skill/add/project/C++/'+project_id)
         resp = self.client.get('/api/get/project/' + project_id)
-        project = json.loads(resp.data)
+        project = json.loads(resp.data)[0]
         self.assertEqual(len(project['skills_needed']), 2) # no duplicate skills
 
     def test_delete_skill(self):
@@ -308,7 +323,7 @@ class RouteTestCase(unittest.TestCase):
         self.assertEqual(json.loads(resp.data)['id'], id_py)
 
         resp = self.client.get('/api/get/user/' + user_id)
-        user = json.loads(resp.data)
+        user = json.loads(resp.data)[0]
         self.assertEqual(len(user['skill_sets']), 1)
         self.assertIn('C++', user['skill_sets'])
         self.assertNotIn('Python', user['skill_sets'])
@@ -323,7 +338,7 @@ class RouteTestCase(unittest.TestCase):
         self.assertEqual(json.loads(resp.data)['id'], id_py)
 
         resp = self.client.get('/api/get/project/' + project_id)
-        project = json.loads(resp.data)
+        project = json.loads(resp.data)[0]
         self.assertEqual(len(project['skills_needed']), 1)
         self.assertIn('C++', project['skills_needed'])
         self.assertNotIn('Python', project['skills_needed'])

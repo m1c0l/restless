@@ -89,7 +89,8 @@ def update_info(type, id):
     try:
         obj = commands[type.lower()](id)
         database.update(obj, **request.form)
-        return retrieve(type, id)
+        obj = commands[type.lower()](id)
+        return flask.jsonify(**(obj.to_dict()))
     except ValueError:
         return error(msg='Invalid ID')
     except AttributeError as e:
@@ -138,14 +139,14 @@ def login(username=None, password=None):
         id = database.get_user_by_username(username).id
     return flask.jsonify(id=id)
 
-@app.route("/api/get/<type>/<int:id>")
-def retrieve(type,id):
+@app.route("/api/get/<type>/<ids>")
+def retrieve(type,ids):
     """
-    Handles API requests from the mobile app.
+    API that retrieves data for users, projects, and skills.
     @param type: The type of data to get (eg. C{user}, C{project}, C{skill})
     @type type: C{str}
-    @param id: The id of the object to get
-    @type id: C{int}
+    @param ids: A comma-separated list of id's
+    @type ids: C{str}
     @return: A JSON response, or a JSON error
     @rtype: C{str}
     """
@@ -154,14 +155,15 @@ def retrieve(type,id):
         'project' : database.get_project_by_id,
         'skill' : database.get_skill_by_id,
     }
-    if type.lower() in database_commands:
-        try:
-            response_dict = database_commands[type.lower()](id).to_dict()
-            return flask.jsonify(**response_dict)
-        except (AttributeError, ValueError):
-            return error(msg='Invalid ID')
-    else:
+    if type.lower() not in database_commands:
         return error(msg='Invalid type')
+
+    get = database_commands[type.lower()]
+    try:
+        response = [get(int(id)).to_dict() for id in ids.split(',')]
+        return flask.jsonify(response)
+    except (AttributeError, ValueError) as e:
+        return error(msg='Invalid id: ' + str(e))
 
 @app.route("/api/new_project/", methods=['POST'])
 def new_project(title=None, description="", pm_id = None):
