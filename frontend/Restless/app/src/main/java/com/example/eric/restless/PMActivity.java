@@ -38,9 +38,7 @@ public class PMActivity extends AppCompatActivity {
     public void onItemClick(int mPosition)
     {
         //goes to project view page with project id
-
     }
-
 
 
     public void createProjectMethod(View v){

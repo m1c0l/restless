@@ -6,6 +6,7 @@ import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -16,7 +17,7 @@ import static java.lang.Math.abs;
  * Created by Eric on 11/25/2016.
  */
 
-public class profileDisplay extends AppCompatActivity {
+public abstract class profileDisplay extends AppCompatActivity {
     private TextView body1,body2,body3,title;
     private ImageView profile_pic;
     private GestureDetectorCompat gdetect;
@@ -109,5 +110,8 @@ public class profileDisplay extends AppCompatActivity {
             this.gdetect.onTouchEvent(event);
             return super.onTouchEvent(event);
         }
+
+        public abstract void onConfirm(View v);
+        public abstract void onDelete(View v);
 
 }
