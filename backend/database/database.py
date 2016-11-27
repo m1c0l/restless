@@ -269,7 +269,7 @@ def update_match(user_id, project_id, new_result=None):
     @type user_id: C{int}
     @type project_id: C{int}
     @type new_result: C{int}
-    @return: The new result of this match, or -1 if the match was not found.
+    @return: The new result of this match, 0 if the match had been previously declined, or -1 if the match was not found.
     @rtype: C{int}
     """
     match_obj = Match.query.filter_by(user_id=user_id,project_id=project_id)
@@ -277,6 +277,8 @@ def update_match(user_id, project_id, new_result=None):
         return -1
     if not new_result:
         new_result = match_obj.result + 1
+    if match_obj.result == 0:
+        return 0
     update(match_obj, result = new_result)
     return new_result
 

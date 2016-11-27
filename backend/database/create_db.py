@@ -1,7 +1,7 @@
 from flask import Flask
 from db import db
 import database
-import os
+import os, urllib2
 
 app = Flask(__name__)
 config_file = os.path.dirname(os.path.realpath(__file__)) + '/../config.py'
@@ -111,3 +111,31 @@ if __name__ == '__main__':
         ]
         for sw in swipe_arr:
             database.insert_obj(sw)
+
+        # test images
+        img_dir = os.path.dirname(os.path.realpath(__file__)) + '/../' + app.config['IMG_PATH']
+        user_imgs = [
+            "http://i.imgur.com/0qZGhaD.jpg",
+            "http://i.imgur.com/2QklmTNr.jpg",
+            "http://i.imgur.com/Umv5YFt.png"
+        ]
+        for i, url in enumerate(user_imgs):
+            path = img_dir + '/user/' + str(i+1)
+            if os.path.isfile(path):
+                continue
+            resp = urllib2.urlopen(url)
+            with open(path, 'w') as f:
+                f.write(resp.read())
+
+        proj_imgs = [
+            "http://i.imgur.com/o7E8bHx.jpg",
+            "http://i.imgur.com/65RykWH.jpg",
+            "http://i.imgur.com/sOkujAg.jpg"
+        ]
+        for i, url in enumerate(proj_imgs):
+            path = img_dir + '/project/' + str(i+1)
+            if os.path.isfile(path):
+                continue
+            resp = urllib2.urlopen(url)
+            with open(path, 'w') as f:
+                f.write(resp.read())

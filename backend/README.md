@@ -24,6 +24,9 @@ start server if it's not up.
 - [Stack](#stack)
     - [Get stack for a user](#get-stack-for-a-user)
     - [Get stack for a project](#get-stack-for-a-project)
+- [Matches](#matches)
+    - [Get matches for a user or project](#get-matches-for-a-user-or-project)
+    - [Accept or decline a match](#accept-or-decline-a-match)
 
 ## Errors
 Any request that is an error will return a JSON like:
@@ -50,55 +53,47 @@ GET /api/get/user/<user-id>
 ```
 Currently 29 users with ids 1 to 29
 #### Example
-Get users with id's 1 and 3: http://159.203.243.194/api/get/user/1,3
+Get users with id's 1 and 3:
+```
+GET /api/get/user/1,3
+```
+Response:
 ```js
-results = 
 {
-	[
-	  {
-		"LinkedIn_profile_id": null,
-		"bio": "m4st3r h4x0r",
-		"email": "xyz",
-		"first_name": "John",
-		"id": 1,
-		"last_name": "Dough",
-		"projects_developing": [],
-		"projects_managing": [
-		  1
-		],
-		"signup_time": "2016-11-26 23:22:20",
-		"skill_sets": [
-		  "MySQL",
-		  "Python"
-		],
-		"username": "jd"
-	  },
-	  {
-		"LinkedIn_profile_id": null,
-		"bio": "waffle the bunny",
-		"email": "rich",
-		"first_name": "Rich",
-		"id": 3,
-		"last_name": "Sun",
-		"projects_developing": [
-		  13,
-		  25,
-		  27
-		],
-		"projects_managing": [
-		  4,
-		  15,
-		  24
-		],
-		"signup_time": "2016-11-26 23:22:20",
-		"skill_sets": [
-		  "SQLAlchemy",
-		  "Django"
-		],
-		"username": "rich",
-		"desired_salary": "30"
-	  }
-	]
+  "results": [
+    {
+      "LinkedIn_profile_id": null,
+      "bio": "m4st3r h4x0r",
+      "city": null,
+      "desired_salary": 0,
+      "email": "xyz",
+      "first_name": "John",
+      "github_link": null,
+      "id": 1,
+      "last_name": "Dough",
+      "phone": null,
+      "projects_developing": [],
+      "projects_managing": [
+        1,
+        6,
+        14
+      ],
+      "signup_time": "2016-11-27 05:06:50",
+      "skill_sets": [
+        "C",
+        "PHP",
+        "Python",
+        "SQLAlchemy",
+        "Scala"
+      ],
+      "username": "jd"
+    },
+    {
+      "id": 3,
+      // ...
+    },
+    // ...
+  ]
 }
 ```
 - `projects_developing` and `projects_managing` are arrays of project id's
@@ -109,20 +104,32 @@ results =
 GET /api/get/project/<project-id>
 ```
 Currently 29 projects with ids 1 to 29
+
 #### Example
-Get project with id 1: http://159.203.243.194/api/get/project/1
+Get project with id 1:
+```
+GET /api/get/project/1
+```
+Response:
 ```js
 {
-  "current_state": 0,
-  "description": "M4st3r h4cks 4 dayz",
-  "id": 1,
-  "pm_id": 1,
-  "skills_needed": [
-    "Django",
-    "MySQL"
-  ],
-  "title": "H4cks",
-  "pay_range": "29"
+  "results": [
+    {
+      "current_state": 0,
+      "description": "M4st3r h4cks 4 dayz",
+      "id": 1,
+      "pay_range": 0,
+      "pm_id": 1,
+      "skills_needed": [
+        "PHP",
+        "Microsoft",
+        "Scala",
+        "Python",
+        "SQLAlchemy"
+      ],
+      "title": "H4cks"
+    }
+  ]
 }
 ```
 - `skills_needed` is an array of skill names.
@@ -136,12 +143,21 @@ Get project with id 1: http://159.203.243.194/api/get/project/1
 GET /api/get/skill/<skill-id>
 ```
 Currently 4 skills with ids 1 to 4
+
 #### Example
-Get skill with id 1: http://159.203.243.194/api/get/skill/1
+Get skill with id 1
+```
+GET /api/get/skill/1
+```
+Response:
 ```js
 {
-  "id": 1,
-  "skill_name": "Python"
+  "results": [
+    {
+      "id": 1,
+      "skill_name": "Python"
+    }
+  ]
 }
 ```
 
@@ -435,5 +451,46 @@ Response:
 ```js
 {
     "stack": [1, 4, 2, 16, 13, 8, 3]
+}
+```
+
+## Matches
+### Get matches for a user or project
+```
+GET /api/matches/<who>/<id>/<type>
+```
+- `<who>` is `0` for a project, and `1` for a developer.
+- `<id>` is the id of this object.
+- `<type>` is the type of this match. `1` is the default value, which indicates that both user and project have swiped positively. `0` means that the match has been declined by either user. `2` or more indicates that a party has accepted the match (a.k.a. sought more information about it)
+
+#### Example
+Get all new matches for project with id 3:
+```
+GET /api/matches/0/3/1
+```
+Response:
+```
+{
+    "results" : [2,5,12]
+}
+```
+
+### Accept or decline a match
+```
+GET /api/matches/<accept/decline>/<user_id>/<project_id>
+```
+- `user_id` is the id of the user.
+- `project_id` is the id of the project.
+Use this if either the user or the PM declines this match. It will set the result of the match to 0.
+
+#### Example
+Suppose user with id 2 and project with id 3 are matched. A party wants to decline the match.
+```
+GET /api/matches/decline/2/3
+```
+Response:
+```
+{
+    "result" : 0
 }
 ```
