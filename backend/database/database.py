@@ -166,7 +166,7 @@ def get_stack_for_user(user_id):
     @type user_id: C{int}
     @return: L{Project}s to have the user to swipe on
     @rtype: list of L{Project}
-    @raise: ValueError: If C{user_id} isn't a valid user id
+    @raise ValueError: If C{user_id} isn't a valid user id
     """
     user_obj = get_user_by_id(user_id)
     if not user_obj:
@@ -180,8 +180,44 @@ def get_stack_for_user(user_id):
     user_dev_swipes = get_swipes_for(Swipe.SWIPER_DEV, user_id)
     #me trying to be pythonic
     user_swiped_proj_ids = [s.project_id for s in user_dev_swipes]
-    stack = {proj for proj in stack if not proj.id in user_swiped_proj_ids} 
-    return list(stack)
+    stack = [proj for proj in stack if not proj.id in user_swiped_proj_ids]
+    user_skill_ids = [s.id for s in user_obj.skill_sets]
+    #for each stack project, calculate a score that ranks the project in the stack
+
+    #big wage/hr to divide salaries against
+    MAX_PAY = 250.0
+    #what percentage the pay contributes to the score
+    PAY_WEIGHT_IN_SCORE = 0.4
+    #what percentage the matched skill contributes to the score
+    SKILL_WEIGHT_IN_SCORE = 0.6
+    project_score_dict = dict()
+    for proj in stack:
+        total_proj_weight = 0.0
+        user_matched_weight = 0.0
+        #see how many skills the user matches and calculate what % of the total
+        #project weights the user satisfies
+        for skill_and_weight in proj.skill_weights:
+            total_proj_weight += skill_and_weight.skill_weight
+            if skill_and_weight.skill_id in user_skill_ids:
+                user_matched_weight += skill_and_weight.skill_weight
+        user_skill_match_percent = user_matched_weight / total_proj_weight
+        #calculate the weight that the project's pay satisfies
+        proj_pay_match_percent = proj.pay_range / MAX_PAY
+        proj_score = PAY_WEIGHT_IN_SCORE * proj_pay_match_percent + SKILL_WEIGHT_IN_SCORE * user_skill_match_percent
+        project_score_dict[proj] = proj_score
+
+    project_score_list = project_score_dict.items()
+    #sort by project score descending
+    project_score_list.sort(key=lambda proj_score: proj_score[1], reverse=True)
+    print "project scores for stack", project_score_list
+    stack = [proj_score[0] for proj_score in project_score_list]
+    return stack
+    #old code: for each stack project, find what % of its needed skills the user has
+        #num_skills_needed = len(proj.skills_needed)
+        #matching_skills = set(user_obj.skill_sets).intersection(set(proj.skills_needed))
+        #num_matching_skills = len(matching_skills)
+        #percent_matching = float(num_matching_skills) / num_skills_needed
+        #skill_matching_dict[proj] = percent_matching
 
 
 def get_swipes_for(who, id):
