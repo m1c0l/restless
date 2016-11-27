@@ -23,4 +23,4 @@ def test3():
     response = requests.post(url, files=files)
     print(response.text)
 
-test3()
+#test3()

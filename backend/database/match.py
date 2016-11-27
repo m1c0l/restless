@@ -15,19 +15,21 @@ class Match(db.Model):
     """
     The id of the User who is involved in this Match.
     @type: C{int}
-    @see: L{User.id}
+    @see: L{User}
     """
 
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
     """
     The id of the Project that is involved in this Match.
     @type: C{int}
-    @see: L{Project.id}
+    @see: L{Project}
     """
 
     result = db.Column(db.Integer, nullable=False)
     """
-    The result of the Match. 0 = match declined, 1 means match initialized (both user and PM swiped up), >1 means match has led to further information.
+    The result of the Match. 0 = match declined, 1 means match initialized
+    (both user and PM swiped up), >1 means match has led to further
+    information.
     @type: C{int}
     """
     def __init__(self, user_id, project_id):
@@ -35,8 +37,9 @@ class Match(db.Model):
         Construct a Match
 
         @param user_id: User's id
-        @type match_name: C{str}
+        @type user_id: C{int}
         @param project_id: Project's id
+        @type project_id: C{int}
         """
         self.user_id = user_id
         self.project_id = project_id
