@@ -260,6 +260,7 @@ def get_stack_for_project(project_id):
     pm_swipes = get_swipes_for(Swipe.GET_PROJECT_SWIPES, project_id, Swipe.SWIPER_PM)
     pm_swipes_user_ids = {swipe.user_id for swipe in pm_swipes}
     stack = list(stack.difference(pm_swipes_user_ids))
+    stack = [get_user_by_id(id) for id in stack]
     return stack
 
 def get_swipes_for(who, id, who_swiped):
