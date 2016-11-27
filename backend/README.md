@@ -64,11 +64,14 @@ Response:
     {
       "LinkedIn_profile_id": null,
       "bio": "m4st3r h4x0r",
+      "city": null,
       "desired_salary": 0,
       "email": "xyz",
       "first_name": "John",
+      "github_link": null,
       "id": 1,
       "last_name": "Dough",
+      "phone": null,
       "projects_developing": [],
       "projects_managing": [
         1,
