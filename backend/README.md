@@ -186,7 +186,7 @@ POST data:
 }
 ```
 Response:
-```
+```js
 {
   "id": 2
 }
@@ -212,14 +212,51 @@ POST data:
 }
 ```
 Response:
-```
+```js
 {
   "id": 1
 }
 ```
 
-## Adding and removing skills to a user/project
-Implemented, docs coming soon...
+## Adding/Deleting skills to a user/project
+### Adding
+```
+GET /api/skill/add/<type>/<skill_name>/<id>
+```
+- `<type>` is one of `user` or `project`
+- `<skill_name>` is a string with the name of the skill to add
+- `<id>` is the id of the user/project
+Returns the skill id on success.
+#### Example
+Add `Python` as a skill for user with id 1:
+```
+GET /api/skill/add/user/Python/1
+```
+Response:
+```js
+{
+  "id": 1
+}
+```
+### Deleting
+```
+GET /api/skill/delete/<type>/<skill_name>/<id>
+```
+- `<type>` is one of `user` or `project`
+- `<skill_name>` is a string with the name of the skill to delete
+- `<id>` is the id of the user/project
+Returns the skill id on success.
+#### Example
+Delete `Python` from user with id 1:
+```
+GET /api/skill/delete/user/Python/1
+```
+Response:
+```js
+{
+  "id": 1
+}
+```
 
 ## Swiping
 Register a swipe:
