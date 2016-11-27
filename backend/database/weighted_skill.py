@@ -16,7 +16,7 @@ class Weighted_Skill(db.Model):
     """
     ID of the skill being weighted.
     @type: C{int}
-    @see: L{Skill}
+    @see: L{Skill.id}
     """
 
     skill_weight = db.Column(db.Float, nullable=False)
