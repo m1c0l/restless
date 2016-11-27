@@ -215,9 +215,7 @@ public class devSwipe extends AppCompatActivity {
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
-                    } finally {
-                        user_stack.peek();
-                    }
+                    } 
 
                 }
             });

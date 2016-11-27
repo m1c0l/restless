@@ -82,6 +82,7 @@ class Project(db.Model):
         self.description = description
         self.pm_id = pm_id
         self.current_state = Project.STATE_RECRUITING
+        self.pay_range = 0
 
     def __repr__(self):
         return "<Project '%s' id=%r>" % (self.title, self.id)
@@ -116,7 +117,8 @@ class Project(db.Model):
             'current_state': self.current_state,
             'description': self.description,
             'pm_id': self.pm_id,
-            'skills_needed': [skill.skill_name for skill in self.skills_needed]
+            'skills_needed': [skill.skill_name for skill in self.skills_needed],
+            'pay_range': self.pay_range
         }
         #return {c.name: getattr(self, c.name) for c in self.__table__.columns}
         return ret
