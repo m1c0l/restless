@@ -401,6 +401,7 @@ GET /api/stack/user/<id>
 ```
 - `<id>` is the user id
 Returns an array of id's of projects in the stack.
+
 #### Example
 Get stack for user with id 1:
 ```
@@ -416,10 +417,13 @@ Response:
 ```
 ### Get stack for a project
 > Not implemented yet
+
 ```
 GET /api/stack/project/<id>
 ```
 - `<id>` is the project id
+
+#### Example
 Get stack for project with id 1:
 ```
 GET /api/stack/project/1
