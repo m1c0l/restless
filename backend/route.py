@@ -335,6 +335,20 @@ def get_matches_for(who,id,type=1):
     """
     return database.get_matches_for(who,id,type)
 
+@app.route("/api/matches/accept/<int:user_id>/<int:project_id>")
+def accept_match(user_id,project_id):
+    """
+    Accept a match. Either a user or a project may call this. It will simply increment the "result" of the Match object by one.
+    @param user_id: The id of the user in this match.
+    @param project_id: The id of the project in this match.
+    @type user_id: C{int}
+    @type project_id: C{int}
+    @return: The new result of this match, or -1 if the match was not found.
+    @rtype: C{int}
+    """
+    return flask.jsonify(result=database.update_match(user_id, project_id))
+    
+
 @app.route("/api/img/get/<type>/<int:id>")
 def get_image(type, id):
     """

@@ -260,6 +260,26 @@ def get_matches_for(who, id, type):
     else:
         return Match.query.filter_by(user_id=id, result=type).all()
 
+def update_match(user_id, project_id, new_result=None):
+    """
+    Update a match, changing the result of the match to new_result, or incrementing if not given.
+    @param user_id: The id of the user in this match.
+    @param project_id: The id of the project in this match.
+    @param new_result: The new result of this match.
+    @type user_id: C{int}
+    @type project_id: C{int}
+    @type new_result: C{int}
+    @return: The new result of this match, or -1 if the match was not found.
+    @rtype: C{int}
+    """
+    match_obj = Match.query.filter_by(user_id=user_id,project_id=project_id)
+    if not match_obj:
+        return -1
+    if not new_result:
+        new_result = match_obj.result + 1
+    update(match_obj, result = new_result)
+    return new_result
+
 def add_swipe(user_id, project_id, result, who_swiped):
     """
     Add a swipe.
