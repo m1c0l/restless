@@ -122,9 +122,11 @@ Get skill with id 1: http://159.203.243.194/api/get/skill/1
 ```
 POST /api/update/<type>/<id>
 ```
-`<type>` is one of `user`, `project`, or `skill`. `<id>` is the id of the
-object you want to update. POST data should be the attributes to update on an
-object. Returns a JSON of the updated object.
+- `<type>` is one of `user`, `project`, or `skill`
+- `<id>` is the id of the object you want to update.
+
+POST data should be the attributes to update on an object. Returns a JSON of
+the updated object.
 
 ### Examples
 #### Change the title of project with id 1:
@@ -222,9 +224,11 @@ Response:
 POST /api/new_project/
 ```
 Three fields are required:
-    - `title`
-    - `pm_id` (id of the project manager creating the project)
-    - `description`.
+
+- `title`
+- `pm_id` (id of the project manager creating the project)
+- `description`
+
 Returns (as json) the project ID if created or -1 if the project title already
 exists.
 
@@ -251,7 +255,9 @@ GET /api/skill/add/<type>/<skill_name>/<id>
 - `<type>` is one of `user` or `project`
 - `<skill_name>` is a string with the name of the skill to add
 - `<id>` is the id of the user/project
+
 Returns the skill id on success.
+
 #### Example
 Add `Python` as a skill for user with id 1:
 ```
@@ -359,6 +365,7 @@ GET/POST /api/img/delete/<type>/<id>
 ```
 - `<type>` is one of `user` or `project`
 - `<id>` is the id of the user/project
+
 #### Example
 Delete the image for the project with id 1:
 ```
