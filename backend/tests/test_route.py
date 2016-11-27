@@ -49,7 +49,14 @@ class RouteTestCase(unittest.TestCase):
 
         user = User(first_name='u', last_name='1', username='u1',
             email='e1', bio='b')
+        user.skill_sets.append(skill)
         db.session.add(user)
+        db.session.commit()
+
+        user2 = User(first_name='u', last_name='1', username='unique!',
+            email='e1', bio='b')
+        user2.skill_sets.append(skill)
+        db.session.add(user2)
         db.session.commit()
 
         login = Login(user.username, 'pass123')
@@ -57,7 +64,15 @@ class RouteTestCase(unittest.TestCase):
         db.session.commit()
 
         project = Project(title="p1", description="blah", pm_id=user.id)
+        project.skills_needed.append(skill)
+        project.skill_weights.append(Weighted_Skill(project.id, skill.id, 5.0))
         db.session.add(project)
+        db.session.commit()
+
+        project2 = Project(title="p_unique", description="blah", pm_id=user2.id)
+        project2.skills_needed.append(skill)
+        project2.skill_weights.append(Weighted_Skill(project.id, skill.id, 5.0))
+        db.session.add(project2)
         db.session.commit()
 
         swipe = Swipe(user.id, project.id, Swipe.RESULT_YES, Swipe.SWIPER_DEV)
