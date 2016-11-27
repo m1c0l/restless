@@ -347,7 +347,7 @@ def accept_match(user_id,project_id):
     return flask.jsonify(result=database.update_match(user_id, project_id))
     
 @app.route("/api/matches/decline/<int:user_id>/<int:project_id>")
-def decline_match(user_id,project_id)
+def decline_match(user_id,project_id):
     """
     Decline a match. Either a user or a project may call this. It will simply set the "result" of the Match object to 0.
     @param user_id: The id of the user in this match.
