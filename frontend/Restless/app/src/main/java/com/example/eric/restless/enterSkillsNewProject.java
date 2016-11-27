@@ -13,11 +13,12 @@ public class enterSkillsNewProject extends enterSkills {
     public void finishSkillsList(View v){
         Bundle b = getIntent().getExtras();
         project = b.getParcelable("TEMP_PROJECT");
-        //adding skills
-        for (SkillModel s : CustomListViewValuesArr){
-            project.getSkills().add(s.getSkillString());
+        //adding skills for this project
+        for ( skillUnit s : CustomListViewValuesArr){
+            s.setProject();
+            s.setId(project.getId());
+            s.pushToServer();
         }
-
         //new project
         project.newProjectToServer();
         Intent transfer=new Intent(enterSkillsNewProject.this,PMActivity.class);

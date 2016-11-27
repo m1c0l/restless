@@ -134,6 +134,7 @@ public class projectUnit implements Parcelable {
         }catch (InterruptedException e) {
             e.printStackTrace();
         }
+        /*
         //pushing list of skills
         for (String skill : skills){
             try{
@@ -160,6 +161,7 @@ public class projectUnit implements Parcelable {
                 e.printStackTrace();
             }
         }
+        */
 
         return true;
 

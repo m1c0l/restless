@@ -1,16 +1,27 @@
 package com.example.eric.restless;
 
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.test.espresso.core.deps.guava.io.Files;
 import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 
 /**
@@ -31,7 +42,7 @@ public class httpInterface {
             Log.i("here","GOT");
             if(json!=null) {
                 connection.setRequestProperty("Content-Type", "application/json");
-                connection.setRequestProperty("Content-length", json.toString().getBytes().length + "");
+                //connection.setRequestProperty("Content-length", json.toString().getBytes().length + "");
                 connection.setDoOutput(true);
                 connection.setUseCaches(false);
                 OutputStream outputStream = connection.getOutputStream();
@@ -74,6 +85,44 @@ public class httpInterface {
         }
         return null;
     }
+    void post_image(String path,String url2){
+
+        File file = new File(path);
+        File temp = file;
+        file.setReadable(true);
+        file.setWritable(true);
+        Log.i("file path: ",file.getAbsolutePath());
+
+
+        try {
+            URL url = new URL(url2);
+
+            byte[] array = Files.toByteArray(temp);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Connection","close");
+            connection.setRequestProperty("Content-Type","application/octet-stream");
+            connection.setDoOutput(true);
+            connection.setUseCaches(false);
+            OutputStream outputStream = connection.getOutputStream();
+
+
+            outputStream.write(array);
+            outputStream.close();
+            int status = connection.getResponseCode();
+
+            Log.i("HTTP Client", "HTTP status code : " + status);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 
 

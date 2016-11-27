@@ -3,6 +3,7 @@ package com.example.eric.restless;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.view.View;
 import android.widget.EditText;
@@ -50,7 +51,7 @@ public class SignIn extends AppCompatActivity {
 
             requestObj.put("username",userText.getText().toString());
             requestObj.put("password",passwordText.getText().toString());
-            //Log.i("Signin: ",requestObj.toString());
+            Log.i("Signin: ",requestObj.toString());
             //Toast.makeText(getApplicationContext(),requestObj.toString(),Toast.LENGTH_LONG).show();
             Thread thread=new Thread(new Runnable() {
                 public void run() {
@@ -75,13 +76,9 @@ public class SignIn extends AppCompatActivity {
 
         if(a[0]!=-1){
             //setting global user object
-<<<<<<< HEAD
-            User.getUser().setId(a[0]);
-=======
             Log.i("user id: ", String.valueOf(a[0]));
             User.getUser().setId(a[0]);
->>>>>>> 30336dfae3458f7e694f50d31d16f6b571c1ee82
-            
+
             Intent transfer=new Intent(SignIn.this,DevPMSelectionActivity.class);
             startActivity(transfer);
         }

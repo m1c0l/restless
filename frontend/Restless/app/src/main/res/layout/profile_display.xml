@@ -18,9 +18,31 @@
         android:layout_width="fill_parent"
         android:layout_below="@+id/imageView2">
 
+        <Button
+            android:text="Confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="43dp"
+            android:layout_marginStart="43dp"
+            android:id="@+id/confirm" />
+
+        <Button
+            android:text="Delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="59dp"
+            android:layout_marginEnd="59dp"
+            android:id="@+id/delete" />
+
         <TextView
             android:text="Primary"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/TextFieldTitle1"
             android:textAllCaps="true"
@@ -52,43 +74,21 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/TextFieldTitle1"
             android:id="@+id/textFlipper1"
-            android:padding="7dp">
+            android:padding="7dp"
+            android:layout_above="@+id/confirm">
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:layout_marginTop="20dp"
                     android:background="@drawable/rounded_text"
                     android:id="@+id/Text1"
 
-                    android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    />
+                    android:layout_alignParentTop="true" />
 
-                <Button
-                    android:text="Confirm"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginLeft="43dp"
-                    android:layout_marginStart="43dp"
-                    android:id="@+id/confirm" />
-
-                <Button
-                    android:text="Delete"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginRight="59dp"
-                    android:layout_marginEnd="59dp"
-                    android:id="@+id/delete" />
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="fill_parent"
@@ -117,6 +117,21 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/rounded_text"
+                    android:id="@+id/Text4"
+
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true" />
+
             </RelativeLayout>
         </ViewFlipper>
 

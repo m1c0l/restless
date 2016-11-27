@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_update_bio"
     android:layout_width="match_parent"
@@ -191,20 +192,6 @@
         android:layout_alignStart="@+id/wage" />
 
     <Button
-        android:text="U p d a t e"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/github"
-        android:layout_alignRight="@+id/github"
-        android:layout_alignEnd="@+id/github"
-        android:layout_marginRight="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginTop="67dp"
-        android:id="@+id/button5"
-        android:onClick="update"
-        android:background="@drawable/roundedbutton"/>
-
-    <Button
         android:text="c a n c e l"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -214,4 +201,44 @@
         android:background="@drawable/roundedbutton"
         android:onClick="moveBack"
         android:id="@+id/button6" />
+
+    <Button
+        android:text="U p d a t e"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="30dp"
+        android:layout_marginEnd="30dp"
+        android:id="@+id/button5"
+        android:onClick="update"
+        android:background="@drawable/roundedbutton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/github"
+        android:layout_alignEnd="@+id/github"
+        android:layout_marginBottom="29dp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@android:drawable/sym_def_app_icon"
+        android:layout_below="@+id/github"
+        android:layout_alignRight="@+id/button5"
+        android:layout_alignEnd="@+id/button5"
+        android:layout_marginRight="46dp"
+        android:layout_marginEnd="46dp"
+        android:layout_marginTop="12dp"
+        android:id="@+id/imageButton2"
+        android:background="@drawable/rounded_text"/>
+
+    <TextView
+        android:text="Image: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView16"
+        android:layout_marginTop="21dp"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:layout_alignTop="@+id/imageButton2"
+        android:layout_alignLeft="@+id/textView14"
+        android:layout_alignStart="@+id/textView14" />
 </RelativeLayout>
