@@ -410,12 +410,10 @@ Get stack for user with id 1:
 GET /api/stack/user/1
 ```
 Response:
-```js
-[ 5,
-  3,
-  7,
-  // ...
-]
+```json
+{
+    "stack": [5, 3, 7, 21, 12, 6, 14]
+}
 ```
 ### Get stack for a project
 > Not implemented yet
@@ -431,10 +429,8 @@ Get stack for project with id 1:
 GET /api/stack/project/1
 ```
 Response:
-```js
-[ 1,
-  4,
-  2,
-  // ...
-]
+```json
+{
+    "stack": [1, 4, 2, 16, 13, 8, 3]
+}
 ```

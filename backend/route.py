@@ -310,10 +310,10 @@ def get_stack_for(type, id):
     """
     if type == 'user':
         stack = database.get_stack_for_user(id)
-        return flask.jsonify([project.id for project in stack])
+        return flask.jsonify(stack=[project.id for project in stack])
     elif type == 'project':
         stack = database.get_stack_for_project(id)
-        return flask.jsonify([user.id for user in stack])
+        return flask.jsonify(stack=[user.id for user in stack])
     else:
         return error('Invalid type')
 
