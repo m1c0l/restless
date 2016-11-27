@@ -495,7 +495,7 @@ GET /api/matches/<who>/<id>/<type>
       more information about it)
 
 #### Special users for testing
-- user 2 is pro and has swiped yes on all projects and all projects have swiped yes on him (matched yes on all projects), so /api/matches/1/2/1 should initially contain all the projects, and all of /api/matches/0/<project_id>/1 should initially contain user 2 
+- user 2 is pro and has swiped yes on all projects and all projects have swiped yes on him (matched yes on all projects), so ```/api/matches/1/2/1``` should initially contain all the projects, and all of ```/api/matches/0/<project_id>/1``` should initially contain user 2
 
 #### Example
 Get all new matches for project with id 3:
