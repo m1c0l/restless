@@ -24,6 +24,9 @@ start server if it's not up.
 - [Stack](#stack)
     - [Get stack for a user](#get-stack-for-a-user)
     - [Get stack for a project](#get-stack-for-a-project)
+- [Matches](#matches)
+    - [Get matches for a user or project](#get-matches-for-a-user-or-project)
+    - [Accept or decline a match](#accept-or-decline-a-match)
 
 ## Errors
 Any request that is an error will return a JSON like:
@@ -469,7 +472,7 @@ Response:
 }
 ```
 
-### Accept/decline a match
+### Accept or decline a match
 ```
 GET /api/matches/<accept/decline>/<user_id>/<project_id>
 ```
