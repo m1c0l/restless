@@ -4,16 +4,16 @@ package com.example.eric.restless;
  * Created by minh on 11/26/16.
  */
 
-public class User {
+public class UserSingeton {
     private int id;
-    private static User u = null;
+    private static UserSingeton u = new UserSingeton();
 
     //accessor method
-    public static User getUser(){
+    public static UserSingeton getUser(){
         return u;
     }
     //private constructor
-    private User(){}
+    private UserSingeton(){}
 
     public int getId(){
         return id;

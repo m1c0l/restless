@@ -15,9 +15,13 @@ import android.widget.Toast;
 public class createProjectActivity extends AppCompatActivity {
     private static int RESULT_LOAD_IMG = 1;
     String imgDecodableString;
+    private projectUnit project = null;
     static final String PROJECT = "PROJECT_DATA";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Bundle b = getIntent().getExtras();
+        project = b.getParcelable("TEMP_PROJECT");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_project);
     }
@@ -69,6 +73,15 @@ public class createProjectActivity extends AppCompatActivity {
         Intent transfer=new Intent(createProjectActivity.this,enterSkillsNewProject.class);
         //creating project object and passing it on
         //get data from text field
+        EditText title = (EditText) findViewById(R.id.projectName);
+        EditText description = (EditText) findViewById(R.id.projectDescription);
+        EditText income = (EditText) findViewById(R.id.projectIncome);
+        project.setTitle(title.getText().toString());
+        project.setDescription(description.getText().toString());
+        project.setPayRange(Integer.parseInt(income.getText().toString()));
+
+        //transfering to next project
+        transfer.putExtra("TEMP_PROJECT", project);
         startActivity(transfer);
     }
 }
