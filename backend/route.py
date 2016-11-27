@@ -419,24 +419,17 @@ def upload_image(type, id):
     if type == 'project' and not database.get_project_by_id(id):
         return error('Invalid project id')
 
-    # Check that the file is sent
-    if 'file' not in request.files:
-        return error("No file part on POST data")
-    file = request.files['file']
-    if file.filename == '':
-        return error("No image file selected")
-
     # Check mimetype to make sure file is an image
-    mimetype = magic.from_buffer(file.read(1024), mime=True)
+    mimetype = magic.from_buffer(request.data, mime=True)
     if not re.match(r'^image\/', mimetype):
         return error("File is not an image")
-    file.seek(0)
 
     # save the file
     img_path = type + '/' + str(id)
     rootdir = os.path.dirname(os.path.realpath(__file__))
     abs_path = os.path.join(rootdir, app.config['IMG_PATH'], img_path)
-    file.save(abs_path)
+    with open(abs_path, 'w') as f:
+        f.write(request.data)
     return error("Success", status="OK", code=200)
 
 @app.route("/api/img/delete/<type>/<int:id>")

@@ -483,34 +483,36 @@ class RouteTestCase(unittest.TestCase):
         project_id = str(self.project.id)
         rootdir = os.path.dirname(os.path.realpath(__file__))
 
-        gif_file = os.path.join(rootdir, 'data/pic.gif')
-        png_file = os.path.join(rootdir, 'data/pic.png')
-        text_file = os.path.join(rootdir, 'data/text.txt')
-        gif_bad_ext = os.path.join(rootdir, 'data/actually-gif.unknown')
+        with open(os.path.join(rootdir, 'data/pic.gif'), 'rb') as f:
+            gif_file = f.read()
+        with open(os.path.join(rootdir, 'data/pic.png'), 'rb') as f:
+            png_file = f.read()
+        with open(os.path.join(rootdir, 'data/text.txt'), 'rb') as f:
+            text_file = f.read()
+        with open(os.path.join(rootdir, 'data/actually-gif.unknown'), 'rb') as f:
+            gif_bad_ext = f.read()
 
-        resp = self.client.post('/api/img/upload/user/' + user_id,
-                                data={'file': open(gif_file)})
+        resp = self.client.post('/api/img/upload/user/' + user_id, data=gif_file)
         self.assertEqual(resp.status_code, 200)
         resp = self.client.get('/api/img/get/user/' + user_id)
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.mimetype, 'image/gif')
-        self.assertEqual(resp.data, open(gif_file).read())
+        self.assertEqual(resp.data, gif_file)
 
-        resp = self.client.post('/api/img/upload/user/' + user_id,
-                                data={'file': open(png_file)})
+        resp = self.client.post('/api/img/upload/user/' + user_id, data=png_file)
         self.assertEqual(resp.status_code, 200)
         resp = self.client.get('/api/img/get/user/' + user_id)
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.mimetype, 'image/png')
-        self.assertEqual(resp.data, open(png_file).read())
+        self.assertEqual(resp.data, png_file)
 
         resp = self.client.post('/api/img/upload/project/' + project_id,
-                                data={'file': open(gif_bad_ext)})
+                                    data=gif_bad_ext)
         self.assertEqual(resp.status_code, 200)
         resp = self.client.get('/api/img/get/project/' + project_id)
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.mimetype, 'image/gif')
-        self.assertEqual(resp.data, open(gif_bad_ext).read())
+        self.assertEqual(resp.data, gif_bad_ext)
 
     def test_get_stack_for(self):
         """
