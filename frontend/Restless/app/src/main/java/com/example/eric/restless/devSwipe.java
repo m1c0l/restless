@@ -11,6 +11,7 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -27,7 +28,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
+
+import java.util.Arrays;
+import java.util.Stack;
 
 import static java.lang.Math.abs;
 
@@ -47,6 +53,7 @@ public class devSwipe extends AppCompatActivity {
     private Point dimensions;
     String[] a= {"Populate field with GET API Overview 0","Populate field with GET API Skills  1","Populate field with GET API background/past projects 2"};
     String[] b={"reserve 1", "reserve 2", "reserve 3"};
+    Stack<Integer> user_stack;
     int a_pos = 0;
 
 
@@ -91,6 +98,7 @@ public class devSwipe extends AppCompatActivity {
         public void run() {
             //post request
             //if match, set match_pic and match_text
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -120,12 +128,14 @@ public class devSwipe extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dev_swipe);
         Display display = getWindowManager().getDefaultDisplay();
         dimensions = new Point();
         display.getSize(dimensions);
         //populate stack with GET query
+
         profileflip= (ViewFlipper) findViewById(R.id.view_flipper_main);
         profile_pic = (ImageView) findViewById(R.id.dev_profile_pic1);
         profile_pic_reserve = (ImageView) findViewById(R.id.dev_profile_pic2);
@@ -133,22 +143,44 @@ public class devSwipe extends AppCompatActivity {
         textflip_reserve = (ViewFlipper) findViewById(R.id.textFlipper2);
         primary_text = (TextView) findViewById(R.id.TextFieldTitle1);
         reserve_text = (TextView) findViewById(R.id.TextFieldTitle2);
-        //populate page with stack information
         body1 = (TextView) findViewById(R.id.Text1);
         body2= (TextView) findViewById(R.id.Text2);
         body3= (TextView) findViewById(R.id.Text3);
         body1_reserve= (TextView) findViewById(R.id.Text4);
         body2_reserve= (TextView) findViewById(R.id.Text5);
         body3_reserve= (TextView) findViewById(R.id.Text6);
+
+
+        populate_stack();
+        //fetch profile
+        if(user_stack.empty())
+            Toast.makeText(this,"No profiles found", Toast.LENGTH_SHORT).show();
+
+        first_page= new ViewAssociation(textflip,body1,body2,body3,profile_pic, primary_text);
+        second_page = new ViewAssociation(textflip_reserve,body1_reserve,body2_reserve,body3_reserve,profile_pic_reserve, reserve_text);
+
+        Thread first = fetch_and_update(first_page);
+        Thread second = fetch_and_update(second_page);
+        try {
+            first.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        try {
+            second.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         body1.setText(a[0]);
         body2.setText(a[1]);
         body3.setText(a[2]);
+        //fetch profile
         body1_reserve.setText(b[0]);
         body2_reserve.setText(b[1]);
         body3_reserve.setText(b[2]);
         relativeLayout = (RelativeLayout) findViewById(R.id.activity_dev_swipe);
-        first_page= new ViewAssociation(textflip,body1,body2,body3,profile_pic, primary_text);
-        second_page = new ViewAssociation(textflip_reserve,body1_reserve,body2_reserve,body3_reserve,profile_pic_reserve, reserve_text);
+
         inflater=(LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
 
         container = (ViewGroup) inflater.inflate(R.layout.match_popup,null);
@@ -163,6 +195,93 @@ public class devSwipe extends AppCompatActivity {
             }
         });
 
+    }
+    public void populate_stack(){
+        try{
+            final String url = new String("http://159.203.243.194/api/stack/1");
+            final JSONObject obj = new JSONObject();
+            final httpInterface requester = new httpInterface();
+            //populate obj
+            Thread thread=new Thread(new Runnable() {
+                public void run() {
+                    JSONObject b=requester.request("GET", obj, url);
+                    try {
+
+                        if(b!=null) {
+                            Integer stack_vals[] = (Integer[])b.get("stack");
+                            for (int i = 0; i < stack_vals.length; i++) {
+                                user_stack.push(i);
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } finally {
+                        user_stack.peek();
+                    }
+
+                }
+            });
+            thread.start();
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+    public Thread fetch_and_update(final ViewAssociation viewer){
+        Integer top;
+        synchronized(user_stack){
+            top=user_stack.pop();
+        }
+
+        JSONObject obj[] = new JSONObject[1];
+        final httpInterface requester = new httpInterface();
+        Thread thread;
+
+        final String url = new String("http://159.203.243.194:8003/api/get/project/"+top.toString());
+
+
+            //Log.i("Signin: ",requestObj.toString());
+            //Toast.makeText(getApplicationContext(),requestObj.toString(),Toast.LENGTH_LONG).show();
+        thread=new Thread(new Runnable() {
+            public void run() {
+
+                final JSONObject b=requester.request("GET", null, url);
+
+                if(b!=null) {
+                    Log.i("Error: ", "Invalid GET request");
+                }
+
+                try {
+
+                    String skill_desc=new String();
+                    String skills[] = (String[]) b.get("skills_needed");
+                    for(int i=0; i < skills.length; i++){
+                        skill_desc+=skills[i];
+                        skill_desc+=((skills.length==i) ? " " : ".");
+                    }
+                    final String skills_desc = skill_desc;
+                    final JSONObject pm = requester.request("GET",null,"http://159.203.243.194:8003/api/get/user/"+String.valueOf((Integer)b.get("pm_id")));
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                viewer.update((String)b.get("description"),skills_desc, (String)pm.get("bio"));
+                                viewer.name.setText((String) b.get("title"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+
+
+        return thread;
     }
     private class GestureListener extends GestureDetector.SimpleOnGestureListener{
         private float minFling = 50;
