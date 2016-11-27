@@ -2,6 +2,7 @@ package com.example.eric.restless;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
  */
 
 public class teamAdapter extends CustomAdapter {
-    TeamModel tempTeam = null;
+    developerUnit tempTeam = null;
     public teamAdapter(Activity a, ArrayList d, Resources resLocal){
         super(a,d,resLocal);
     }
@@ -52,8 +53,8 @@ public class teamAdapter extends CustomAdapter {
         else
         {
             /***** Get each Model object from Arraylist ********/
-            tempTeam=null;
-            tempTeam = ( TeamModel ) super.getData().get( position );
+            tempTeam= null;
+            tempTeam = ( developerUnit ) super.getData().get( position );
 
             /************  Set Model values in Holder elements ***********/
             holder.teamName.setText( tempTeam.getName() );
@@ -61,5 +62,23 @@ public class teamAdapter extends CustomAdapter {
             vi.setOnClickListener(new OnItemClickListener( position ));
         }
         return vi;
+    }
+    public void onClick(View v) {
+        Log.v("CustomAdapter", "=====Row button clicked=====");
+    }
+    /********* Called when Item click in ListView ************/
+    protected class OnItemClickListener  implements View.OnClickListener{
+        private int mPosition;
+
+        OnItemClickListener(int position){
+            mPosition = position;
+        }
+
+        @Override
+        public void onClick(View arg0) {
+            viewProjectPM sct = (viewProjectPM)activity;
+            /****  Call  onItemClick Method inside CustomListViewAndroidExample Class ( See Below )****/
+            sct.onItemClick(mPosition);
+        }
     }
 }

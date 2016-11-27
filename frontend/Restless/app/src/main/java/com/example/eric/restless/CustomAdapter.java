@@ -18,7 +18,7 @@ import java.util.ArrayList;
  */
 
 public abstract class CustomAdapter extends BaseAdapter implements View.OnClickListener {
-    private Activity activity;
+    protected Activity activity;
     private ArrayList data;
     private static LayoutInflater inflater = null;
     public Resources res;
@@ -61,24 +61,6 @@ public abstract class CustomAdapter extends BaseAdapter implements View.OnClickL
     /****** Depends upon data size called for each row , Create each ListView row *****/
     public abstract View getView(int position, View convertView, ViewGroup parent);
 
-    @Override
-    public void onClick(View v) {
-        Log.v("CustomAdapter", "=====Row button clicked=====");
-    }
-    /********* Called when Item click in ListView ************/
-    protected class OnItemClickListener  implements View.OnClickListener{
-        private int mPosition;
 
-        OnItemClickListener(int position){
-            mPosition = position;
-        }
-
-        @Override
-        public void onClick(View arg0) {
-            enterSkills sct = (enterSkills)activity;
-            /****  Call  onItemClick Method inside CustomListViewAndroidExample Class ( See Below )****/
-            sct.onItemClick(mPosition);
-        }
-    }
 
 }

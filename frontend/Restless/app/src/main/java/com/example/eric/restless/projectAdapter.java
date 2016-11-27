@@ -2,6 +2,7 @@ package com.example.eric.restless;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -62,5 +63,23 @@ public class projectAdapter extends CustomAdapter {
             vi.setOnClickListener(new OnItemClickListener( position ));
         }
         return vi;
+    }
+    public void onClick(View v) {
+        Log.v("CustomAdapter", "=====Row button clicked=====");
+    }
+    /********* Called when Item click in ListView ************/
+    protected class OnItemClickListener  implements View.OnClickListener{
+        private int mPosition;
+
+        OnItemClickListener(int position){
+            mPosition = position;
+        }
+
+        @Override
+        public void onClick(View arg0) {
+            PMActivity sct = (PMActivity)activity;
+            /****  Call  onItemClick Method inside CustomListViewAndroidExample Class ( See Below )****/
+            sct.onItemClick(mPosition);
+        }
     }
 }

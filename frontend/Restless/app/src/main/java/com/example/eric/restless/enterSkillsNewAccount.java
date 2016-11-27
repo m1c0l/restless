@@ -10,8 +10,13 @@ import android.view.View;
 public class enterSkillsNewAccount extends enterSkills {
 
     public void finishSkillsList(View v){
-        //push data to server
-        //push skills and rating array
+        //pushing dat to server
+        for ( skillUnit s : CustomListViewValuesArr){
+            s.setUser();
+            s.setId(User.getUser().getId());
+            s.pushToServer();
+        }
+
         Intent transfer=new Intent(enterSkillsNewAccount.this,DevPMSelectionActivity.class);
         startActivity(transfer);
     }

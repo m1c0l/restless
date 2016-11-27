@@ -19,7 +19,7 @@ public abstract class enterSkills extends AppCompatActivity {
     ListView list;
     CustomSkillAdapter adapter;
     public enterSkills customListView = null;
-    public ArrayList<SkillModel> CustomListViewValuesArr = new ArrayList<SkillModel>();
+    public ArrayList<skillUnit> CustomListViewValuesArr = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,6 @@ public abstract class enterSkills extends AppCompatActivity {
         list = (ListView) findViewById(R.id.skill_list);
 
         //adding data?
-
         adapter = new CustomSkillAdapter(customListView, CustomListViewValuesArr, res);
         list.setAdapter(adapter);
     }
@@ -49,7 +48,7 @@ public abstract class enterSkills extends AppCompatActivity {
             public void onClick(View v){
 
                 //check for input?
-                SkillModel temp = new SkillModel(edit.getText().toString(), ratingBar.getRating());
+                skillUnit temp = new skillUnit(edit.getText().toString(), ratingBar.getRating());
                 CustomListViewValuesArr.add(temp);
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -66,7 +65,7 @@ public abstract class enterSkills extends AppCompatActivity {
     /*****************  This function used by adapter ****************/
     public void onItemClick(int mPosition)
     {
-        SkillModel tempValues = ( SkillModel ) CustomListViewValuesArr.get(mPosition);
+        skillUnit tempValues = ( skillUnit ) CustomListViewValuesArr.get(mPosition);
         final int mPos = mPosition;
         final Dialog dialog = new Dialog(enterSkills.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -76,15 +75,15 @@ public abstract class enterSkills extends AppCompatActivity {
         Button deleteBtn = (Button)dialog.findViewById(R.id.delete);
 
         final EditText edit = (EditText) dialog.findViewById(R.id.skillText);
-        edit.setText(tempValues.getSkillString());
+        edit.setText(tempValues.getName());
         final RatingBar ratingBar = (RatingBar)dialog.findViewById(R.id.skillRating);
         ratingBar.setRating(tempValues.getSkillRating());
         dialog.show();
         confirmBtn.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 //check for input?
-                (( SkillModel ) CustomListViewValuesArr.get(mPos)).setSkillRating(ratingBar.getRating());
-                (( SkillModel ) CustomListViewValuesArr.get(mPos)).setSkillString(edit.getText().toString());
+                (( skillUnit ) CustomListViewValuesArr.get(mPos)).setSkillRating(ratingBar.getRating());
+                (( skillUnit ) CustomListViewValuesArr.get(mPos)).setName(edit.getText().toString());
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }

@@ -65,7 +65,9 @@ public class PMActivity extends AppCompatActivity {
             projectUnit p = new projectUnit();
             p.setId(projectId);
             p.pullFromServer();
-            CustomListViewValuesArr.add(p);
+            //if project isn't deleted
+            if (p.getState() != 2)
+                CustomListViewValuesArr.add(p);
         }
 
         //display object preview
@@ -76,7 +78,10 @@ public class PMActivity extends AppCompatActivity {
     /*****************  This function used by adapter ****************/
     public void onItemClick(int mPosition)
     {
-
+        Intent transfer=new Intent(PMActivity.this, viewProjectPM.class);
+        projectUnit project = CustomListViewValuesArr.get(mPosition);
+        transfer.putExtra("TEMP_PROJECT", project);
+        startActivity(transfer);
     }
 
 
