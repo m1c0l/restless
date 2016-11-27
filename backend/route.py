@@ -328,7 +328,7 @@ def get_matches_for(who,id,type=1):
     @param id: The id of this person or project.
     @type id: C{int}
     @param type: The type of match. 0 means match declined, 1 means match made,
-    2 means match accepted.
+    2 means match accepted by one party, 3 means match accepted by both parties.
     @type type: C{int}
     @return: List of IDs of people or projects who we have matched with, with
     the certain type.

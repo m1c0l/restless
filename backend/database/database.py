@@ -381,6 +381,19 @@ def update_match(user_id, project_id, new_result=None):
             update(pm_obj, projects_managing = pm_projects)
     return new_result
 
+def delete_pending_matches_with_project_id(project_id):
+    """
+    Delete all pending matches with a certain project id. This occurs when the project has entered
+    a starting state, or is no longer taking new users. This will not delete any confirmed matches,
+    but only matches with result <= 1.
+    @param project_id: The project ID.
+    @type project_id: C{int}
+    """
+    projects_to_delete = Match.query.filter(Match.project_id==project_id, Match.result <= 1)
+    for project_to_delete in projects_to_delete:
+        db.session.delete(project_to_delete)
+    db.session.commit()
+
 def add_swipe(user_id, project_id, result, who_swiped):
     """
     Add a swipe.
