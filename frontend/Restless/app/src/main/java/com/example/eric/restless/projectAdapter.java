@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 
 public class projectAdapter extends CustomAdapter {
-    projectPreview project = null;
+    projectUnit project = null;
     public projectAdapter(Activity a, ArrayList d, Resources resLocal){
         super(a,d,resLocal);
     }
@@ -53,11 +53,11 @@ public class projectAdapter extends CustomAdapter {
         {
             /***** Get each Model object from Arraylist ********/
             project=null;
-            project = ( projectPreview ) super.getData().get( position );
+            project = ( projectUnit ) super.getData().get( position );
 
             /************  Set Model values in Holder elements ***********/
 
-            holder.projectName.setText( project.getProjectName() );
+            holder.projectName.setText( project.getTitle() );
             /******** Set Item Click Listner for LayoutInflater for each row *******/
             vi.setOnClickListener(new OnItemClickListener( position ));
         }

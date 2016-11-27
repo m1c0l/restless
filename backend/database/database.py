@@ -11,8 +11,11 @@ def insert_obj(obj):
     @param obj: The object to be inserted
     @type obj: flask_sqlalchemy.Model
     """
-    db.session.add(obj)
-    db.session.commit()
+    try:
+        db.session.add(obj)
+        db.session.commit()
+    except: # IntegrityError
+        db.session.rollback()
 
 def update(obj, **kwargs):
     """
@@ -31,7 +34,10 @@ def update(obj, **kwargs):
             setattr(obj, key, value)
         else:
             raise AttributeError("%s has no attribute '%s'" % (obj.__class__, key))
-    db.session.commit()
+    try:
+        db.session.commit()
+    except:
+        db.session.rollback()
 
 def delete(obj):
     """
@@ -40,8 +46,11 @@ def delete(obj):
     @param obj: The existing object in the database to be deleted
     @type obj: flask_sqlalchemy.Model
     """
-    db.session.delete(obj)
-    db.session.commit()
+    try:
+        db.session.delete(obj)
+        db.session.commit()
+    except:
+        db.session.rollback()
 
 def get_user_by_username(username):
     """
@@ -261,6 +270,27 @@ def get_stack_for_project(project_id):
     pm_swipes_user_ids = {swipe.user_id for swipe in pm_swipes}
     stack = list(stack.difference(pm_swipes_user_ids))
     stack = [get_user_by_id(id) for id in stack]
+    #calculate a score for each user to rank them by
+    user_score_dict = dict()
+    for user in stack:
+        total_proj_weight = 0.0
+        user_matched_weight = 0.0
+        user_skill_ids = [skill.id for skill in user.skill_sets]
+        #see how many skills the user matches and calculate what % of the total
+        #project weights the user satisfies
+        for skill_and_weight in project_obj.skill_weights:
+            total_proj_weight += skill_and_weight.skill_weight
+            if skill_and_weight.skill_id in user_skill_ids:
+                user_matched_weight += skill_and_weight.skill_weight
+        if total_proj_weight == 0.0:
+            raise ValueError("Project %d: No skills or skill weights sum to 0!" % proj.id)
+        user_skill_match_percent = user_matched_weight / total_proj_weight
+        user_score_dict[user] = user_skill_match_percent
+    user_score_list = user_score_dict.items()
+    #sort by user score descending
+    user_score_list.sort(key=lambda user_score: user_score[1], reverse=True)
+    print "user scores:", user_score_list
+    stack = [user_score[0] for user_score in user_score_list]
     return stack
 
 def get_swipes_for(who, id, who_swiped):
@@ -315,10 +345,10 @@ def update_match(user_id, project_id, new_result=None):
     @return: The new result of this match, 0 if the match had been previously declined, or -1 if the match was not found.
     @rtype: C{int}
     """
-    match_obj = Match.query.filter_by(user_id=user_id,project_id=project_id)
+    match_obj = Match.query.filter_by(user_id=user_id,project_id=project_id).first()
     if not match_obj:
         return -1
-    if not new_result:
+    if new_result == None:
         new_result = match_obj.result + 1
     if match_obj.result == 0:
         return 0
@@ -326,6 +356,8 @@ def update_match(user_id, project_id, new_result=None):
     if new_result == 3: #both user and PM have accepted the match. add to list of confirmed devs
         user_obj = get_user_by_id(user_id)
         project_obj = get_project_by_id(project_id)
+        if not user_obj or not project_obj:
+            return -1
         user_projects = user_obj.projects_developing
         if project_obj not in user_projects:
             user_projects.append(project_obj)
@@ -365,16 +397,30 @@ def delete_pending_matches_with_project_id(project_id):
 def add_swipe(user_id, project_id, result, who_swiped):
     """
     Add a swipe.
+    @param result: one of C{Swipe.RESULT_NO} or C{Swipe.RESULT_YES}
+    @param who_swiped: one of C{Swipe.SWIPER_DEV} or C{Swipe.SWIPER_PM}
     @see: L{Swipe}
     """
-    swipe_obj = Swipe(user_id, project_id, result, who_swiped)
-    insert_obj(swipe_obj)
-    if result == Swipe.RESULT_NO:
+    try:
+        swipe_obj = Swipe(user_id, project_id, result, who_swiped)
+        insert_obj(swipe_obj)
+    except Exception:
         return None
-    complement = {}
-    complement[Swipe.SWIPER_DEV] = Swipe.SWIPER_PM
-    complement[Swipe.SWIPER_PM] = Swipe.SWIPER_DEV
-    complement_swipe = Swipe.query.filter_by(user_id=user_id, project_id=project_id, result=Swipe.RESULT_YES, who_swiped=complement[who_swiped]).first()
+
+    if result != Swipe.RESULT_YES:
+        return None
+
+    if who_swiped == Swipe.SWIPER_DEV:
+        complement = Swipe.SWIPER_PM
+    elif who_swiped == Swipe.SWIPER_PM:
+        complement = Swipe.SWIPER_DEV
+    else:
+        return None
+
+    complement_swipe = Swipe.query.filter_by(user_id=user_id,
+                                             project_id=project_id,
+                                             result=Swipe.RESULT_YES,
+                                             who_swiped=complement).first()
     if complement_swipe: #there is a match
         match_obj = Match(user_id, project_id)
         insert_obj(match_obj)

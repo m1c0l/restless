@@ -483,34 +483,36 @@ class RouteTestCase(unittest.TestCase):
         project_id = str(self.project.id)
         rootdir = os.path.dirname(os.path.realpath(__file__))
 
-        gif_file = os.path.join(rootdir, 'data/pic.gif')
-        png_file = os.path.join(rootdir, 'data/pic.png')
-        text_file = os.path.join(rootdir, 'data/text.txt')
-        gif_bad_ext = os.path.join(rootdir, 'data/actually-gif.unknown')
+        with open(os.path.join(rootdir, 'data/pic.gif'), 'rb') as f:
+            gif_file = f.read()
+        with open(os.path.join(rootdir, 'data/pic.png'), 'rb') as f:
+            png_file = f.read()
+        with open(os.path.join(rootdir, 'data/text.txt'), 'rb') as f:
+            text_file = f.read()
+        with open(os.path.join(rootdir, 'data/actually-gif.unknown'), 'rb') as f:
+            gif_bad_ext = f.read()
 
-        resp = self.client.post('/api/img/upload/user/' + user_id,
-                                data={'file': open(gif_file)})
+        resp = self.client.post('/api/img/upload/user/' + user_id, data=gif_file)
         self.assertEqual(resp.status_code, 200)
         resp = self.client.get('/api/img/get/user/' + user_id)
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.mimetype, 'image/gif')
-        self.assertEqual(resp.data, open(gif_file).read())
+        self.assertEqual(resp.data, gif_file)
 
-        resp = self.client.post('/api/img/upload/user/' + user_id,
-                                data={'file': open(png_file)})
+        resp = self.client.post('/api/img/upload/user/' + user_id, data=png_file)
         self.assertEqual(resp.status_code, 200)
         resp = self.client.get('/api/img/get/user/' + user_id)
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.mimetype, 'image/png')
-        self.assertEqual(resp.data, open(png_file).read())
+        self.assertEqual(resp.data, png_file)
 
         resp = self.client.post('/api/img/upload/project/' + project_id,
-                                data={'file': open(gif_bad_ext)})
+                                    data=gif_bad_ext)
         self.assertEqual(resp.status_code, 200)
         resp = self.client.get('/api/img/get/project/' + project_id)
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.mimetype, 'image/gif')
-        self.assertEqual(resp.data, open(gif_bad_ext).read())
+        self.assertEqual(resp.data, gif_bad_ext)
 
     def test_get_stack_for(self):
         """
@@ -564,6 +566,90 @@ class RouteTestCase(unittest.TestCase):
         self.assertEqual(len(devs), 2)
         self.assertIn(u2.id, devs)
         self.assertIn(u3.id, devs)
+
+    def test_matching(self):
+        """
+        Test the matching algorithm.
+        """
+        # enums to keep track of the numbers
+        NO = '0'
+        YES = '1'
+        DECLINED = '0'
+        MATCHED = '1'
+        ACCEPTED = '2'
+
+        pm = User('pm','','','','')
+        u0 = User('u0','','','','')
+        u1 = User('u1','','','','')
+        u2 = User('u2','','','','')
+        u3 = User('u3','','','','')
+        db.session.add(pm)
+        db.session.add(u0)
+        db.session.add(u1)
+        db.session.add(u2)
+        db.session.add(u3)
+        db.session.commit()
+        p1 = Project('p1','',pm.id)
+        db.session.add(p1)
+        db.session.commit()
+
+        uid = [str(u.id) for u in [u0,u1,u2,u3]]
+        pid = str(p1.id)
+
+        self.client.get('/api/swipe/user/' + uid[0] + '/' + pid + '/' + YES)
+        self.client.get('/api/swipe/user/' + uid[1] + '/' + pid + '/' + YES)
+        self.client.get('/api/swipe/user/' + uid[2] + '/' + pid + '/' + YES)
+        self.client.get('/api/swipe/user/' + uid[3] + '/' + pid + '/' + NO)
+
+        self.client.get('/api/swipe/project/' + pid + '/' + uid[0] + '/' + YES)
+        self.client.get('/api/swipe/project/' + pid + '/' + uid[1] + '/' + YES)
+        self.client.get('/api/swipe/project/' + pid + '/' + uid[2] + '/' + NO)
+        self.client.get('/api/swipe/project/' + pid + '/' + uid[3] + '/' + YES)
+
+        # At this point, the project should match with u0 and u1
+        resp = self.client.get('/api/matches/0/' + pid + '/' + MATCHED)
+        data = json.loads(resp.data)['results']
+        self.assertEqual(len(data), 2)
+        self.assertIn(u0.id, data)
+        self.assertIn(u1.id, data)
+
+        # accept u0
+        resp = self.client.get('/api/matches/accept/' + uid[0] + '/' + pid)
+        self.assertEqual(json.loads(resp.data)['result'], int(ACCEPTED))
+        # decline u1
+        resp = self.client.get('/api/matches/decline/' + uid[1] + '/' + pid)
+        self.assertEqual(json.loads(resp.data)['result'], int(DECLINED))
+
+        # no match with u2
+        resp = self.client.get('/api/matches/accept/' + uid[2] + '/' + pid)
+        self.assertEqual(json.loads(resp.data)['result'], -1)
+        resp = self.client.get('/api/matches/decline/' + uid[2] + '/' + pid)
+        self.assertEqual(json.loads(resp.data)['result'], -1)
+
+        # all matches were accepted/declined
+        resp = self.client.get('/api/matches/0/' + pid + '/' + MATCHED)
+        data = json.loads(resp.data)['results']
+        self.assertEqual(len(data), 0)
+
+        # accepted u0
+        resp = self.client.get('/api/matches/0/' + pid + '/' + ACCEPTED)
+        data = json.loads(resp.data)['results']
+        self.assertEqual(len(data), 1)
+        self.assertIn(u0.id, data)
+
+        # declined u1
+        resp = self.client.get('/api/matches/0/' + pid + '/' + DECLINED)
+        data = json.loads(resp.data)['results']
+        self.assertEqual(len(data), 1)
+        self.assertIn(u1.id, data)
+
+        # accept a declined match => still declined
+        resp = self.client.get('/api/matches/accept/' + uid[1] + '/' + pid)
+        self.assertEqual(json.loads(resp.data)['result'], int(DECLINED))
+
+        # decline an accepted match => declined
+        resp = self.client.get('/api/matches/decline/' + uid[0] + '/' + pid)
+        self.assertEqual(json.loads(resp.data)['result'], int(DECLINED))
 
     def test_debug(self):
         """

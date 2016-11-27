@@ -8,7 +8,6 @@ public class User {
     private int id;
 
     private static User u= new User();
-
     //accessor method
     public static User getUser(){
         return u;

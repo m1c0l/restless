@@ -1,29 +1,17 @@
 package com.example.eric.restless;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.renderscript.ScriptGroup;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class SignIn extends AppCompatActivity {
 
@@ -87,8 +75,12 @@ public class SignIn extends AppCompatActivity {
 
         if(a[0]!=-1){
             //setting global user object
+<<<<<<< HEAD
+            User.getUser().setId(a[0]);
+=======
             Log.i("user id: ", String.valueOf(a[0]));
             User.getUser().setId(a[0]);
+>>>>>>> 30336dfae3458f7e694f50d31d16f6b571c1ee82
             
             Intent transfer=new Intent(SignIn.this,DevPMSelectionActivity.class);
             startActivity(transfer);

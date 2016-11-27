@@ -122,18 +122,40 @@ class DatabaseTestCase(unittest.TestCase):
         self.assertEqual(comp.who_swiped, Swipe.SWIPER_DEV)
 
         user2 = User('user2', '', '', '', '')
+        insert_obj(user2)
         comp = add_swipe(user2.id, project.id, Swipe.RESULT_YES, Swipe.SWIPER_DEV)
         self.assertIsNone(comp)
         comp = add_swipe(user2.id, project.id, Swipe.RESULT_NO, Swipe.SWIPER_PM)
         self.assertIsNone(comp)
 
         user3 = User('user3', '', '', '', '')
+        insert_obj(user3)
         comp = add_swipe(user2.id, project.id, Swipe.RESULT_NO, Swipe.SWIPER_PM)
         self.assertIsNone(comp)
         comp = add_swipe(user2.id, project.id, Swipe.RESULT_YES, Swipe.SWIPER_DEV)
         self.assertIsNone(comp)
 
-    def test_get_swipes(self):
+    def test_add_swipe_error(self):
+        """
+        Error handling for adding swipes.
+        """
+        user = User('user1', '', '', '', '')
+        insert_obj(user)
+        project = Project('title', '', user.id)
+        insert_obj(project)
+
+        user2 = User('user2', '', '', '', '')
+        insert_obj(user2)
+        comp = add_swipe(0, project.id, Swipe.RESULT_YES, Swipe.SWIPER_DEV)
+        self.assertIsNone(comp)
+        comp = add_swipe(user2.id, 0, Swipe.RESULT_YES, Swipe.SWIPER_DEV)
+        self.assertIsNone(comp)
+        comp = add_swipe(user2.id, 0, -1,  Swipe.SWIPER_DEV)
+        self.assertIsNone(comp)
+        comp = add_swipe(user2.id, 0, Swipe.RESULT_YES, -1)
+        self.assertIsNone(comp)
+
+    def test_get_user_swipes(self):
         """
         Test getting a user's swipes.
         """

@@ -99,7 +99,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="none"
+        android:inputType="number"
         android:background="@drawable/rounded_text"
 
         android:ems="10"
