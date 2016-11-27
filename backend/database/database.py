@@ -327,13 +327,15 @@ def update_match(user_id, project_id, new_result=None):
         user_obj = get_user_by_id(user_id)
         project_obj = get_project_by_id(project_id)
         user_projects = user_obj.projects_developing
-        user_projects.append(project_obj)
-        update(user_obj, projects_developing = user_projects)
+        if project_obj not in user_projects:
+            user_projects.append(project_obj)
+            update(user_obj, projects_developing = user_projects)
         pm_obj = get_user_by_id(project_obj.pm_id)
         pm_projects = pm_obj.projects_managing
-        pm_projects.append(project_obj)
-        update(pm_obj, projects_managing = pm_projects)
-    if new_result == 0:
+        if project_obj not in pm_projects:
+            pm_projects.append(project_obj)
+            update(pm_obj, projects_managing = pm_projects)
+    if new_result == 0: #someone has declined the match. remove from all lists
         user_obj = get_user_by_id(user_id)
         project_obj = get_project_by_id(project_id)
         user_projects = user_obj.projects_developing
