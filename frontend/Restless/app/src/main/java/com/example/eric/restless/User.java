@@ -6,7 +6,8 @@ package com.example.eric.restless;
 
 public class User {
     private int id;
-    private static User u = null;
+
+    private static User u= new User();
 
     //accessor method
     public static User getUser(){
