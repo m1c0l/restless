@@ -3,6 +3,25 @@ start server if it's not up.
 
 # API usage
 
+## Contents
+- [Errors](#errors)
+- [Getting data](#getting-data)
+    - [Users](#users)
+    - [Projects](#projects)
+    - [Skills](#skills)
+- [Updating stuff](#updating-stuff)
+- [Creating users](#creating-users)
+- [Logging in](#logging-in)
+- [Add a new project](#add-a-new-project)
+- [Adding/Deleting skills](#addingdeleting-skills)
+    - [Adding](#adding)
+    - [Deleting](#deleting)
+- [Swiping](#swiping)
+- [Images](#images)
+    - [Getting an image](#getting-an-image)
+    - [Uploading an image](#uploading-an-image)
+    - [Deleting an image](#deleting-an-image)
+
 ## Errors
 Any request that is an error will return a JSON like:
 ```js
@@ -247,7 +266,7 @@ Response:
 }
 ```
 
-## Adding/Deleting skills to a user/project
+## Adding/Deleting skills
 ### Adding
 ```
 GET /api/skill/add/<type>/<skill_name>/<id>
