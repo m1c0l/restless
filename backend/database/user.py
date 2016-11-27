@@ -105,6 +105,7 @@ class User(db.Model):
         self.email = email
         self.bio = bio
         self.signup_time = datetime.now()
+        self.desired_salary = 0
 
     def __repr__(self):
         return "<User '%s' id=%r>" % (self.username, self.id)
@@ -126,7 +127,8 @@ class User(db.Model):
             'signup_time': str(self.signup_time),
             'projects_managing': [project.id for project in self.projects_managing],
             'projects_developing': [project.id for project in self.projects_developing],
-            'skill_sets': [skill.skill_name for skill in self.skill_sets]
+            'skill_sets': [skill.skill_name for skill in self.skill_sets],
+            'desired_salary': self.desired_salary
         }
         #return {c.name: getattr(self, c.name) for c in self.__table__.columns}
         return ret
