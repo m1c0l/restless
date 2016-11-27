@@ -345,10 +345,10 @@ def update_match(user_id, project_id, new_result=None):
     @return: The new result of this match, 0 if the match had been previously declined, or -1 if the match was not found.
     @rtype: C{int}
     """
-    match_obj = Match.query.filter_by(user_id=user_id,project_id=project_id)
+    match_obj = Match.query.filter_by(user_id=user_id,project_id=project_id).first()
     if not match_obj:
         return -1
-    if not new_result:
+    if new_result == None:
         new_result = match_obj.result + 1
     if match_obj.result == 0:
         return 0
@@ -356,6 +356,8 @@ def update_match(user_id, project_id, new_result=None):
     if new_result == 3: #both user and PM have accepted the match. add to list of confirmed devs
         user_obj = get_user_by_id(user_id)
         project_obj = get_project_by_id(project_id)
+        if not user_obj or not project_obj:
+            return -1
         user_projects = user_obj.projects_developing
         if project_obj not in user_projects:
             user_projects.append(project_obj)

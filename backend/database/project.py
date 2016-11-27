@@ -49,7 +49,7 @@ class Project(db.Model):
     The pay for this project (hourly?). Default to be free.
     @type: C{int}
     """
-    pm_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    pm_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     """
     The id of the project manager of this project, which is a L{User}.
     The project manager creates and leads the project, deciding who to

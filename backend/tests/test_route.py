@@ -565,6 +565,90 @@ class RouteTestCase(unittest.TestCase):
         self.assertIn(u2.id, devs)
         self.assertIn(u3.id, devs)
 
+    def test_matching(self):
+        """
+        Test the matching algorithm.
+        """
+        # enums to keep track of the numbers
+        NO = '0'
+        YES = '1'
+        DECLINED = '0'
+        MATCHED = '1'
+        ACCEPTED = '2'
+
+        pm = User('pm','','','','')
+        u0 = User('u0','','','','')
+        u1 = User('u1','','','','')
+        u2 = User('u2','','','','')
+        u3 = User('u3','','','','')
+        db.session.add(pm)
+        db.session.add(u0)
+        db.session.add(u1)
+        db.session.add(u2)
+        db.session.add(u3)
+        db.session.commit()
+        p1 = Project('p1','',pm.id)
+        db.session.add(p1)
+        db.session.commit()
+
+        uid = [str(u.id) for u in [u0,u1,u2,u3]]
+        pid = str(p1.id)
+
+        self.client.get('/api/swipe/user/' + uid[0] + '/' + pid + '/' + YES)
+        self.client.get('/api/swipe/user/' + uid[1] + '/' + pid + '/' + YES)
+        self.client.get('/api/swipe/user/' + uid[2] + '/' + pid + '/' + YES)
+        self.client.get('/api/swipe/user/' + uid[3] + '/' + pid + '/' + NO)
+
+        self.client.get('/api/swipe/project/' + pid + '/' + uid[0] + '/' + YES)
+        self.client.get('/api/swipe/project/' + pid + '/' + uid[1] + '/' + YES)
+        self.client.get('/api/swipe/project/' + pid + '/' + uid[2] + '/' + NO)
+        self.client.get('/api/swipe/project/' + pid + '/' + uid[3] + '/' + YES)
+
+        # At this point, the project should match with u0 and u1
+        resp = self.client.get('/api/matches/0/' + pid + '/' + MATCHED)
+        data = json.loads(resp.data)['results']
+        self.assertEqual(len(data), 2)
+        self.assertIn(u0.id, data)
+        self.assertIn(u1.id, data)
+
+        # accept u0
+        resp = self.client.get('/api/matches/accept/' + uid[0] + '/' + pid)
+        self.assertEqual(json.loads(resp.data)['result'], int(ACCEPTED))
+        # decline u1
+        resp = self.client.get('/api/matches/decline/' + uid[1] + '/' + pid)
+        self.assertEqual(json.loads(resp.data)['result'], int(DECLINED))
+
+        # no match with u2
+        resp = self.client.get('/api/matches/accept/' + uid[2] + '/' + pid)
+        self.assertEqual(json.loads(resp.data)['result'], -1)
+        resp = self.client.get('/api/matches/decline/' + uid[2] + '/' + pid)
+        self.assertEqual(json.loads(resp.data)['result'], -1)
+
+        # all matches were accepted/declined
+        resp = self.client.get('/api/matches/0/' + pid + '/' + MATCHED)
+        data = json.loads(resp.data)['results']
+        self.assertEqual(len(data), 0)
+
+        # accepted u0
+        resp = self.client.get('/api/matches/0/' + pid + '/' + ACCEPTED)
+        data = json.loads(resp.data)['results']
+        self.assertEqual(len(data), 1)
+        self.assertIn(u0.id, data)
+
+        # declined u1
+        resp = self.client.get('/api/matches/0/' + pid + '/' + DECLINED)
+        data = json.loads(resp.data)['results']
+        self.assertEqual(len(data), 1)
+        self.assertIn(u1.id, data)
+
+        # accept a declined match => still declined
+        resp = self.client.get('/api/matches/accept/' + uid[1] + '/' + pid)
+        self.assertEqual(json.loads(resp.data)['result'], int(DECLINED))
+
+        # decline an accepted match => declined
+        resp = self.client.get('/api/matches/decline/' + uid[0] + '/' + pid)
+        self.assertEqual(json.loads(resp.data)['result'], int(DECLINED))
+
     def test_debug(self):
         """
         Just run debug-only code for coverage

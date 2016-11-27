@@ -343,20 +343,24 @@ def get_matches_for(who,id,type=1):
 @app.route("/api/matches/accept/<int:user_id>/<int:project_id>")
 def accept_match(user_id,project_id):
     """
-    Accept a match. Either a user or a project may call this. It will simply increment the "result" of the Match object by one.
+    Accept a match. Either a user or a project may call this. It will simply
+    increment the "result" of the Match object by one.
     @param user_id: The id of the user in this match.
     @param project_id: The id of the project in this match.
     @type user_id: C{int}
     @type project_id: C{int}
-    @return: The new result of this match, 0 if the match had been previously declined, or -1 if the match was not found.
+    @return: The new result of this match, 0 if the match had been previously
+             declined, or -1 if the match was not found.
     @rtype: C{int}
     """
-    return flask.jsonify(result=database.update_match(user_id, project_id))
+    result = database.update_match(user_id, project_id)
+    return flask.jsonify(result=result)
     
 @app.route("/api/matches/decline/<int:user_id>/<int:project_id>")
 def decline_match(user_id,project_id):
     """
-    Decline a match. Either a user or a project may call this. It will simply set the "result" of the Match object to 0.
+    Decline a match. Either a user or a project may call this. It will simply
+    set the "result" of the Match object to 0.
     @param user_id: The id of the user in this match.
     @param project_id: The id of the project in this match.
     @type user_id: C{int}
@@ -364,7 +368,8 @@ def decline_match(user_id,project_id):
     @return: 0 if the match was found, or -1 if the match was not found.
     @rtype: C{int}
     """
-    return flask.jsonify(result=database.update_match(user_id, project_id, new_result=0))
+    result = database.update_match(user_id, project_id, new_result=0)
+    return flask.jsonify(result=result)
 
 @app.route("/api/img/get/<type>/<int:id>")
 def get_image(type, id):
