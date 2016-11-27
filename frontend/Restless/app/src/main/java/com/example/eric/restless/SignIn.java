@@ -83,6 +83,9 @@ public class SignIn extends AppCompatActivity {
 
 
         if(a[0]!=-1){
+            //setting global user object
+            User.getUser().setId(a[0]);
+            
             Intent transfer=new Intent(SignIn.this,DevPMSelectionActivity.class);
             startActivity(transfer);
         }

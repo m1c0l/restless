@@ -29,10 +29,8 @@
         <activity android:name=".devSwipe" />
         <activity android:name=".devMatches" />
         <activity android:name=".editProfileMainScreen" />
-        <activity android:name=".skillsForProject" />
         <activity android:name=".viewProjectPM" />
-        <activity android:name=".profileDisplay" />
-        <activity android:name=".skillsForProject" />
+        <activity android:name=".profileDisplay_pm" />
         <activity android:name=".changePassword" />
         <activity android:name=".manageMatchesPM"></activity>
     </application>
