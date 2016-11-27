@@ -48,7 +48,7 @@ public class devSwipe extends AppCompatActivity {
     private TextView body1,body2,body3, body1_reserve, body2_reserve, body3_reserve;
     private RelativeLayout relativeLayout;
     private ViewFlipper textflip, profileflip, textflip_reserve;
-    private TextView primary_text, reserve_text, match_text;
+    private TextView primary_text, reserve_text, matchee_text, matcher_text;
     private ViewAssociation first_page, second_page;
     private ViewGroup container;
     private Point dimensions;
@@ -69,7 +69,7 @@ public class devSwipe extends AppCompatActivity {
         public boolean swipeDir;
     }
     public class ViewAssociation{
-        public ViewAssociation(ViewFlipper text, TextView body_1, TextView body_2, TextView body_3, ImageView picture, TextView name){
+        public ViewAssociation(ViewFlipper text, TextView body_1, TextView body_2, TextView body_3, ImageView picture, TextView name, Integer id){
             textswitcher = text;
             one=body_1;
             two=body_2;
@@ -84,6 +84,7 @@ public class devSwipe extends AppCompatActivity {
             three.setText(body_3);
         }
         public TextView one,two,three, name;
+        public int id;
         public ViewFlipper textswitcher;
         public ImageView picture;
     }
@@ -100,28 +101,48 @@ public class devSwipe extends AppCompatActivity {
         public void run() {
             //post request
             //if match, set match_pic and match_text
+            final httpInterface requester=new httpInterface();
+            final Boolean matched[] = new Boolean[1];
+            matched[0] = false;
+            Thread thread;
+            int i = swipe_up ? 1 : 0;
+            final String url = new String("http://159.203.243.194/api/swipe/user/"+String.valueOf(User.getUser().getId())+"/"+String.valueOf(first.id)+"/"+String.valueOf(i));
+            thread = new Thread (new Runnable() {
+                public void run() {
+                    JSONObject b=requester.request("GET", null, url);
+                    try {
+                        if(b!=null && b.get("id")!=null)
+                            matched[0] = (Integer)b.get("id") > 0;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            thread.start();
 
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    String one, two, three;
-                    one = (String) first.one.getText();
-                    two = (String) first.two.getText();
-                    three = (String) first.three.getText();
-                    first.update((String) second.one.getText(), (String) second.two.getText(), (String) second.three.getText());
-                    second.update(one, two, three);
-                    Boolean matched = swipe_up;
-                    if(matched){
-                        //set up and display popup
-                        match_text = (TextView)container.findViewById(R.id.with);
-                        match_text.setText("boogers");
-                        match_popup.showAtLocation(relativeLayout, Gravity.NO_GRAVITY,0,0);
+
+                    if (matched[0]) {
+                    //set up and display popup
+                        matchee_text = (TextView) container.findViewById(R.id.with);
+                        matcher_text = (TextView) container.findViewById(R.id.matcher);
+                        matchee_text.setText(first.name.getText().toString());
+                        matcher_text.setText("boogers");
+                        match_popup.showAtLocation(relativeLayout, Gravity.NO_GRAVITY, 0, 0);
                     }
                 }
             });
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            fetch_and_update(first);
 
-            //fetch next guy right here
         }
+
         private ViewAssociation first;
         private ViewAssociation second;
         private Boolean swipe_up;
@@ -158,18 +179,18 @@ public class devSwipe extends AppCompatActivity {
         if(user_stack.empty())
             Toast.makeText(this,"No profiles found", Toast.LENGTH_SHORT).show();
 
-        first_page= new ViewAssociation(textflip,body1,body2,body3,profile_pic, primary_text);
-        second_page = new ViewAssociation(textflip_reserve,body1_reserve,body2_reserve,body3_reserve,profile_pic_reserve, reserve_text);
+        first_page= new ViewAssociation(textflip,body1,body2,body3,profile_pic, primary_text,-1);
+        second_page = new ViewAssociation(textflip_reserve,body1_reserve,body2_reserve,body3_reserve,profile_pic_reserve, reserve_text,-1);
 
         Log.i("hello", "reached");
         Thread first = fetch_and_update(first_page);
+        Thread second = fetch_and_update(second_page);
 
         try {
             first.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Thread second = fetch_and_update(second_page);
         try {
             second.join();
         } catch (InterruptedException e) {
@@ -239,6 +260,7 @@ public class devSwipe extends AppCompatActivity {
             top=user_stack.pop();
             Log.i("popped object: ", String.valueOf(top));
         }
+        viewer.id = top;
 
         JSONObject obj[] = new JSONObject[1];
         final httpInterface requester = new httpInterface();

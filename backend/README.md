@@ -213,6 +213,24 @@ Response:
 }
 ```
 
+#### Change a password for user with id 1:
+```
+POST /api/update/login/1
+```
+POST data:
+```js
+{
+  "password": "new password"
+}
+```
+Response:
+```js
+{
+  "username": "jd"
+}
+```
+The new password is intentionally left out of this response.
+
 ## Creating users
 ```
 POST /api/new_user/

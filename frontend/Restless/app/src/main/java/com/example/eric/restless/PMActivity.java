@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
@@ -35,7 +34,7 @@ public class PMActivity extends AppCompatActivity {
         try {
             System.setProperty("http.keepAlive", "false");
             final String url = new String("http://159.203.243.194/api/get/user/"
-                    + UserSingeton.getUser().getId());
+                    + User.getUser().getId());
             //final JSONObject requestObj = new JSONObject();
             Thread thread=new Thread(new Runnable() {
                 public void run() {

@@ -155,6 +155,21 @@ def get_projects_by_pm_id(pm_id):
     """
     return Project.query.filter_by(pm_id=pm_id).all()
 
+def get_login_by_user_id(id):
+    """
+    Gets the login info for a user
+    @param id: The User's id
+    @type id: C{int}
+    @return: The User's user/pass
+    @rtype: C{Login}
+    @see: L{Login}
+    """
+    try:
+        user = get_user_by_id(id)
+        return Login.query.filter_by(username=user.username).first()
+    except AttributeError:
+        return None
+
 def get_open_projects(current_state):
     return Project.query.filter_by(current_state=current_state).all()
 
@@ -179,7 +194,7 @@ def get_stack_for_user(user_id):
     #keep projects with higher pay rate than desired by user
     stack = [proj for proj in stack if proj.pay_range >= user_obj.desired_salary]
     #subtract any projects the user has swiped on as developer
-    user_dev_swipes = get_swipes_for(Swipe.SWIPER_DEV, user_id)
+    user_dev_swipes = get_swipes_for(Swipe.GET_USER_SWIPES, user_id, Swipe.SWIPER_DEV)
     #me trying to be pythonic
     user_swiped_proj_ids = [s.project_id for s in user_dev_swipes]
     stack = [proj for proj in stack if not proj.id in user_swiped_proj_ids]
@@ -223,28 +238,73 @@ def get_stack_for_user(user_id):
         #percent_matching = float(num_matching_skills) / num_skills_needed
         #skill_matching_dict[proj] = percent_matching
 
+def get_stack_for_project(project_id):
+    """
+    Get users for project PM to swipe on.
 
-def get_swipes_for(who, id):
+    @param project_id: Project's id
+    @type project_id: C{int}
+    @return: L{User}s to have the project PM to swipe on
+    @rtype: list of L{User}
+    @raise ValueError: If C{project_id} isn't a valid project id
+    """
+
+    project_obj = get_project_by_id(project_id)
+    if not project_obj:
+        raise ValueError("Invalid project id: %d" % project_id)
+    #first get all the swipes of users who've swiped on this project
+    dev_swipes = get_swipes_for(Swipe.GET_PROJECT_SWIPES, project_id, Swipe.SWIPER_DEV)
+    #set stack to the users who swiped yes
+    stack = {swipe.user_id for swipe in dev_swipes if swipe.result == Swipe.RESULT_YES}
+    #subtract users that project PM has swiped on
+    pm_swipes = get_swipes_for(Swipe.GET_PROJECT_SWIPES, project_id, Swipe.SWIPER_PM)
+    pm_swipes_user_ids = {swipe.user_id for swipe in pm_swipes}
+    stack = list(stack.difference(pm_swipes_user_ids))
+    stack = [get_user_by_id(id) for id in stack]
+    #calculate a score for each user to rank them by
+    user_score_dict = dict()
+    for user in stack:
+        total_proj_weight = 0.0
+        user_matched_weight = 0.0
+        user_skill_ids = [skill.id for skill in user.skill_sets]
+        #see how many skills the user matches and calculate what % of the total
+        #project weights the user satisfies
+        for skill_and_weight in project_obj.skill_weights:
+            total_proj_weight += skill_and_weight.skill_weight
+            if skill_and_weight.skill_id in user_skill_ids:
+                user_matched_weight += skill_and_weight.skill_weight
+        if total_proj_weight == 0.0:
+            raise ValueError("Project %d: No skills or skill weights sum to 0!" % proj.id)
+        user_skill_match_percent = user_matched_weight / total_proj_weight
+        user_score_dict[user] = user_skill_match_percent
+    user_score_list = user_score_dict.items()
+    #sort by user score descending
+    user_score_list.sort(key=lambda user_score: user_score[1], reverse=True)
+    print "user scores:", user_score_list
+    stack = [user_score[0] for user_score in user_score_list]
+    return stack
+
+def get_swipes_for(who, id, who_swiped):
     """
     Get swipes for a user or project.
-    TODO: implement PM and error checking
 
-    @param who: 0 for project, 1 for dev.
+    @param who: Swipe.GET_PROJECT_SWIPES for project, Swipe.GET_USER_SWIPES for user.
     @type who: C{int}
     @param id: The id of this obejct.
     @type id: C{int}
+    @param who_swiped: Swipe.SWIPER_PM for PM or Swipe.SWIPER_DEV for developer
+    @type who_swiped: C{int}
     @return: L{Swipe}s that this user/project has done
     @rtype: list of L{Swipe}
+    @raise ValueError: if who isn't Swipe.GET_USER_SWIPES or Swipe.GET_PROJECT_SWIPES
     """
     swipe_arr = []
-    if who == Swipe.SWIPER_DEV:
-        swipe_arr = Swipe.query.filter_by(user_id=id).filter_by(who_swiped=Swipe.SWIPER_DEV).all()
-    elif who == Swipe.SWIPER_PM:
-        #TODO
-        swipe_arr = []
+    if who == Swipe.GET_USER_SWIPES:
+        swipe_arr = Swipe.query.filter_by(user_id=id).filter_by(who_swiped=who_swiped).all()
+    elif who == Swipe.GET_PROJECT_SWIPES:
+        swipe_arr = Swipe.query.filter_by(project_id=id).filter_by(who_swiped=who_swiped).all()
     else:
-        #TODO error checking
-        swipe_arr = []
+        raise ValueError("%d isn't Swipe.GET_USER_SWIPES or Swipe.GET_PROJECT_SCORES" % who)
     return swipe_arr
 
 def get_matches_for(who, id, type):
@@ -284,6 +344,30 @@ def update_match(user_id, project_id, new_result=None):
     if match_obj.result == 0:
         return 0
     update(match_obj, result = new_result)
+    if new_result == 3: #both user and PM have accepted the match. add to list of confirmed devs
+        user_obj = get_user_by_id(user_id)
+        project_obj = get_project_by_id(project_id)
+        user_projects = user_obj.projects_developing
+        if project_obj not in user_projects:
+            user_projects.append(project_obj)
+            update(user_obj, projects_developing = user_projects)
+        pm_obj = get_user_by_id(project_obj.pm_id)
+        pm_projects = pm_obj.projects_managing
+        if project_obj not in pm_projects:
+            pm_projects.append(project_obj)
+            update(pm_obj, projects_managing = pm_projects)
+    if new_result == 0: #someone has declined the match. remove from all lists
+        user_obj = get_user_by_id(user_id)
+        project_obj = get_project_by_id(project_id)
+        user_projects = user_obj.projects_developing
+        if project_obj in user_projects:
+            user_projects.remove(project_obj)
+            update(user_obj, projects_developing = user_projects)
+        pm_obj = get_user_by_id(project_obj.pm_id)
+        pm_projects = pm_obj.projects_managing
+        if project_obj in pm_projects:
+            pm_projects.remove(project_obj)
+            update(pm_obj, projects_managing = pm_projects)
     return new_result
 
 def add_swipe(user_id, project_id, result, who_swiped):

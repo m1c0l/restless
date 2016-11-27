@@ -59,6 +59,18 @@ class Swipe(db.Model):
     @type: C{int}
     """
 
+    GET_USER_SWIPES = 0
+    """
+    Enum indicating to get swipes involving a user
+    @type: C{int}
+    """
+
+    GET_PROJECT_SWIPES = 1
+    """
+    Enum indicating to get swipes involving a project
+    @type: C{int}
+    """
+
     who_swiped = db.Column(db.Integer, nullable=False)
     """
     Which party did the swipe.

@@ -2,13 +2,11 @@ package com.example.eric.restless;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -68,20 +66,20 @@ public class projectUnit implements Parcelable {
         state = 0;
         description = "";
         payRange = -1;
-        pm_id = UserSingeton.getUser().getId();
+        pm_id = User.getUser().getId();
         skills = new ArrayList<>();
         title = "";
     }
 
     public boolean newProjectToServer(){
-w        final httpInterface requester = new httpInterface();
+        final httpInterface requester = new httpInterface();
         //creating new project first
         try{
             final String url = new String("http://159.203.243.194/api/new_project/");
             final JSONObject obj = new JSONObject();
             //populate obj
             obj.put("title", title);
-            obj.put("pm_id", UserSingeton.getUser().getId());
+            obj.put("pm_id", User.getUser().getId());
             obj.put("description", description);
 
             Thread thread=new Thread(new Runnable() {

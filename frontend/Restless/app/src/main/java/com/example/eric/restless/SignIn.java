@@ -40,7 +40,7 @@ public class SignIn extends AppCompatActivity {
         //make login request!
         final httpInterface requester = new httpInterface();
         final int[] a = new int[1];
-
+        a[0] = -1;
         try {
             System.setProperty("http.keepAlive", "false");
 
@@ -75,7 +75,12 @@ public class SignIn extends AppCompatActivity {
 
         if(a[0]!=-1){
             //setting global user object
-            UserSingeton.getUser().setId(a[0]);
+<<<<<<< HEAD
+            User.getUser().setId(a[0]);
+=======
+            Log.i("user id: ", String.valueOf(a[0]));
+            User.getUser().setId(a[0]);
+>>>>>>> 30336dfae3458f7e694f50d31d16f6b571c1ee82
             
             Intent transfer=new Intent(SignIn.this,DevPMSelectionActivity.class);
             startActivity(transfer);

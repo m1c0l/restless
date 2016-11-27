@@ -49,7 +49,14 @@ class RouteTestCase(unittest.TestCase):
 
         user = User(first_name='u', last_name='1', username='u1',
             email='e1', bio='b')
+        user.skill_sets.append(skill)
         db.session.add(user)
+        db.session.commit()
+
+        user2 = User(first_name='u', last_name='1', username='unique!',
+            email='e1', bio='b')
+        user2.skill_sets.append(skill)
+        db.session.add(user2)
         db.session.commit()
 
         login = Login(user.username, 'pass123')
@@ -57,7 +64,15 @@ class RouteTestCase(unittest.TestCase):
         db.session.commit()
 
         project = Project(title="p1", description="blah", pm_id=user.id)
+        project.skills_needed.append(skill)
+        project.skill_weights.append(Weighted_Skill(project.id, skill.id, 5.0))
         db.session.add(project)
+        db.session.commit()
+
+        project2 = Project(title="p_unique", description="blah", pm_id=user2.id)
+        project2.skills_needed.append(skill)
+        project2.skill_weights.append(Weighted_Skill(project.id, skill.id, 5.0))
+        db.session.add(project2)
         db.session.commit()
 
         swipe = Swipe(user.id, project.id, Swipe.RESULT_YES, Swipe.SWIPER_DEV)
@@ -242,6 +257,34 @@ class RouteTestCase(unittest.TestCase):
         #resp = self.post_json('/api/update/project/' + str(self.project.id),
         #                        {'title': 'new title'})
         #self.assertGreaterEqual(resp.status_code, 400)
+
+    def test_change_password(self):
+        """
+        Tests changing a password.
+        """
+        self.populate_db()
+        user_id = str(self.user.id)
+
+        resp = self.post_json('/api/update/login/0', {'password':'123'})
+        self.assertGreaterEqual(resp.status_code, 400)
+
+        username = self.login.username
+        old_password = self.login.password
+        new_password = 'new password'
+        resp = self.post_json('/api/update/login/' + user_id,
+                                        { 'password': new_password })
+        data = json.loads(resp.data)
+        self.assertEqual(data['username'], username)
+        self.assertNotIn('password', data) # leave password out of response
+
+        creds = { 'username': username, 'password': old_password }
+        resp = self.post_json('/api/login/', creds)
+        self.assertGreaterEqual(resp.status_code, 400)
+
+        creds['password'] = new_password
+        resp = self.post_json('/api/login/', creds)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(json.loads(resp.data)['id'], self.user.id)
 
     def test_login(self):
         """

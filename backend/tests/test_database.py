@@ -99,6 +99,11 @@ class DatabaseTestCase(unittest.TestCase):
         self.assertEqual(get_swipe_by_id(swipe.id).user_id, swipe.user_id)
         self.assertEqual(get_swipe_by_id(swipe.id).result, swipe.result)
 
+        login = Login(user.username, 'pass123')
+        insert_obj(login)
+        self.assertEqual(get_login_by_user_id(user.id).username, user.username)
+        self.assertEqual(get_login_by_user_id(user.id).password, 'pass123')
+
     def test_add_swipe(self):
         """
         Test adding a swipe.
@@ -128,10 +133,9 @@ class DatabaseTestCase(unittest.TestCase):
         comp = add_swipe(user2.id, project.id, Swipe.RESULT_YES, Swipe.SWIPER_DEV)
         self.assertIsNone(comp)
 
-    def test_get_user_swipes(self):
+    def test_get_swipes(self):
         """
         Test getting a user's swipes.
-        TODO: get PM swipes
         """
         user = User('user1', '', '', '', '')
         insert_obj(user)
@@ -142,7 +146,7 @@ class DatabaseTestCase(unittest.TestCase):
 
         add_swipe(user2.id, project.id, Swipe.RESULT_YES, Swipe.SWIPER_DEV)
         add_swipe(user2.id, project.id, Swipe.RESULT_NO, Swipe.SWIPER_PM)
-        dev_swipes = get_swipes_for(Swipe.SWIPER_DEV, user2.id)
+        dev_swipes = get_swipes_for(Swipe.GET_USER_SWIPES, user2.id, Swipe.SWIPER_DEV)
         self.assertEqual(len(dev_swipes), 1)
         self.assertEqual(dev_swipes[0].who_swiped, Swipe.SWIPER_DEV)
 
