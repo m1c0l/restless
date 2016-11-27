@@ -52,51 +52,54 @@ Currently 29 users with ids 1 to 29
 #### Example
 Get users with id's 1 and 3: http://159.203.243.194/api/get/user/1,3
 ```js
-[
-  {
-    "LinkedIn_profile_id": null,
-    "bio": "m4st3r h4x0r",
-    "email": "xyz",
-    "first_name": "John",
-    "id": 1,
-    "last_name": "Dough",
-    "projects_developing": [],
-    "projects_managing": [
-      1
-    ],
-    "signup_time": "2016-11-26 23:22:20",
-    "skill_sets": [
-      "MySQL",
-      "Python"
-    ],
-    "username": "jd"
-  },
-  {
-    "LinkedIn_profile_id": null,
-    "bio": "waffle the bunny",
-    "email": "rich",
-    "first_name": "Rich",
-    "id": 3,
-    "last_name": "Sun",
-    "projects_developing": [
-      13,
-      25,
-      27
-    ],
-    "projects_managing": [
-      4,
-      15,
-      24
-    ],
-    "signup_time": "2016-11-26 23:22:20",
-    "skill_sets": [
-      "SQLAlchemy",
-      "Django"
-    ],
-    "username": "rich",
-    "desired_salary": "30"
-  }
-]
+results = 
+{
+	[
+	  {
+		"LinkedIn_profile_id": null,
+		"bio": "m4st3r h4x0r",
+		"email": "xyz",
+		"first_name": "John",
+		"id": 1,
+		"last_name": "Dough",
+		"projects_developing": [],
+		"projects_managing": [
+		  1
+		],
+		"signup_time": "2016-11-26 23:22:20",
+		"skill_sets": [
+		  "MySQL",
+		  "Python"
+		],
+		"username": "jd"
+	  },
+	  {
+		"LinkedIn_profile_id": null,
+		"bio": "waffle the bunny",
+		"email": "rich",
+		"first_name": "Rich",
+		"id": 3,
+		"last_name": "Sun",
+		"projects_developing": [
+		  13,
+		  25,
+		  27
+		],
+		"projects_managing": [
+		  4,
+		  15,
+		  24
+		],
+		"signup_time": "2016-11-26 23:22:20",
+		"skill_sets": [
+		  "SQLAlchemy",
+		  "Django"
+		],
+		"username": "rich",
+		"desired_salary": "30"
+	  }
+	]
+}
 ```
 - `projects_developing` and `projects_managing` are arrays of project id's
 - `skill_sets` is an array of skill names.
@@ -410,7 +413,7 @@ Get stack for user with id 1:
 GET /api/stack/user/1
 ```
 Response:
-```json
+```js
 {
     "stack": [5, 3, 7, 21, 12, 6, 14]
 }
@@ -429,7 +432,7 @@ Get stack for project with id 1:
 GET /api/stack/project/1
 ```
 Response:
-```json
+```js
 {
     "stack": [1, 4, 2, 16, 13, 8, 3]
 }
