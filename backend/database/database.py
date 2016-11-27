@@ -200,8 +200,11 @@ def get_stack_for_user(user_id):
     #subtract the projects the user is PM on
     user_pm_projects = set(user_obj.projects_managing)
     stack = stack.difference(user_pm_projects)
-    #keep projects with higher pay rate than desired by user
-    stack = [proj for proj in stack if proj.pay_range >= user_obj.desired_salary]
+    #keep projects in recruiting state that have higher pay rate than desired by user
+    #me trying to be pythonic
+    stack = [proj for proj in stack if
+        proj.current_state == Project.STATE_RECRUITING and
+        proj.pay_range >= user_obj.desired_salary]
     #subtract any projects the user has swiped on as developer
     user_dev_swipes = get_swipes_for(Swipe.GET_USER_SWIPES, user_id, Swipe.SWIPER_DEV)
     #me trying to be pythonic
