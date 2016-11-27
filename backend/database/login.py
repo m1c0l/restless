@@ -9,7 +9,8 @@ class Login(db.Model):
     A login's id. This is Login's primary key in the database.
     @type: C{int}
     """
-    username = db.Column(db.String(20), db.ForeignKey('user.username'))
+    username = db.Column(db.String(20), db.ForeignKey('user.username'),
+                            unique=True, nullable=False)
     """
     The username of the {User}.
     @type: C{str}
@@ -31,6 +32,11 @@ class Login(db.Model):
         """
         self.username = username
         self.password = password
+
+    def to_dict(self):
+        return {
+            "username": self.username
+        }
 
     def __repr__(self):
         return "<Login '%s':'%s' id=%r>" % (self.username, self.password, self.id)

@@ -83,6 +83,7 @@ def update_info(type, id):
         'user' : database.get_user_by_id,
         'project' : database.get_project_by_id,
         #'skill' : database.get_skill_by_id,
+        'login' : database.get_login_by_user_id
     }
     if type not in commands:
         return error(msg='Invalid type')
@@ -303,11 +304,17 @@ def get_stack_for(type, id):
     @rtype: list of C{int}
     """
     if type == 'user':
-        stack = database.get_stack_for_user(id)
-        return flask.jsonify(stack=[project.id for project in stack])
+        try:
+            stack = database.get_stack_for_user(id)
+            return flask.jsonify(stack=[project.id for project in stack])
+        except ValueError:
+            return error('Invalid user id %d' % id)
     elif type == 'project':
-        stack = database.get_stack_for_project(id)
-        return flask.jsonify(stack=[user.id for user in stack])
+        try:
+            stack = database.get_stack_for_project(id)
+            return flask.jsonify(stack=[user.id for user in stack])
+        except ValueError:
+            return error('Invalid project id %d' % id)
     else:
         return error('Invalid type')
 
@@ -446,6 +453,21 @@ def delete_image(type, id):
         return error("Success", status="OK", code=200)
     except OSError as e:
         return error(msg=str(e))
+
+@app.route("/api/confirmed/<int:proj_id>")
+def confirmed(proj_id):
+    """
+    Get the list of users who are confirmed developers on this project
+    @param proj_id: the project's id
+    @type proj_id: C{int}
+    @return: JSON with array of users who are devs on the project
+    @type: C{str}
+    """
+    devs = database.get_confirmed_devs(proj_id)
+    if devs == None:
+        return error('Invalid id')
+    else:
+        return flask.jsonify(results=[dev.id for dev in devs])
 
 @app.route("/docs/")
 def docs_index():

@@ -99,6 +99,11 @@ class DatabaseTestCase(unittest.TestCase):
         self.assertEqual(get_swipe_by_id(swipe.id).user_id, swipe.user_id)
         self.assertEqual(get_swipe_by_id(swipe.id).result, swipe.result)
 
+        login = Login(user.username, 'pass123')
+        insert_obj(login)
+        self.assertEqual(get_login_by_user_id(user.id).username, user.username)
+        self.assertEqual(get_login_by_user_id(user.id).password, 'pass123')
+
     def test_add_swipe(self):
         """
         Test adding a swipe.
@@ -128,10 +133,9 @@ class DatabaseTestCase(unittest.TestCase):
         comp = add_swipe(user2.id, project.id, Swipe.RESULT_YES, Swipe.SWIPER_DEV)
         self.assertIsNone(comp)
 
-    def test_get_user_swipes(self):
+    def test_get_swipes(self):
         """
         Test getting a user's swipes.
-        TODO: get PM swipes
         """
         user = User('user1', '', '', '', '')
         insert_obj(user)
@@ -142,7 +146,7 @@ class DatabaseTestCase(unittest.TestCase):
 
         add_swipe(user2.id, project.id, Swipe.RESULT_YES, Swipe.SWIPER_DEV)
         add_swipe(user2.id, project.id, Swipe.RESULT_NO, Swipe.SWIPER_PM)
-        dev_swipes = get_swipes_for(Swipe.SWIPER_DEV, user2.id)
+        dev_swipes = get_swipes_for(Swipe.GET_USER_SWIPES, user2.id, Swipe.SWIPER_DEV)
         self.assertEqual(len(dev_swipes), 1)
         self.assertEqual(dev_swipes[0].who_swiped, Swipe.SWIPER_DEV)
 
@@ -273,3 +277,31 @@ class DatabaseTestCase(unittest.TestCase):
         self.assertTrue(validate_login(Login('user1', 'pass123')))
         self.assertFalse(validate_login(Login('user1', 'wrong pass')))
         self.assertFalse(validate_login(Login('wrong user', 'pass123')))
+
+    def test_get_confirmed_devs(self):
+        """
+        Test getting users who are devs on a project.
+        """
+        u1 = User('u1', '', '', '', '')
+        insert_obj(u1)
+        u2 = User('u2', '', '', '', '')
+        insert_obj(u2)
+        u3 = User('u3', '', '', '', '')
+        insert_obj(u3)
+        u4 = User('u4', '', '', '', '')
+        insert_obj(u4)
+        p = Project('p', '', u1.id)
+        insert_obj(p)
+
+        devs = get_confirmed_devs(p.id)
+        self.assertEqual(len(devs), 0)
+
+        u2.projects_developing.append(p)
+        u3.projects_developing.append(p)
+        devs = get_confirmed_devs(p.id)
+        self.assertEqual(len(devs), 2)
+        self.assertIn(u2, devs)
+        self.assertIn(u3, devs)
+
+        devs = get_confirmed_devs(-1)
+        self.assertIsNone(devs)
