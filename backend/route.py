@@ -447,6 +447,21 @@ def delete_image(type, id):
     except OSError as e:
         return error(msg=str(e))
 
+@app.route("/api/confirmed/<int:proj_id>")
+def confirmed(proj_id):
+    """
+    Get the list of users who are confirmed developers on this project
+    @param proj_id: the project's id
+    @type proj_id: C{int}
+    @return: JSON with array of users who are devs on the project
+    @type: C{str}
+    """
+    devs = database.get_confirmed_devs(proj_id)
+    if devs == None:
+        return error('Invalid id')
+    else:
+        return flask.jsonify(results=[dev.id for dev in devs])
+
 @app.route("/docs/")
 def docs_index():
     """

@@ -495,9 +495,36 @@ class RouteTestCase(unittest.TestCase):
         resp = self.client.get('/api/stack/project/0')
         self.assertGreaterEqual(resp.status_code, 400)
 
+    def test_confirmed(self):
+        """
+        Test API for getting confirmed devs.
+        """
+        self.populate_db()
+
+        resp = self.client.get('/api/confirmed/0')
+        self.assertGreaterEqual(resp.status_code, 400)
+
+        resp = self.client.get('/api/confirmed/' + str(self.project.id))
+        devs = json.loads(resp.data)['results']
+        self.assertEqual(len(devs), 0)
+
+        u2 = User('u2','','','','')
+        db.session.add(u2)
+        db.session.commit()
+        u2.projects_developing.append(self.project)
+        u3 = User('u3','','','','')
+        db.session.add(u3)
+        db.session.commit()
+        u3.projects_developing.append(self.project)
+        resp = self.client.get('/api/confirmed/' + str(self.project.id))
+        devs = json.loads(resp.data)['results']
+        self.assertEqual(len(devs), 2)
+        self.assertIn(u2.id, devs)
+        self.assertIn(u3.id, devs)
+
     def test_debug(self):
         """
-        Just debug-only code for coverage
+        Just run debug-only code for coverage
         """
         self.populate_db()
         objs = [self.user, self.login, self.project, self.skill, self.swipe,

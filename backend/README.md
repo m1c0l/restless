@@ -27,6 +27,7 @@ start server if it's not up.
 - [Matches](#matches)
     - [Get matches for a user or project](#get-matches-for-a-user-or-project)
     - [Accept or decline a match](#accept-or-decline-a-match)
+- [Confirmed devs](#confirmed-devs)
 
 ## Errors
 Any request that is an error will return a JSON like:
@@ -469,7 +470,7 @@ Get all new matches for project with id 3:
 GET /api/matches/0/3/1
 ```
 Response:
-```
+```js
 {
     "results" : [2,5,12]
 }
@@ -489,8 +490,28 @@ Suppose user with id 2 and project with id 3 are matched. A party wants to decli
 GET /api/matches/decline/2/3
 ```
 Response:
-```
+```js
 {
     "result" : 0
+}
+```
+
+## Confirmed devs
+```
+GET /api/confirmed/<project_id>
+```
+- `<project_id>` is the project's id
+
+Returns an array of user id's
+
+#### Example
+Get the users who are developers on the project with id 1:
+```
+GET /api/confirmed/1
+```
+Response:
+```js
+{
+  "results": [ 2, 4 ]
 }
 ```

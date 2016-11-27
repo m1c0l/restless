@@ -384,3 +384,17 @@ def validate_login(login_obj):
     return Login.query.filter_by(username=login_obj.username) \
                       .filter_by(password=login_obj.password) \
                       .first() != None
+
+def get_confirmed_devs(proj_id):
+    """
+    Returns the list of users who are developers on this project
+    @param proj_id: The project's id
+    @type proj_id: C{int}
+    @return: the list of users who are developers on this project
+    @rtype: list of L{User}
+    """
+    try:
+        p = get_project_by_id(proj_id)
+        return User.query.filter(User.projects_developing.contains(p)).all()
+    except AttributeError:
+        return None

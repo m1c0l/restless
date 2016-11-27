@@ -273,3 +273,31 @@ class DatabaseTestCase(unittest.TestCase):
         self.assertTrue(validate_login(Login('user1', 'pass123')))
         self.assertFalse(validate_login(Login('user1', 'wrong pass')))
         self.assertFalse(validate_login(Login('wrong user', 'pass123')))
+
+    def test_get_confirmed_devs(self):
+        """
+        Test getting users who are devs on a project.
+        """
+        u1 = User('u1', '', '', '', '')
+        insert_obj(u1)
+        u2 = User('u2', '', '', '', '')
+        insert_obj(u2)
+        u3 = User('u3', '', '', '', '')
+        insert_obj(u3)
+        u4 = User('u4', '', '', '', '')
+        insert_obj(u4)
+        p = Project('p', '', u1.id)
+        insert_obj(p)
+
+        devs = get_confirmed_devs(p.id)
+        self.assertEqual(len(devs), 0)
+
+        u2.projects_developing.append(p)
+        u3.projects_developing.append(p)
+        devs = get_confirmed_devs(p.id)
+        self.assertEqual(len(devs), 2)
+        self.assertIn(u2, devs)
+        self.assertIn(u3, devs)
+
+        devs = get_confirmed_devs(-1)
+        self.assertIsNone(devs)
