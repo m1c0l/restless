@@ -118,7 +118,7 @@ class RouteTestCase(unittest.TestCase):
         """
         def assert_vals(endpoint, obj):
             resp = self.client.get(endpoint)
-            data = json.loads(resp.get_data())[0]
+            data = json.loads(resp.get_data())['results'][0]
             self.assertDictContainsSubset(obj.to_dict(), data)
 
         self.populate_db()
@@ -137,7 +137,7 @@ class RouteTestCase(unittest.TestCase):
         db.session.commit()
 
         resp = self.client.get('/api/get/user/'+str(self.user.id)+','+str(u2.id))
-        data = json.loads(resp.data)
+        data = json.loads(resp.data)['results']
         self.assertEqual(len(data), 2)
         self.assertTrue(data[0]['id'] == self.user.id or data[0]['id'] == u2.id)
         self.assertTrue(data[1]['id'] == self.user.id or data[1]['id'] == u2.id)
@@ -168,7 +168,7 @@ class RouteTestCase(unittest.TestCase):
         self.assertGreater(id, 0)
 
         resp = self.client.get('/api/get/user/' + str(id))
-        user = json.loads(resp.data)[0]
+        user = json.loads(resp.data)['results'][0]
         self.assertEqual(user['id'], id)
         self.assertEqual(user['username'], data['username'])
 
@@ -191,7 +191,7 @@ class RouteTestCase(unittest.TestCase):
         self.assertGreater(id, 0)
 
         resp = self.client.get('/api/get/project/' + str(id))
-        project = json.loads(resp.data)[0]
+        project = json.loads(resp.data)['results'][0]
         self.assertEqual(project['id'], id)
         self.assertEqual(project['title'], data['title'])
         self.assertEqual(project['pm_id'], self.user.id)
@@ -278,14 +278,14 @@ class RouteTestCase(unittest.TestCase):
         self.assertNotEqual(id_cpp, id_py)
 
         resp = self.client.get('/api/get/user/' + user_id)
-        user = json.loads(resp.data)[0]
+        user = json.loads(resp.data)['results'][0]
         self.assertEqual(len(user['skill_sets']), 2)
         self.assertIn('C++', user['skill_sets'])
         self.assertIn('Python', user['skill_sets'])
 
         self.client.get('/api/skill/add/user/C++/'+user_id)
         resp = self.client.get('/api/get/user/' + user_id)
-        user = json.loads(resp.data)[0]
+        user = json.loads(resp.data)['results'][0]
         self.assertEqual(len(user['skill_sets']), 2) # no duplicate skills
 
         # Project
@@ -298,14 +298,14 @@ class RouteTestCase(unittest.TestCase):
         self.assertEqual(id_py, id_py2)
 
         resp = self.client.get('/api/get/project/' + project_id)
-        project = json.loads(resp.data)[0]
+        project = json.loads(resp.data)['results'][0]
         self.assertEqual(len(project['skills_needed']), 2)
         self.assertIn('C++', project['skills_needed'])
         self.assertIn('Python', project['skills_needed'])
 
         self.client.get('/api/skill/add/project/C++/'+project_id)
         resp = self.client.get('/api/get/project/' + project_id)
-        project = json.loads(resp.data)[0]
+        project = json.loads(resp.data)['results'][0]
         self.assertEqual(len(project['skills_needed']), 2) # no duplicate skills
 
     def test_delete_skill(self):
@@ -324,7 +324,7 @@ class RouteTestCase(unittest.TestCase):
         self.assertEqual(json.loads(resp.data)['id'], id_py)
 
         resp = self.client.get('/api/get/user/' + user_id)
-        user = json.loads(resp.data)[0]
+        user = json.loads(resp.data)['results'][0]
         self.assertEqual(len(user['skill_sets']), 1)
         self.assertIn('C++', user['skill_sets'])
         self.assertNotIn('Python', user['skill_sets'])
@@ -339,7 +339,7 @@ class RouteTestCase(unittest.TestCase):
         self.assertEqual(json.loads(resp.data)['id'], id_py)
 
         resp = self.client.get('/api/get/project/' + project_id)
-        project = json.loads(resp.data)[0]
+        project = json.loads(resp.data)['results'][0]
         self.assertEqual(len(project['skills_needed']), 1)
         self.assertIn('C++', project['skills_needed'])
         self.assertNotIn('Python', project['skills_needed'])
@@ -478,11 +478,11 @@ class RouteTestCase(unittest.TestCase):
         project_id = str(self.project.id)
 
         resp = self.client.get('/api/stack/user/' + user_id)
-        stack = json.loads(resp.data)
+        stack = json.loads(resp.data)['stack']
         self.assertGreaterEqual(len(stack), 1)
 
         resp = self.client.get('/api/stack/project/' + project_id)
-        stack = json.loads(resp.data)
+        stack = json.loads(resp.data)['stack']
         self.assertGreaterEqual(len(stack), 1)
 
         # bad type
