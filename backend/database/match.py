@@ -28,8 +28,7 @@ class Match(db.Model):
     result = db.Column(db.Integer, nullable=False)
     """
     The result of the Match. 0 = match declined, 1 means match initialized
-    (both user and PM swiped up), >1 means match has led to further
-    information.
+    (both user and PM swiped up), 2 means match has been accepted by one party, 3 means match has been accepted by both parties.
     @type: C{int}
     """
     def __init__(self, user_id, project_id):

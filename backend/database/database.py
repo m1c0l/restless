@@ -322,6 +322,28 @@ def update_match(user_id, project_id, new_result=None):
     if match_obj.result == 0:
         return 0
     update(match_obj, result = new_result)
+    if new_result == 3: #both user and PM have accepted the match. add to list of confirmed devs
+        user_obj = get_user_by_id(user_id)
+        project_obj = get_project_by_id(project_id)
+        user_projects = user_obj.projects_developing
+        user_projects.append(project_obj)
+        update(user_obj, projects_developing = user_projects)
+        pm_obj = get_user_by_id(project_obj.pm_id)
+        pm_projects = pm_obj.projects_managing
+        pm_projects.append(project_obj)
+        update(pm_obj, projects_managing = pm_projects)
+    if new_result == 0:
+        user_obj = get_user_by_id(user_id)
+        project_obj = get_project_by_id(project_id)
+        user_projects = user_obj.projects_developing
+        if project_obj in user_projects:
+            user_projects.remove(project_obj)
+            update(user_obj, projects_developing = user_projects)
+        pm_obj = get_user_by_id(project_obj.pm_id)
+        pm_projects = pm_obj.projects_managing
+        if project_obj in pm_projects:
+            pm_projects.remove(project_obj)
+            update(pm_obj, projects_managing = pm_projects)
     return new_result
 
 def add_swipe(user_id, project_id, result, who_swiped):
