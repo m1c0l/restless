@@ -304,11 +304,17 @@ def get_stack_for(type, id):
     @rtype: list of C{int}
     """
     if type == 'user':
-        stack = database.get_stack_for_user(id)
-        return flask.jsonify(stack=[project.id for project in stack])
+        try:
+            stack = database.get_stack_for_user(id)
+            return flask.jsonify(stack=[project.id for project in stack])
+        except ValueError:
+            return error('Invalid user id %d' % id)
     elif type == 'project':
-        stack = database.get_stack_for_project(id)
-        return flask.jsonify(stack=[user.id for user in stack])
+        try:
+            stack = database.get_stack_for_project(id)
+            return flask.jsonify(stack=[user.id for user in stack])
+        except ValueError:
+            return error('Invalid project id %d' % id)
     else:
         return error('Invalid type')
 

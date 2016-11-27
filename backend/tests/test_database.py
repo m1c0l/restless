@@ -133,10 +133,9 @@ class DatabaseTestCase(unittest.TestCase):
         comp = add_swipe(user2.id, project.id, Swipe.RESULT_YES, Swipe.SWIPER_DEV)
         self.assertIsNone(comp)
 
-    def test_get_user_swipes(self):
+    def test_get_swipes(self):
         """
         Test getting a user's swipes.
-        TODO: get PM swipes
         """
         user = User('user1', '', '', '', '')
         insert_obj(user)
@@ -147,7 +146,7 @@ class DatabaseTestCase(unittest.TestCase):
 
         add_swipe(user2.id, project.id, Swipe.RESULT_YES, Swipe.SWIPER_DEV)
         add_swipe(user2.id, project.id, Swipe.RESULT_NO, Swipe.SWIPER_PM)
-        dev_swipes = get_swipes_for(Swipe.SWIPER_DEV, user2.id)
+        dev_swipes = get_swipes_for(Swipe.GET_USER_SWIPES, user2.id, Swipe.SWIPER_DEV)
         self.assertEqual(len(dev_swipes), 1)
         self.assertEqual(dev_swipes[0].who_swiped, Swipe.SWIPER_DEV)
 
