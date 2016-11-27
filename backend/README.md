@@ -16,10 +16,11 @@ a bad request, the status code will be `4xx` or `5xx`.
 
 ## Getting data
 ```
-/api/get/<type>/<id>
+/api/get/<type>/<ids>
 ```
-`<type>` is one of `user`, `project`, or `skill`. `<id>` is the id of the
-object you want.  Will return a JSON of the object from the database.
+- `<type>` is one of `user`, `project`, or `skill`.
+- `<ids>` is a comma-separated array of id's of the objects you want.
+Will return a JSON of the object from the database.
 
 ### Users
 ```
@@ -27,28 +28,52 @@ GET /api/get/user/<user-id>
 ```
 Currently 29 users with ids 1 to 29
 #### Example
-Get user with id 1: http://159.203.243.194/api/get/user/1
+Get users with id's 1 and 3: http://159.203.243.194/api/get/user/1,3
 ```js
-{
-  "LinkedIn_profile_id": null,
-  "bio": "m4st3r h4x0r",
-  "email": "xyz",
-  "first_name": "John",
-  "id": 1,
-  "last_name": "Dough",
-  "projects_developing": [
-    27
-  ],
-  "projects_managing": [
-    1
-  ],
-  "signup_time": "2016-11-26 10:26:03",
-  "skill_sets": [
-    "SQLAlchemy",
-    "MySQL"
-  ],
-  "username": "jd"
-}
+[
+  {
+    "LinkedIn_profile_id": null,
+    "bio": "m4st3r h4x0r",
+    "email": "xyz",
+    "first_name": "John",
+    "id": 1,
+    "last_name": "Dough",
+    "projects_developing": [],
+    "projects_managing": [
+      1
+    ],
+    "signup_time": "2016-11-26 23:22:20",
+    "skill_sets": [
+      "MySQL",
+      "Python"
+    ],
+    "username": "jd"
+  },
+  {
+    "LinkedIn_profile_id": null,
+    "bio": "waffle the bunny",
+    "email": "rich",
+    "first_name": "Rich",
+    "id": 3,
+    "last_name": "Sun",
+    "projects_developing": [
+      13,
+      25,
+      27
+    ],
+    "projects_managing": [
+      4,
+      15,
+      24
+    ],
+    "signup_time": "2016-11-26 23:22:20",
+    "skill_sets": [
+      "SQLAlchemy",
+      "Django"
+    ],
+    "username": "rich"
+  }
+]
 ```
 - `projects_developing` and `projects_managing` are arrays of project id's
 - `skill_sets` is an array of skill names.
