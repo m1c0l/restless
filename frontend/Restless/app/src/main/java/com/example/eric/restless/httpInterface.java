@@ -29,7 +29,7 @@ public class httpInterface {
             connection.setRequestProperty("Accept", "application/json");
             if(json!=null) {
 
-                //connection.setRequestProperty("Content-length", json.toString().getBytes().length + "");
+                connection.setRequestProperty("Content-length", json.toString().getBytes().length + "");
                 connection.setDoInput(true);
                 connection.setDoOutput(true);
                 //connection.setUseCaches(false);

@@ -54,18 +54,19 @@ public class SignIn extends AppCompatActivity {
         final int[] a = new int[1];
 
         try {
-            final String url = new String("http://159.203.243.194/api/login/");
+            final String url = new String("http://159.203.243.194:8003/api/login/");
             final JSONObject requestObj = new JSONObject();
 
             requestObj.put("username",userText.getText().toString());
             requestObj.put("password",passwordText.getText().toString());
-            Log.i("Signin: ",requestObj.toString());
-            Toast.makeText(getApplicationContext(),requestObj.toString(),Toast.LENGTH_LONG).show();
+            //Log.i("Signin: ",requestObj.toString());
+            //Toast.makeText(getApplicationContext(),requestObj.toString(),Toast.LENGTH_LONG).show();
             Thread thread=new Thread(new Runnable() {
                 public void run() {
                     JSONObject b=requester.request("POST", requestObj, url);
                     try {
-                       a[0] = (Integer)(b.get("id"));
+                        if(b!=null)
+                            a[0] = (Integer)(b.get("id"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
