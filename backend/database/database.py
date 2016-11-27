@@ -155,6 +155,21 @@ def get_projects_by_pm_id(pm_id):
     """
     return Project.query.filter_by(pm_id=pm_id).all()
 
+def get_login_by_user_id(id):
+    """
+    Gets the login info for a user
+    @param id: The User's id
+    @type id: C{int}
+    @return: The User's user/pass
+    @rtype: C{Login}
+    @see: L{Login}
+    """
+    try:
+        user = get_user_by_id(id)
+        return Login.query.filter_by(username=user.username).first()
+    except AttributeError:
+        return None
+
 def get_open_projects(current_state):
     return Project.query.filter_by(current_state=current_state).all()
 

@@ -83,6 +83,7 @@ def update_info(type, id):
         'user' : database.get_user_by_id,
         'project' : database.get_project_by_id,
         #'skill' : database.get_skill_by_id,
+        'login' : database.get_login_by_user_id
     }
     if type not in commands:
         return error(msg='Invalid type')

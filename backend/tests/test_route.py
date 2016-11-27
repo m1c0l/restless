@@ -243,6 +243,34 @@ class RouteTestCase(unittest.TestCase):
         #                        {'title': 'new title'})
         #self.assertGreaterEqual(resp.status_code, 400)
 
+    def test_change_password(self):
+        """
+        Tests changing a password.
+        """
+        self.populate_db()
+        user_id = str(self.user.id)
+
+        resp = self.post_json('/api/update/login/0', {'password':'123'})
+        self.assertGreaterEqual(resp.status_code, 400)
+
+        username = self.login.username
+        old_password = self.login.password
+        new_password = 'new password'
+        resp = self.post_json('/api/update/login/' + user_id,
+                                        { 'password': new_password })
+        data = json.loads(resp.data)
+        self.assertEqual(data['username'], username)
+        self.assertNotIn('password', data) # leave password out of response
+
+        creds = { 'username': username, 'password': old_password }
+        resp = self.post_json('/api/login/', creds)
+        self.assertGreaterEqual(resp.status_code, 400)
+
+        creds['password'] = new_password
+        resp = self.post_json('/api/login/', creds)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(json.loads(resp.data)['id'], self.user.id)
+
     def test_login(self):
         """
         Logging in returns the correct user id, and fails if bad credentials.

@@ -99,6 +99,11 @@ class DatabaseTestCase(unittest.TestCase):
         self.assertEqual(get_swipe_by_id(swipe.id).user_id, swipe.user_id)
         self.assertEqual(get_swipe_by_id(swipe.id).result, swipe.result)
 
+        login = Login(user.username, 'pass123')
+        insert_obj(login)
+        self.assertEqual(get_login_by_user_id(user.id).username, user.username)
+        self.assertEqual(get_login_by_user_id(user.id).password, 'pass123')
+
     def test_add_swipe(self):
         """
         Test adding a swipe.
