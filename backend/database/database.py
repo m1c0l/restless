@@ -11,8 +11,11 @@ def insert_obj(obj):
     @param obj: The object to be inserted
     @type obj: flask_sqlalchemy.Model
     """
-    db.session.add(obj)
-    db.session.commit()
+    try:
+        db.session.add(obj)
+        db.session.commit()
+    except: # IntegrityError
+        db.session.rollback()
 
 def update(obj, **kwargs):
     """
@@ -31,7 +34,10 @@ def update(obj, **kwargs):
             setattr(obj, key, value)
         else:
             raise AttributeError("%s has no attribute '%s'" % (obj.__class__, key))
-    db.session.commit()
+    try:
+        db.session.commit()
+    except:
+        db.session.rollback()
 
 def delete(obj):
     """
@@ -40,8 +46,11 @@ def delete(obj):
     @param obj: The existing object in the database to be deleted
     @type obj: flask_sqlalchemy.Model
     """
-    db.session.delete(obj)
-    db.session.commit()
+    try:
+        db.session.delete(obj)
+        db.session.commit()
+    except:
+        db.session.rollback()
 
 def get_user_by_username(username):
     """
@@ -373,16 +382,30 @@ def update_match(user_id, project_id, new_result=None):
 def add_swipe(user_id, project_id, result, who_swiped):
     """
     Add a swipe.
+    @param result: one of C{Swipe.RESULT_NO} or C{Swipe.RESULT_YES}
+    @param who_swiped: one of C{Swipe.SWIPER_DEV} or C{Swipe.SWIPER_PM}
     @see: L{Swipe}
     """
-    swipe_obj = Swipe(user_id, project_id, result, who_swiped)
-    insert_obj(swipe_obj)
-    if result == Swipe.RESULT_NO:
+    try:
+        swipe_obj = Swipe(user_id, project_id, result, who_swiped)
+        insert_obj(swipe_obj)
+    except Exception:
         return None
-    complement = {}
-    complement[Swipe.SWIPER_DEV] = Swipe.SWIPER_PM
-    complement[Swipe.SWIPER_PM] = Swipe.SWIPER_DEV
-    complement_swipe = Swipe.query.filter_by(user_id=user_id, project_id=project_id, result=Swipe.RESULT_YES, who_swiped=complement[who_swiped]).first()
+
+    if result != Swipe.RESULT_YES:
+        return None
+
+    if who_swiped == Swipe.SWIPER_DEV:
+        complement = Swipe.SWIPER_PM
+    elif who_swiped == Swipe.SWIPER_PM:
+        complement = Swipe.SWIPER_DEV
+    else:
+        return None
+
+    complement_swipe = Swipe.query.filter_by(user_id=user_id,
+                                             project_id=project_id,
+                                             result=Swipe.RESULT_YES,
+                                             who_swiped=complement).first()
     if complement_swipe: #there is a match
         match_obj = Match(user_id, project_id)
         insert_obj(match_obj)
