@@ -2,15 +2,28 @@ package com.example.eric.restless;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.renderscript.ScriptGroup;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class SignIn extends AppCompatActivity {
 
@@ -18,28 +31,63 @@ public class SignIn extends AppCompatActivity {
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-    private GoogleApiClient client;
-
+    private HttpURLConnection connection;
+    EditText userText;
+    EditText passwordText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_sign_in);
 
         Button signIn = (Button) findViewById(R.id.signIn);
         Button linkedinSignIn = (Button) findViewById(R.id.linkedinSign);
-        setContentView(R.layout.activity_sign_in);
+        userText = (EditText) findViewById(R.id.usernameText);
+        passwordText = (EditText) findViewById(R.id.passwordText);
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
     public void signIn(View v){
 
         //make login request!
-        boolean successful_login=true;
+        final httpInterface requester = new httpInterface();
+        final int[] a = new int[1];
 
-        if(successful_login){
+        try {
+            final String url = new String("http://159.203.243.194:8003/api/login/");
+            final JSONObject requestObj = new JSONObject();
+
+            requestObj.put("username",userText.getText().toString());
+            requestObj.put("password",passwordText.getText().toString());
+            //Log.i("Signin: ",requestObj.toString());
+            //Toast.makeText(getApplicationContext(),requestObj.toString(),Toast.LENGTH_LONG).show();
+            Thread thread=new Thread(new Runnable() {
+                public void run() {
+                    JSONObject b=requester.request("POST", requestObj, url);
+                    try {
+                        if(b!=null)
+                            a[0] = (Integer)(b.get("id"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+            thread.start();
+            thread.join();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+        if(a[0]!=-1){
             Intent transfer=new Intent(SignIn.this,DevPMSelectionActivity.class);
             startActivity(transfer);
         }
+        else
+            Toast.makeText(getApplicationContext(),"Invalid username/password combination",Toast.LENGTH_SHORT).show();
     }
     public void linkedinLogin(View v){
 
@@ -48,35 +96,5 @@ public class SignIn extends AppCompatActivity {
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("SignIn Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
-    }
 }

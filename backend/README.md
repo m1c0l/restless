@@ -3,6 +3,28 @@ start server if it's not up.
 
 # API usage
 
+## Contents
+- [Errors](#errors)
+- [Getting data](#getting-data)
+    - [Users](#users)
+    - [Projects](#projects)
+    - [Skills](#skills)
+- [Updating stuff](#updating-stuff)
+- [Creating users](#creating-users)
+- [Logging in](#logging-in)
+- [Add a new project](#add-a-new-project)
+- [Adding/Deleting skills](#addingdeleting-skills)
+    - [Adding](#adding)
+    - [Deleting](#deleting)
+- [Swiping](#swiping)
+- [Images](#images)
+    - [Getting an image](#getting-an-image)
+    - [Uploading an image](#uploading-an-image)
+    - [Deleting an image](#deleting-an-image)
+- [Stack](#stack)
+    - [Get stack for a user](#get-stack-for-a-user)
+    - [Get stack for a project](#get-stack-for-a-project)
+
 ## Errors
 Any request that is an error will return a JSON like:
 ```js
@@ -16,10 +38,11 @@ a bad request, the status code will be `4xx` or `5xx`.
 
 ## Getting data
 ```
-/api/get/<type>/<id>
+/api/get/<type>/<ids>
 ```
-`<type>` is one of `user`, `project`, or `skill`. `<id>` is the id of the
-object you want.  Will return a JSON of the object from the database.
+- `<type>` is one of `user`, `project`, or `skill`.
+- `<ids>` is a comma-separated array of id's of the objects you want.
+Will return a JSON of the object from the database.
 
 ### Users
 ```
@@ -27,32 +50,55 @@ GET /api/get/user/<user-id>
 ```
 Currently 29 users with ids 1 to 29
 #### Example
-Get user with id 1: http://159.203.243.194/api/get/user/1
-```json
-{
-  "LinkedIn_profile_id": null,
-  "bio": "m4st3r h4x0r",
-  "email": "xyz",
-  "first_name": "John",
-  "id": 1,
-  "last_name": "Dough",
-  "projects_developing": [
-    12,
-    18
-  ],
-  "projects_managing": [
-    1
-  ],
-  "signup_time": "Sun, 20 Nov 2016 07:07:01 GMT",
-  "skill_sets": [
-    4,
-    2
-  ],
-  "username": "jd"
-}
+Get users with id's 1 and 3: http://159.203.243.194/api/get/user/1,3
+```js
+[
+  {
+    "LinkedIn_profile_id": null,
+    "bio": "m4st3r h4x0r",
+    "email": "xyz",
+    "first_name": "John",
+    "id": 1,
+    "last_name": "Dough",
+    "projects_developing": [],
+    "projects_managing": [
+      1
+    ],
+    "signup_time": "2016-11-26 23:22:20",
+    "skill_sets": [
+      "MySQL",
+      "Python"
+    ],
+    "username": "jd"
+  },
+  {
+    "LinkedIn_profile_id": null,
+    "bio": "waffle the bunny",
+    "email": "rich",
+    "first_name": "Rich",
+    "id": 3,
+    "last_name": "Sun",
+    "projects_developing": [
+      13,
+      25,
+      27
+    ],
+    "projects_managing": [
+      4,
+      15,
+      24
+    ],
+    "signup_time": "2016-11-26 23:22:20",
+    "skill_sets": [
+      "SQLAlchemy",
+      "Django"
+    ],
+    "username": "rich"
+  }
+]
 ```
 - `projects_developing` and `projects_managing` are arrays of project id's
-- `skill_sets` is an array of skill id's.
+- `skill_sets` is an array of skill names.
 
 ### Projects
 ```
@@ -68,13 +114,13 @@ Get project with id 1: http://159.203.243.194/api/get/project/1
   "id": 1,
   "pm_id": 1,
   "skills_needed": [
-    3,
-    1
+    "Django",
+    "MySQL"
   ],
   "title": "H4cks"
 }
 ```
-- `skills_needed` is an array of skill id's.
+- `skills_needed` is an array of skill names.
 - `current_state` is an enum with values:
     - `STATE_RECRUITING = 0`, the project is recruiting devs
     - `STATE_STARTED = 1`, the project is being worked on
@@ -98,9 +144,11 @@ Get skill with id 1: http://159.203.243.194/api/get/skill/1
 ```
 POST /api/update/<type>/<id>
 ```
-`<type>` is one of `user`, `project`, or `skill`. `<id>` is the id of the
-object you want to update. POST data should be the attributes to update on an
-object. Returns a JSON of the updated object.
+- `<type>` is one of `user`, `project`, or `skill`
+- `<id>` is the id of the object you want to update.
+
+POST data should be the attributes to update on an object. Returns a JSON of
+the updated object.
 
 ### Examples
 #### Change the title of project with id 1:
@@ -187,7 +235,7 @@ POST data:
 }
 ```
 Response:
-```
+```js
 {
   "id": 2
 }
@@ -198,9 +246,11 @@ Response:
 POST /api/new_project/
 ```
 Three fields are required:
-    - `title`
-    - `pm_id` (id of the project manager creating the project)
-    - `description`.
+
+- `title`
+- `pm_id` (id of the project manager creating the project)
+- `description`
+
 Returns (as json) the project ID if created or -1 if the project title already
 exists.
 
@@ -213,14 +263,53 @@ POST data:
 }
 ```
 Response:
-```
+```js
 {
   "id": 1
 }
 ```
 
-## Adding and removing skills to a user/project
-Implemented, docs coming soon...
+## Adding/Deleting skills
+### Adding
+```
+GET /api/skill/add/<type>/<skill_name>/<id>
+```
+- `<type>` is one of `user` or `project`
+- `<skill_name>` is a string with the name of the skill to add
+- `<id>` is the id of the user/project
+
+Returns the skill id on success.
+
+#### Example
+Add `Python` as a skill for user with id 1:
+```
+GET /api/skill/add/user/Python/1
+```
+Response:
+```js
+{
+  "id": 1
+}
+```
+### Deleting
+```
+GET /api/skill/delete/<type>/<skill_name>/<id>
+```
+- `<type>` is one of `user` or `project`
+- `<skill_name>` is a string with the name of the skill to delete
+- `<id>` is the id of the user/project
+Returns the skill id on success.
+#### Example
+Delete `Python` from user with id 1:
+```
+GET /api/skill/delete/user/Python/1
+```
+Response:
+```js
+{
+  "id": 1
+}
+```
 
 ## Swiping
 Register a swipe:
@@ -298,8 +387,52 @@ GET/POST /api/img/delete/<type>/<id>
 ```
 - `<type>` is one of `user` or `project`
 - `<id>` is the id of the user/project
+
 #### Example
 Delete the image for the project with id 1:
 ```
 GET /api/img/delete/project/1
+```
+
+## Stack
+### Get stack for a user
+```
+GET /api/stack/user/<id>
+```
+- `<id>` is the user id
+Returns an array of id's of projects in the stack.
+
+#### Example
+Get stack for user with id 1:
+```
+GET /api/stack/user/1
+```
+Response:
+```js
+[ 5,
+  3,
+  7,
+  // ...
+]
+```
+### Get stack for a project
+> Not implemented yet
+
+```
+GET /api/stack/project/<id>
+```
+- `<id>` is the project id
+
+#### Example
+Get stack for project with id 1:
+```
+GET /api/stack/project/1
+```
+Response:
+```js
+[ 1,
+  4,
+  2,
+  // ...
+]
 ```

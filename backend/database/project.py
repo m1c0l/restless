@@ -44,7 +44,7 @@ class Project(db.Model):
     The project's longer description about what it does.
     @type: C{str}
     """
-    pay_range = db.Column(db.Integer, nullable=False, default=1)
+    pay_range = db.Column(db.Integer, nullable=False, default=0)
     """
     The pay for this project (hourly?). Default to be free.
     @type: C{int}
@@ -60,6 +60,11 @@ class Project(db.Model):
     """
     A set of skills needed to develop the project.
     @type: list of L{Skill}
+    """
+    skill_weights = db.relationship('Weighted_Skill', backref='project_of_skill', lazy='select')
+    """
+    A set of weights for the skills needed, quantifying how important the skill is to the project.
+    @type: list of L{Weighted_Skill}
     """
 
     def __init__(self, title, description, pm_id):
@@ -81,6 +86,24 @@ class Project(db.Model):
     def __repr__(self):
         return "<Project '%s' id=%r>" % (self.title, self.id)
 
+    def __hash__(self):
+        """
+        Make Project hashable so it can be a dictionary key
+        """
+        return hash(self.id)
+
+    def __eq__(self, other):
+        """
+        Project comparator so it can be a dictionary key
+        """
+        return self.id == other.id
+
+    def __ne__(self, other):
+        """
+        Project comparator so it can be a dictionary key
+        """
+        return not(self == other)
+
     def to_dict(self):
         """
         Return a dictionary to be returned by the API.
@@ -93,7 +116,7 @@ class Project(db.Model):
             'current_state': self.current_state,
             'description': self.description,
             'pm_id': self.pm_id,
-            'skills_needed': [skill.id for skill in self.skills_needed]
+            'skills_needed': [skill.skill_name for skill in self.skills_needed]
         }
         #return {c.name: getattr(self, c.name) for c in self.__table__.columns}
         return ret

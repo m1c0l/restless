@@ -88,8 +88,9 @@ def update_info(type, id):
         return error(msg='Invalid type')
     try:
         obj = commands[type.lower()](id)
-        database.update(obj, **request.form)
-        return retrieve(type, id)
+        database.update(obj, **request.get_json())
+        obj = commands[type.lower()](id)
+        return flask.jsonify(**(obj.to_dict()))
     except ValueError:
         return error(msg='Invalid ID')
     except AttributeError as e:
@@ -107,17 +108,24 @@ def new_user(username=None, password=None):
              username/password, or -1 if username was already in the database.
     @rtype: C{str}
     """
-    if not username:
-        username = request.form.get('username')
-    if not password:
-        password = request.form.get('password')
-    id = -1
-    if username and password:
+    if not username or not password:
+        try:
+            data = request.get_json()
+            username = data['username']
+            password = data['password']
+        except:
+            return error("not json")
+    try:
         id = database.add_new_user(username, password)
-    return flask.jsonify(id=id)
+        if id == -1:
+            return error("User already exists")
+        else:
+            return flask.jsonify(id=id)
+    except Exception as e:
+        return error(msg=str(e))
 
 @app.route("/api/login/", methods=['POST'])
-def login(username=None, password=None):
+def login():
     """
     Handles login requests from the mobile app.
     @param username: Username from input.
@@ -125,27 +133,31 @@ def login(username=None, password=None):
     @param password: Password from input.
     @type password: C{str}
     @return: Integer describing the ID of the user with specified
-             username/password, or -1 if none.
+             username/password, or error if none.
     @rtype: C{int}
     """
-    if not username:
-        username = request.form.get('username')
-    if not password:
-        password = request.form.get('password')
-    id = -1
+    try:
+        data = request.get_json()
+        username = data['username']
+        password = data['password']
+    except:
+        error("not json")
+
     creds = Login(username, password)
     if database.validate_login(creds):
         id = database.get_user_by_username(username).id
-    return flask.jsonify(id=id)
+        return flask.jsonify(id=id)
+    else:
+        return error('Invalid login')
 
-@app.route("/api/get/<type>/<int:id>")
-def retrieve(type,id):
+@app.route("/api/get/<type>/<ids>")
+def retrieve(type,ids):
     """
-    Handles API requests from the mobile app.
+    API that retrieves data for users, projects, and skills.
     @param type: The type of data to get (eg. C{user}, C{project}, C{skill})
     @type type: C{str}
-    @param id: The id of the object to get
-    @type id: C{int}
+    @param ids: A comma-separated list of id's
+    @type ids: C{str}
     @return: A JSON response, or a JSON error
     @rtype: C{str}
     """
@@ -154,17 +166,18 @@ def retrieve(type,id):
         'project' : database.get_project_by_id,
         'skill' : database.get_skill_by_id,
     }
-    if type.lower() in database_commands:
-        try:
-            response_dict = database_commands[type.lower()](id).to_dict()
-            return flask.jsonify(**response_dict)
-        except (AttributeError, ValueError):
-            return error(msg='Invalid ID')
-    else:
+    if type.lower() not in database_commands:
         return error(msg='Invalid type')
 
+    get = database_commands[type.lower()]
+    try:
+        response = [get(int(id)).to_dict() for id in ids.split(',')]
+        return flask.jsonify(response)
+    except (AttributeError, ValueError) as e:
+        return error(msg='Invalid id: ' + str(e))
+
 @app.route("/api/new_project/", methods=['POST'])
-def new_project(title=None, description="", pm_id = None):
+def new_project():
     """
     Creates a new project
     @param title: The title of the new project
@@ -176,16 +189,22 @@ def new_project(title=None, description="", pm_id = None):
     @return: Project id if user was created, -1 if username already exists
     @rtype: C{str}
     """
-    if not title:
-        title = request.form.get("title")
-    if not pm_id:
-        pm_id = request.form.get("pm_id")
-    if not description:
-        description = request.form.get("description")
-    id = -1
-    if pm_id and title:
-        id = database.add_new_project(title=title, description=description, pm_id=pm_id)
-    return flask.jsonify(id=id)
+    try:
+        data = request.get_json()
+        title = data['title']
+        description = data['description']
+        pm_id = data['pm_id']
+    except:
+        return error("not json")
+
+    try:
+        id = database.add_new_project(title, description, pm_id)
+        if id == -1:
+            return error('Project already exists')
+        else:
+            return flask.jsonify(id=id)
+    except Exception as e:
+        return error(msg=str(e))
 
 @app.route("/api/skill/add/<type>/<skill_name>/<int:id>")
 def add_skill(type, skill_name, id):
