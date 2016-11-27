@@ -59,7 +59,7 @@ def error(msg='Bad Request', status='BAD_REQUEST', code=400): #todo: add logging
 def handle_404(e):
     """
     Handles 404 errors
-    @param: the werkzeug response
+    @param e: the werkzeug response
     @return: A 404 error
     @rtype: (C{str}. C{int})
     """
@@ -128,20 +128,18 @@ def new_user(username=None, password=None):
 def login():
     """
     Handles login requests from the mobile app.
-    @param username: Username from input.
-    @type username: C{str}
-    @param password: Password from input.
-    @type password: C{str}
+    POST data is a JSON with "username" and "password".
+
     @return: Integer describing the ID of the user with specified
              username/password, or error if none.
-    @rtype: C{int}
+    @rtype: C{str}
     """
     try:
         data = request.get_json()
         username = data['username']
         password = data['password']
     except:
-        error("not json")
+        return error("not json")
 
     creds = Login(username, password)
     if database.validate_login(creds):
@@ -180,12 +178,8 @@ def retrieve(type,ids):
 def new_project():
     """
     Creates a new project
-    @param title: The title of the new project
-    @type title: C{str}
-    @param description: The new project's description
-    @type description: C{str}
-    @param pm_id: User ID of the project manager that manages this project.
-    @type pm_id: C{int}
+    POST data is a JSON with "title", "description", and "pm_id"
+
     @return: Project id if user was created, -1 if username already exists
     @rtype: C{str}
     """
