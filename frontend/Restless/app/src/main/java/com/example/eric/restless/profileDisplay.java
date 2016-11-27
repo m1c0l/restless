@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import org.w3c.dom.Text;
+
 import static java.lang.Math.abs;
 
 /**
@@ -18,7 +20,7 @@ import static java.lang.Math.abs;
  */
 
 public abstract class profileDisplay extends AppCompatActivity {
-    private TextView body1,body2,body3,title;
+    private TextView body1,body2,body3,body4, title;
     private ImageView profile_pic;
     private GestureDetectorCompat gdetect;
     private ViewFlipper textflipper;
@@ -33,6 +35,7 @@ public abstract class profileDisplay extends AppCompatActivity {
         body1=(TextView )findViewById(R.id.Text1);
         body2=(TextView )findViewById(R.id.Text2);
         body3=(TextView )findViewById(R.id.Text3);
+        body4=(TextView) findViewById(R.id.Text4);
         title=(TextView )findViewById(R.id.TextFieldTitle1);
         profile_pic = (ImageView) findViewById(R.id.dev_profile_pic1);
         textflipper = (ViewFlipper) findViewById(R.id.textFlipper1);
