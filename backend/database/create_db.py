@@ -30,6 +30,11 @@ if __name__ == '__main__':
             Skill(skill_name="Django"),
             Skill(skill_name="MySQL"),
             Skill(skill_name="SQLAlchemy"),
+            Skill(skill_name="C"),
+            Skill(skill_name="C++"),
+            Skill(skill_name="PHP"),
+            Skill(skill_name="Scala"),
+            Skill(skill_name="Microsoft"),
         ]
 
         for s in skill_arr:
@@ -54,13 +59,16 @@ if __name__ == '__main__':
             user_arr.append(User(first_name=fname, last_name=lname, email=email, username=uname, bio=bio))
         for u in user_arr:
             #generate few unique skills for the user
-            last_skill = -1
-            for j in range(2):
+            #last_skill = -1
+            skill_set = set()
+            for j in range(5):
                 skill = random.randint(0, len(skill_arr) - 1)
-                while skill == last_skill:
+                #while skill == last_skill:
+                while skill in skill_set:
                     skill = random.randint(0, len(skill_arr) - 1)
+                skill_set.add(skill)
                 u.skill_sets.append(skill_arr[skill])
-                last_skill = skill
+                #last_skill = skill
             
             database.insert_obj(u)
             login = Login(username=u.username, password="hunter2")
@@ -82,14 +90,17 @@ if __name__ == '__main__':
             database.insert_obj(p)
             user_arr[random.randint(0, len(user_arr) - 1)].projects_developing.append(p)
             # generate a few unique skills for each project
-            last_skill = -1
-            for j in range(2):
+            skill_set = set()
+            #last_skill = -1
+            for j in range(5):
                 skill = random.randint(0, len(skill_arr) - 1)
-                while skill == last_skill:
+                #while skill == last_skill:
+                while skill in skill_set:
                     skill = random.randint(0, len(skill_arr) - 1)
+                skill_set.add(skill)
                 p.skills_needed.append(skill_arr[skill])
                 p.skill_weights.append(Weighted_Skill(p.id, skill_arr[skill].id, 5.0))
-                last_skill = skill
+                #last_skill = skill
             db.session.commit()
 
         swipe_arr = [
