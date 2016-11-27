@@ -21,6 +21,9 @@ start server if it's not up.
     - [Getting an image](#getting-an-image)
     - [Uploading an image](#uploading-an-image)
     - [Deleting an image](#deleting-an-image)
+- [Stack](#stack)
+    - [Get stack for a user](#get-stack-for-a-user)
+    - [Get stack for a project](#get-stack-for-a-project)
 
 ## Errors
 Any request that is an error will return a JSON like:
@@ -389,4 +392,43 @@ GET/POST /api/img/delete/<type>/<id>
 Delete the image for the project with id 1:
 ```
 GET /api/img/delete/project/1
+```
+
+## Stack
+### Get stack for a user
+```
+GET /api/stack/user/<id>
+```
+- `<id>` is the user id
+Returns an array of id's of projects in the stack.
+#### Example
+Get stack for user with id 1:
+```
+GET /api/stack/user/1
+```
+Response:
+```js
+[ 5,
+  3,
+  7,
+  // ...
+]
+```
+### Get stack for a project
+> Not implemented yet
+```
+GET /api/stack/project/<id>
+```
+- `<id>` is the project id
+Get stack for project with id 1:
+```
+GET /api/stack/project/1
+```
+Response:
+```js
+[ 1,
+  4,
+  2,
+  // ...
+]
 ```
