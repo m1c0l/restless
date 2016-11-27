@@ -21,24 +21,26 @@ public class httpInterface {
 
     JSONObject request(String method, JSONObject json, String url){
         try {
+
             URL url1=new URL(url);
             HttpURLConnection connection = (HttpURLConnection) url1.openConnection();
             connection.setRequestMethod(method);
-
-            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Connection","close");
             connection.setRequestProperty("Accept", "application/json");
+            connection.setDoInput(true);
+            Log.i("here","GOT");
             if(json!=null) {
-
+                connection.setRequestProperty("Content-Type", "application/json");
                 connection.setRequestProperty("Content-length", json.toString().getBytes().length + "");
-                connection.setDoInput(true);
                 connection.setDoOutput(true);
-                //connection.setUseCaches(false);
+                connection.setUseCaches(false);
                 OutputStream outputStream = connection.getOutputStream();
                 outputStream.write(json.toString().getBytes("UTF-8"));
                 //Log.i("Content: ", connection.getContent().toString());
                 outputStream.close();
             }
-            connection.connect();
+            Log.i("here","GOT");
+            //connection.connect();
             Log.i("Connection String: ",connection.toString());
 
             int status = connection.getResponseCode();
@@ -58,6 +60,8 @@ public class httpInterface {
                     JSONObject obj =  new JSONObject(sb.toString());
                     return obj;
             }
+            connection.disconnect();
+
         }
 
             catch (MalformedURLException e){

@@ -54,7 +54,10 @@ public class SignIn extends AppCompatActivity {
         final int[] a = new int[1];
 
         try {
-            final String url = new String("http://159.203.243.194:8003/api/login/");
+            System.setProperty("http.keepAlive", "false");
+
+
+            final String url = new String("http://159.203.243.194/api/login/");
             final JSONObject requestObj = new JSONObject();
 
             requestObj.put("username",userText.getText().toString());

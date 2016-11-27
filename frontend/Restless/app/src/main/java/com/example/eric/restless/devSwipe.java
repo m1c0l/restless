@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
@@ -53,7 +54,7 @@ public class devSwipe extends AppCompatActivity {
     private Point dimensions;
     String[] a= {"Populate field with GET API Overview 0","Populate field with GET API Skills  1","Populate field with GET API background/past projects 2"};
     String[] b={"reserve 1", "reserve 2", "reserve 3"};
-    Stack<Integer> user_stack;
+    Stack<Integer> user_stack=new Stack<Integer>();
     int a_pos = 0;
 
 
@@ -74,6 +75,7 @@ public class devSwipe extends AppCompatActivity {
             two=body_2;
             three=body_3;
             this.picture=picture;
+            this.name = name;
         }
         public void update(String body_1, String body_2, String body_3){
 
@@ -159,13 +161,15 @@ public class devSwipe extends AppCompatActivity {
         first_page= new ViewAssociation(textflip,body1,body2,body3,profile_pic, primary_text);
         second_page = new ViewAssociation(textflip_reserve,body1_reserve,body2_reserve,body3_reserve,profile_pic_reserve, reserve_text);
 
+        Log.i("hello", "reached");
         Thread first = fetch_and_update(first_page);
-        Thread second = fetch_and_update(second_page);
+
         try {
             first.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        Thread second = fetch_and_update(second_page);
         try {
             second.join();
         } catch (InterruptedException e) {
@@ -198,19 +202,20 @@ public class devSwipe extends AppCompatActivity {
     }
     public void populate_stack(){
         try{
-            final String url = new String("http://159.203.243.194/api/stack/1");
-            final JSONObject obj = new JSONObject();
+            final String url = new String("http://159.203.243.194/api/stack/user/1");
+            //final JSONObject obj = new JSONObject();
             final httpInterface requester = new httpInterface();
             //populate obj
             Thread thread=new Thread(new Runnable() {
                 public void run() {
-                    JSONObject b=requester.request("GET", obj, url);
+                    JSONObject b=requester.request("GET", null, url);
                     try {
 
                         if(b!=null) {
-                            Integer stack_vals[] = (Integer[])b.get("stack");
-                            for (int i = 0; i < stack_vals.length; i++) {
-                                user_stack.push(i);
+                            JSONArray stack_vals = (JSONArray)b.get("stack");
+
+                            for (int i = 0; i < stack_vals.length(); i++) {
+                                user_stack.push(stack_vals.getInt(i));
                             }
                         }
                     } catch (JSONException e) {
@@ -228,44 +233,52 @@ public class devSwipe extends AppCompatActivity {
     }
     public Thread fetch_and_update(final ViewAssociation viewer){
         Integer top;
+
+
         synchronized(user_stack){
             top=user_stack.pop();
+            Log.i("popped object: ", String.valueOf(top));
         }
 
         JSONObject obj[] = new JSONObject[1];
         final httpInterface requester = new httpInterface();
         Thread thread;
 
-        final String url = new String("http://159.203.243.194:8003/api/get/project/"+top.toString());
+        final String url = new String("http://159.203.243.194/api/get/project/"+top.toString());
 
 
-            //Log.i("Signin: ",requestObj.toString());
+        //Log.i("Signin: ",requestObj.toString());
             //Toast.makeText(getApplicationContext(),requestObj.toString(),Toast.LENGTH_LONG).show();
         thread=new Thread(new Runnable() {
             public void run() {
 
-                final JSONObject b=requester.request("GET", null, url);
 
-                if(b!=null) {
-                    Log.i("Error: ", "Invalid GET request");
-                }
+
 
                 try {
-
+                    final JSONObject b=(JSONObject)((JSONArray)requester.request("GET", null, url).get("results")).get(0);
                     String skill_desc=new String();
-                    String skills[] = (String[]) b.get("skills_needed");
-                    for(int i=0; i < skills.length; i++){
-                        skill_desc+=skills[i];
-                        skill_desc+=((skills.length==i) ? " " : ".");
+                    JSONArray skills = (JSONArray) b.get("skills_needed");
+
+
+                    for(int i=0; i < skills.length(); i++){
+                        skill_desc+=skills.getString(i);
+                        skill_desc+=((skills.length()!=i) ? " " : ".");
                     }
                     final String skills_desc = skill_desc;
-                    final JSONObject pm = requester.request("GET",null,"http://159.203.243.194:8003/api/get/user/"+String.valueOf((Integer)b.get("pm_id")));
+                    final JSONObject pm = (JSONObject) ((JSONArray) requester.request("GET",null,"http://159.203.243.194/api/get/user/"+String.valueOf((Integer)b.get("pm_id"))).get("results")).get(0);
+
+
                     runOnUiThread(new Runnable() {
                         @Override
+
                         public void run() {
                             try {
+
                                 viewer.update((String)b.get("description"),skills_desc, (String)pm.get("bio"));
-                                viewer.name.setText((String) b.get("title"));
+
+                                viewer.name.setText((String)b.get("title"));
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
