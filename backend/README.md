@@ -26,7 +26,8 @@ start server if it's not up.
     - [Get stack for a project](#get-stack-for-a-project)
 - [Matches](#matches)
     - [Get matches for a user or project](#get-matches-for-a-user-or-project)
-    - [Accept or decline a match](#accept-or-decline-a-match)
+    - [Accept a match](#accept-a-match)
+    - [Decline a match](#decline-a-match)
 - [Confirmed devs](#confirmed-devs)
 
 ## Errors
@@ -480,7 +481,12 @@ GET /api/matches/<who>/<id>/<type>
 ```
 - `<who>` is `0` for a project, and `1` for a developer.
 - `<id>` is the id of this object.
-- `<type>` is the type of this match. `1` is the default value, which indicates that both user and project have swiped positively. `0` means that the match has been declined by either user. `2` or more indicates that a party has accepted the match (a.k.a. sought more information about it)
+- `<type>` is the type of this match.
+    - `1` is the default value, which indicates that both user and project have
+      swiped positively, and they made a match.
+    - `0` means that the match has been declined by either user.
+    - `2` or more indicates that a party has accepted the match (a.k.a. sought
+      more information about it)
 
 #### Example
 Get all new matches for project with id 3:
@@ -494,13 +500,40 @@ Response:
 }
 ```
 
-### Accept or decline a match
+### Accept a match
 ```
-GET /api/matches/<accept/decline>/<user_id>/<project_id>
+GET /api/matches/accept/<user_id>/<project_id>
 ```
 - `user_id` is the id of the user.
 - `project_id` is the id of the project.
-Use this if either the user or the PM declines this match. It will set the result of the match to 0.
+
+Use this if either the user or the PM accepts this match.
+
+Returns the new result of the match:
+- `2` or greater: the match was accepted successfully
+- `0`: the match was previously declined, so the result is still `0` (declined).
+
+#### Example
+A project with id 2 accepts a user with id 4.
+```
+GET /api/matches/accept/4/2
+```
+
+### Decline a match
+```
+GET /api/matches/accept/<user_id>/<project_id>
+```
+- `user_id` is the id of the user.
+- `project_id` is the id of the project.
+
+Use this if either the user or the PM declines this match. If the user/project
+match was previously accepted, this call will set the new result of the match
+to declined.
+
+Returns the new result of the match:
+- `0`: the match was successfully declined
+- `-1`: the user and project were never matched
+
 
 #### Example
 Suppose user with id 2 and project with id 3 are matched. A party wants to decline the match.
