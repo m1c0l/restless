@@ -47,6 +47,24 @@ class User(db.Model):
     @type: C{str}
     """
 
+    github_link = db.Column(db.Text, nullable=True)
+    """
+    The URL of the user's Github profile.
+    @type: C{str}
+    """
+
+    phone = db.Column(db.Text, nullable=True)
+    """
+    The user's phone number.
+    @type: C{str}
+    """
+
+    city = db.Column(db.Text, nullable=True)
+    """
+    The user's city of residence.
+    @type: C{str}
+    """
+
     bio = db.Column(db.Text, nullable=False, default="")
     """
     A description about the user.
@@ -123,6 +141,9 @@ class User(db.Model):
             'last_name': self.last_name,
             'email': self.email,
             'LinkedIn_profile_id': self.LinkedIn_profile_id,
+            'github_link': self.github_link,
+            'city': self.city,
+            'phone': self.phone,
             'bio': self.bio,
             'signup_time': str(self.signup_time),
             'projects_managing': [project.id for project in self.projects_managing],
