@@ -456,6 +456,7 @@ GET /api/matches/<who>/<id>/<type>
 - `<who>` is `0` for a project, and `1` for a developer.
 - `<id>` is the id of this object.
 - `<type>` is the type of this match. `1` is the default value, which indicates that both user and project have swiped positively. `0` means that the match has been declined by either user. `2` or more indicates that a party has accepted the match (a.k.a. sought more information about it)
+
 #### Example
 Get all new matches for project with id 3:
 ```
@@ -475,6 +476,7 @@ GET /api/matches/<accept/decline>/<user_id>/<project_id>
 - `user_id` is the id of the user.
 - `project_id` is the id of the project.
 Use this if either the user or the PM declines this match. It will set the result of the match to 0.
+
 #### Example
 Suppose user with id 2 and project with id 3 are matched. A party wants to decline the match.
 ```
