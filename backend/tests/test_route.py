@@ -35,6 +35,10 @@ class RouteTestCase(unittest.TestCase):
         """
         db.session.remove()
 
+    def post_json(self, endpoint, dictionary):
+        return self.client.post(endpoint, data=json.dumps(dictionary),
+                                content_type='application/json')
+
     def populate_db(self):
         """
         Adds sample data into the database.
@@ -159,7 +163,7 @@ class RouteTestCase(unittest.TestCase):
             'username': 'user123',
             'password': 'pass123'
         }
-        resp = self.client.post('/api/new_user/', data=data)
+        resp = self.post_json('/api/new_user/', data)
         id = json.loads(resp.data)['id']
         self.assertGreater(id, 0)
 
@@ -169,9 +173,8 @@ class RouteTestCase(unittest.TestCase):
         self.assertEqual(user['username'], data['username'])
 
         # duplicate username
-        resp = self.client.post('/api/new_user/', data=data)
-        id = json.loads(resp.data)['id']
-        self.assertEqual(id, -1)
+        resp = self.post_json('/api/new_user/', data)
+        self.assertGreaterEqual(resp.status_code, 400)
 
     def test_new_project(self):
         """
@@ -183,7 +186,7 @@ class RouteTestCase(unittest.TestCase):
             'description': 'cool project',
             'pm_id': self.user.id
         }
-        resp = self.client.post('/api/new_project/', data=data)
+        resp = self.post_json('/api/new_project/', data)
         id = json.loads(resp.data)['id']
         self.assertGreater(id, 0)
 
@@ -195,9 +198,8 @@ class RouteTestCase(unittest.TestCase):
         self.assertEqual(project['pm_id'], self.user.id)
 
         # duplicate title
-        resp = self.client.post('/api/new_project/', data=data)
-        id = json.loads(resp.data)['id']
-        self.assertEqual(id, -1)
+        resp = self.post_json('/api/new_project/', data)
+        self.assertGreaterEqual(resp.status_code, 400)
 
     def test_update_user(self):
         """
@@ -208,15 +210,14 @@ class RouteTestCase(unittest.TestCase):
             'first_name': 'new first name',
             'email': 'email@gmail.com'
         }
-        resp = self.client.post('/api/update/user/' + str(self.user.id),
-                                data=user_update)
+        resp = self.post_json('/api/update/user/'+str(self.user.id), user_update)
         updated_user = json.loads(resp.data)
         self.assertEqual(updated_user['first_name'], user_update['first_name'])
         self.assertEqual(updated_user['email'], user_update['email'])
         self.assertEqual(updated_user['last_name'], self.user.last_name)
 
-        #resp = self.client.post('/api/update/user/' + str(self.user.id),
-        #                        data={'username': 'new username'})
+        #resp = self.post_json('/api/update/user/' + str(self.user.id),
+        #                        {'username': 'new username'})
         #print(json.loads(resp.data)['username'])
         #self.assertGreaterEqual(resp.status_code, 400)
 
@@ -229,8 +230,8 @@ class RouteTestCase(unittest.TestCase):
             'description': 'new description',
             'current_state': Project.STATE_FINISHED
         }
-        resp = self.client.post('/api/update/project/' + str(self.project.id),
-                                data=project_update)
+        resp = self.post_json('/api/update/project/' + str(self.project.id),
+                                project_update)
         updated_project = json.loads(resp.data)
         self.assertEqual(updated_project['description'],
                           project_update['description'])
@@ -238,8 +239,8 @@ class RouteTestCase(unittest.TestCase):
                           project_update['current_state'])
         self.assertEqual(updated_project['pm_id'], self.project.pm_id)
 
-        #resp = self.client.post('/api/update/project/' + str(self.project.id),
-        #                        data={'title': 'new title'})
+        #resp = self.post_json('/api/update/project/' + str(self.project.id),
+        #                        {'title': 'new title'})
         #self.assertGreaterEqual(resp.status_code, 400)
 
     def test_login(self):
@@ -250,15 +251,15 @@ class RouteTestCase(unittest.TestCase):
             'username': 'user123',
             'password': 'pass123'
         }
-        resp_new_user = self.client.post('/api/new_user/', data=data)
+        resp_new_user = self.post_json('/api/new_user/', data)
         id1 = json.loads(resp_new_user.data)['id']
-        resp_login = self.client.post('/api/login/', data=data)
+        resp_login = self.post_json('/api/login/', data)
         id2 = json.loads(resp_login.data)['id']
         self.assertEqual(id1, id2)
 
         data['password'] = 'wrongpasswd'
-        resp = self.client.post('/api/login/', data=data)
-        self.assertEqual(json.loads(resp.data)['id'], -1)
+        resp = self.post_json('/api/login/', data)
+        self.assertGreaterEqual(resp.status_code, 400)
 
     def test_add_skill(self):
         """
