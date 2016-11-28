@@ -248,4 +248,8 @@ public class viewProjectPM extends AppCompatActivity {
         Intent transfer=new Intent(viewProjectPM.this, PMActivity.class);
         startActivity(transfer);
     }
+    public void back(View v){
+        Intent transfer = new Intent(viewProjectPM.this, PMActivity.class);
+        startActivity(transfer);
+    }
 }

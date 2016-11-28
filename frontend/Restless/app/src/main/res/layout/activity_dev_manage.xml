@@ -26,8 +26,18 @@
         android:layout_width="wrap_content"
         android:onClick="onActive"
         android:layout_height="wrap_content"
-        android:layout_marginTop="153dp"
+        android:layout_marginTop="89dp"
         android:id="@+id/view"
         android:layout_below="@+id/matches"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="77dp"
+        android:onClick="home"
+        android:id="@+id/home" />
 </RelativeLayout>

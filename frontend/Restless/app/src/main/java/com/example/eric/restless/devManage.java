@@ -21,4 +21,8 @@ public class devManage extends AppCompatActivity {
         Intent transfer=new Intent(devManage.this,devPendingMatches.class);
         startActivity(transfer);
     }
+    public void home(View v){
+        Intent transfer = new Intent(devManage.this, DevPMSelectionActivity.class);
+        startActivity(transfer);
+    }
 }

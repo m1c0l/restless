@@ -100,4 +100,8 @@ public class createProjectActivity extends AppCompatActivity {
         transfer.putExtra("TEMP_PROJECT", project);
         startActivity(transfer);
     }
+    public void back(View v){
+        Intent transfer = new Intent(createProjectActivity.this, PMActivity.class);
+        startActivity(transfer);
+    }
 }
