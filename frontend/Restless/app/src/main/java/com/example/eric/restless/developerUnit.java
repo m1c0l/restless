@@ -53,8 +53,8 @@ public class developerUnit implements Parcelable{
 
     }
     public String getBody3(){
-        String ret = "github: " + githubLink + "\n";
-        ret += "Past Projects: ";
+        String ret = "github: " + githubLink + "\n\n";
+        ret += "Past Projects:\n";
 
         //TODO limit 5?
         for (int pid : projectsDev){
@@ -74,7 +74,7 @@ public class developerUnit implements Parcelable{
 
     }
     public String getBody2(){
-    String ret = "Skills:";
+    String ret = "Skills:\n";
     for (String s : skillSet){
         ret += s + "\n";
     }
