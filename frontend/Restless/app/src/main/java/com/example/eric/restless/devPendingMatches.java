@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -70,6 +71,14 @@ public class devPendingMatches extends AppCompatActivity {
         Intent transfer=new Intent(devPendingMatches.this, profileMatchedProject.class);
         projectUnit project = CustomListViewValuesArr.get(mPosition);
         transfer.putExtra("TEMP_PROJECT", project);
+        startActivity(transfer);
+    }
+    public void back(View v){
+        Intent transfer = new Intent(devPendingMatches.this,devSwipe.class);
+        startActivity(transfer);
+    }
+    public void forward(View v){
+        Intent transfer = new Intent(devPendingMatches.this,devActiveProjects.class);
         startActivity(transfer);
     }
 }

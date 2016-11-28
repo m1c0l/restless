@@ -72,7 +72,7 @@
                     android:layout_marginTop="20dp"
                     android:background="@drawable/rounded_text"
                     android:id="@+id/Text1"
-                    android:textSize="12dp"
+                    android:textSize="15dp"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
@@ -89,7 +89,7 @@
                         android:id="@+id/Text2"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentLeft="true"
-                        android:textSize="12dp"
+                        android:textSize="15dp"
                         android:layout_alignParentStart="true"
                         />
                 </RelativeLayout>
@@ -105,7 +105,7 @@
                         android:layout_alignParentTop="true"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
-                        android:textSize="12dp"
+                        android:textSize="15dp"
                         />
                 </RelativeLayout>
             </ViewFlipper>
@@ -171,7 +171,7 @@
                         android:layout_alignParentTop="true"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
-                        android:textSize="12dp"
+                        android:textSize="15dp"
                         />
                 </RelativeLayout>
                 <RelativeLayout
@@ -186,7 +186,7 @@
                         android:layout_alignParentTop="true"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
-                        android:textSize="12dp"
+                        android:textSize="15dp"
                         />
                 </RelativeLayout>
                 <RelativeLayout
@@ -201,7 +201,7 @@
                         android:layout_alignParentTop="true"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
-                        android:textSize="12dp"
+                        android:textSize="15dp"
                         />
                 </RelativeLayout>
             </ViewFlipper>

@@ -77,7 +77,7 @@ public class projectAdapter extends CustomAdapter {
 
         @Override
         public void onClick(View arg0) {
-            PMActivity sct = (PMActivity)activity;
+                PMActivity sct = (PMActivity)activity;
             /****  Call  onItemClick Method inside CustomListViewAndroidExample Class ( See Below )****/
             sct.onItemClick(mPosition);
         }

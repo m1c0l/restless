@@ -289,7 +289,7 @@ public class devSwipe extends AppCompatActivity {
                     String skill_desc=new String();
                     JSONArray skills = (JSONArray) b.get("skills_needed");
 
-
+                    skill_desc+="The project desires the following skills:\n";
                     for(int i=0; i < skills.length(); i++){
                         skill_desc+=skills.getString(i);
                         skill_desc+=((skills.length()!=i) ? " " : ".");
@@ -452,7 +452,7 @@ public class devSwipe extends AppCompatActivity {
     public void match_transfer(View v){
 
 
-        Intent transfer=new Intent(devSwipe.this,devManage.class);
+        Intent transfer=new Intent(devSwipe.this,devPendingMatches.class);
         //transfer.putExtra("TEMP_PROJECT", );
         //transfer.putExtra("TEMP_USER", );
         startActivity(transfer);

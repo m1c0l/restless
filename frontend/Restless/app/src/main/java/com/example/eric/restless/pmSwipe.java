@@ -223,7 +223,7 @@ public class pmSwipe extends AppCompatActivity {
                     String skill_desc=new String();
                     JSONArray skills = (JSONArray) b.get("skill_sets");
 
-
+                    skill_desc+="The user has the following skills:\n";
                     for(int i=0; i < skills.length(); i++){
                         skill_desc+=skills.getString(i);
                         skill_desc+=((skills.length()!=i) ? " " : ".");
