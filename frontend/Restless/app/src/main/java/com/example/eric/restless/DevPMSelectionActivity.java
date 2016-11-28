@@ -23,7 +23,7 @@ public class DevPMSelectionActivity extends AppCompatActivity {
         startActivity(transfer);
     }
     public void devMethod(View v){
-        Intent transfer=new Intent(DevPMSelectionActivity.this,devSwipe.class);
+        Intent transfer=new Intent(DevPMSelectionActivity.this,pmSwipe.class);
         startActivity(transfer);
     }
     public void editProfileMethod(View v){

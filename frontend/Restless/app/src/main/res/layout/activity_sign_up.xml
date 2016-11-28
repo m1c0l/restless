@@ -309,12 +309,12 @@
         android:layout_height="wrap_content"
         app:srcCompat="@android:drawable/sym_def_app_icon"
         android:id="@+id/imageButton"
-        android:backgroundTint="#00000000"
-        android:layout_below="@+id/github"
+        android:background="@drawable/rounded_text"
+        android:layout_marginLeft="73dp"
+        android:layout_marginStart="73dp"
+        android:layout_below="@+id/textView"
         android:layout_alignLeft="@+id/github"
-        android:layout_alignStart="@+id/github"
-        android:layout_marginLeft="72dp"
-        android:layout_marginStart="72dp" />
+        android:layout_alignStart="@+id/github" />
 
 
 </RelativeLayout>
