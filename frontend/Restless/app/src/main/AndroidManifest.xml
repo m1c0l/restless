@@ -16,7 +16,7 @@
         <activity android:name=".SignIn" />
         <activity android:name=".signUp" />
         <activity android:name=".DevPMSelectionActivity" />
-        <activity android:name=".devPendingMatches">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -44,7 +44,7 @@
         <activity android:name=".devManage" />
         <activity android:name=".devActiveProjects" />
         <activity android:name=".viewProjectDev" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".devPendingMatches"></activity>
     </application>
 
 </manifest>
