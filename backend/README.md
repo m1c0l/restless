@@ -427,15 +427,7 @@ Upload an image for the project with id 1:
 ```
 POST /api/img/get/project/1
 ```
-POST data:
-```js
-{
-  "file": File('/path/to/file')
-}
-```
-> Currently, the server assumes the data is given as `multipart/form-data`. If
-  it is easier to upload the image as raw data (eg. `binary/octet-stream`), ask
-  Richard to change this.
+POST data: Raw image data
 
 ### Deleting an image
 ```
