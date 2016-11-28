@@ -116,9 +116,9 @@ if __name__ == '__main__':
         swipe_arr = [
             #Swipe(user_id=user_arr[1].id, project_id=project_arr[0].id, result=Swipe.RESULT_YES, who_swiped=Swipe.SWIPER_DEV),
             #Swipe(user_id=user_arr[1].id, project_id=project_arr[0].id, result=Swipe.RESULT_YES, who_swiped=Swipe.SWIPER_PM),
-            Swipe(user_id=user_arr[3].id, project_id=project_arr[1].id, result=Swipe.RESULT_YES, who_swiped=Swipe.SWIPER_DEV),
+            #Swipe(user_id=user_arr[3].id, project_id=project_arr[1].id, result=Swipe.RESULT_YES, who_swiped=Swipe.SWIPER_DEV),
             #Swipe(user_id=user_arr[0].id, project_id=project_arr[2].id, result=Swipe.RESULT_NO, who_swiped=Swipe.SWIPER_DEV),
-            Swipe(user_id=user_arr[3].id, project_id=project_arr[3].id, result=Swipe.RESULT_NO, who_swiped=Swipe.SWIPER_DEV),
+            #Swipe(user_id=user_arr[3].id, project_id=project_arr[3].id, result=Swipe.RESULT_NO, who_swiped=Swipe.SWIPER_DEV),
             #Swipe(user_id=user_arr[3].id, project_id=project_arr[3].id, result=Swipe.RESULT_NO, who_swiped=Swipe.SWIPER_PM)
         ]
         #make user 1 and 2 swipe on all projects and all projects swipe on user 2
@@ -131,12 +131,20 @@ if __name__ == '__main__':
             #add swipes for users that aren't special for testing
             rand_user_ids = set()
             for i in range(10):
-                rand_user = random.randint(3, len(user_arr) - 1)
+                rand_user = random.randint(4, len(user_arr) - 1)
                 while rand_user in rand_user_ids:
-                    rand_user = random.randint(3, len(user_arr) - 1)
+                    rand_user = random.randint(4, len(user_arr) - 1)
+                rand_user_ids.add(rand_user)
                 more_swipes.append(Swipe(user_id=user_arr[rand_user].id,
                     project_id=proj.id, result=Swipe.RESULT_YES,
                     who_swiped=Swipe.SWIPER_DEV))
+            rand_user_ids = list(rand_user_ids)
+            for i in range(len(rand_user_ids) / 2):
+                idx = rand_user_ids[i]
+                more_swipes.append(Swipe(user_id=user_arr[idx].id,
+                    project_id=proj.id, result=Swipe.RESULT_YES,
+                    who_swiped=Swipe.SWIPER_PM))
+
             swipe_arr += more_swipes
         #database.add_swipe should auto generate the proper Match objects
         """
