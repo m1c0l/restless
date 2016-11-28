@@ -47,7 +47,7 @@
 
 
             <ImageView
-                android:layout_width="150dp"
+                android:layout_width="160dp"
                 app:srcCompat="@drawable/default_photo"
                 android:id="@+id/dev_profile_pic1"
                 android:layout_height="150dp"
@@ -141,7 +141,7 @@
 
 
             <ImageView
-                android:layout_width="150dp"
+                android:layout_width="160dp"
                 app:srcCompat="@drawable/default_photo"
                 android:id="@+id/dev_profile_pic2"
                 android:layout_height="150dp"

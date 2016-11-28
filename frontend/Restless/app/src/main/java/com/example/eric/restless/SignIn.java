@@ -16,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -98,23 +99,25 @@ public class SignIn extends AppCompatActivity {
             });
             thread1.start();
             thread1.join();
-            URL url = null;
-            try {
-                url = new URL("http://159.203.243.194/api/img/get/user/"+String.valueOf((Integer) User.getUser().getId()));
-                Log.i("Shit", url.toString());
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-            final Bitmap bmp;
-            try {
-                bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                if(bmp!=null)
-                    User.getUser().setImage(bmp);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
 
+            Thread thread2=new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        URL url = new URL("http://159.203.243.194/api/img/get/user/"+String.valueOf((Integer) User.getUser().getId()));
+                        InputStream stream = (InputStream) url.getContent();
+                        Bitmap bmp = BitmapFactory.decodeStream(stream);
+
+                        if (bmp != null)
+                            User.getUser().setImage(bmp);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            );
+            thread2.start();
+            thread2.join();
 
             Intent transfer=new Intent(SignIn.this,DevPMSelectionActivity.class);
             startActivity(transfer);
