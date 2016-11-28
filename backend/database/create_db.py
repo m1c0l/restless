@@ -63,7 +63,9 @@ if __name__ == '__main__':
             email = fake.company_email()
             uname = fake.user_name()
             bio = fake.sentence()
-            user_arr.append(User(first_name=fname, last_name=lname, email=email, username=uname, bio=bio))
+            new_user = User(first_name=fname, last_name=lname, email=email, username=uname, bio=bio)
+            new_user.desired_salary = random.randint(0, 50)
+            user_arr.append(new_user)
         for u in user_arr:
             #generate few unique skills for the user
             #last_skill = -1
@@ -94,6 +96,7 @@ if __name__ == '__main__':
             pm = user_arr[random.randint(0, len(user_arr) - 1)].id
             project_arr.append(Project(title=title, description=desc, pm_id=pm))
         for p in project_arr:
+            p.pay_range = random.randint(50, 225)
             database.insert_obj(p)
             user_arr[random.randint(0, len(user_arr) - 1)].projects_developing.append(p)
             # generate a few unique skills for each project
@@ -125,6 +128,15 @@ if __name__ == '__main__':
                 Swipe(user_id=user_arr[1].id, project_id=proj.id, result=Swipe.RESULT_YES, who_swiped=Swipe.SWIPER_DEV),
                 Swipe(user_id=user_arr[1].id, project_id=proj.id, result=Swipe.RESULT_YES, who_swiped=Swipe.SWIPER_PM),
             ]
+            #add swipes for users that aren't special for testing
+            rand_user_ids = set()
+            for i in range(10):
+                rand_user = random.randint(3, len(user_arr) - 1)
+                while rand_user in rand_user_ids:
+                    rand_user = random.randint(3, len(user_arr) - 1)
+                more_swipes.append(Swipe(user_id=user_arr[rand_user].id,
+                    project_id=proj.id, result=Swipe.RESULT_YES,
+                    who_swiped=Swipe.SWIPER_DEV))
             swipe_arr += more_swipes
         #database.add_swipe should auto generate the proper Match objects
         """

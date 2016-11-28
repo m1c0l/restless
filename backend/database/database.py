@@ -180,6 +180,13 @@ def get_login_by_user_id(id):
         return None
 
 def get_open_projects(current_state):
+    """
+    Gets a list of projects with the current state.
+    @param current_state: the desired state of the project.
+    @type current_state: C{int}
+    @return: List of projects with this state.
+    @rtype: C{Project}
+    """
     return Project.query.filter_by(current_state=current_state).all()
 
 def get_stack_for_user(user_id):

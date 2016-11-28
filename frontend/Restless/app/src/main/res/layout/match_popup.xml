@@ -31,28 +31,31 @@
         android:textSize="15dp"
         android:textStyle="bold"
         android:id="@+id/matcher"
-        android:layout_below="@+id/imageView"
-        android:layout_alignLeft="@+id/imageView"
-        android:layout_alignStart="@+id/imageView" />
+        android:layout_below="@+id/matcherPic"
+        android:layout_alignLeft="@+id/matcherPic"
+        android:layout_alignStart="@+id/matcherPic"
+        />
 
     <ImageView
-        android:layout_width="100dp"
+        android:layout_width="110dp"
         android:layout_height="100dp"
-        app:srcCompat="@android:drawable/picture_frame"
-        android:id="@+id/imageView3"
-        android:layout_alignTop="@+id/imageView"
+        app:srcCompat="@drawable/default_photo"
+        android:id="@+id/matcheePic"
+        android:layout_alignTop="@+id/matcherPic"
         android:layout_alignRight="@+id/matchText"
-        android:layout_alignEnd="@+id/matchText" />
+        android:layout_alignEnd="@+id/matchText"
+        android:background="@drawable/rounded_text"/>
 
     <ImageView
-        android:layout_width="100dp"
+        android:layout_width="110dp"
         android:layout_height="100dp"
-        app:srcCompat="@android:drawable/picture_frame"
-        android:id="@+id/imageView"
+        app:srcCompat="@drawable/default_photo"
+        android:id="@+id/matcherPic"
         android:layout_marginBottom="39dp"
         android:layout_above="@+id/with"
         android:layout_alignLeft="@+id/matchText"
-        android:layout_alignStart="@+id/matchText" />
+        android:layout_alignStart="@+id/matchText"
+        android:background="@drawable/rounded_text"/>
 
     <TextView
         android:text="TextView"
@@ -67,6 +70,6 @@
         android:layout_marginLeft="14dp"
         android:layout_marginStart="14dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/imageView3"
-        android:layout_alignStart="@+id/imageView3" />
+        android:layout_alignLeft="@+id/matcheePic"
+        android:layout_alignStart="@+id/matcheePic" />
 </RelativeLayout>

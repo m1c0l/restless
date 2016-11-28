@@ -3,8 +3,8 @@
     package="com.example.eric.restless">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -26,7 +26,6 @@
         <activity android:name=".createProjectActivity" />
         <activity android:name=".selectProjectActivity" />
         <activity android:name=".pendingMatchActivity" />
-        <activity android:name=".editProjectActivity" />
         <activity android:name=".selectDevelopersActivity" />
         <activity android:name=".enterSkillsNewAccount" />
         <activity android:name=".enterSkillsNewProject" />
@@ -37,7 +36,8 @@
         <activity android:name=".profileDisplayManage" />
         <activity android:name=".changePassword" />
         <activity android:name=".manageMatchesPM" />
-        <activity android:name=".updateBio"></activity>
+        <activity android:name=".updateBio" />
+        <activity android:name=".pmSwipe"></activity>
     </application>
 
 </manifest>

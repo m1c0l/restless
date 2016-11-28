@@ -1,14 +1,9 @@
 package com.example.eric.restless;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
-import android.os.AsyncTask;
-import android.os.Looper;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,13 +13,11 @@ import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -32,23 +25,19 @@ import android.widget.ViewFlipper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Stack;
-
 import static java.lang.Math.abs;
 
-public class devSwipe extends AppCompatActivity {
-
+public class pmSwipe extends AppCompatActivity {
 
     protected GestureDetectorCompat gdetect;
     protected PopupWindow match_popup;
     protected LayoutInflater inflater;
-    protected ImageView profile_pic, profile_pic_reserve, matcher_pic, matchee_pic;
+    protected ImageView profile_pic, profile_pic_reserve, matcher_pic,matchee_pic;
     protected TextView body1,body2,body3, body1_reserve, body2_reserve, body3_reserve;
     protected RelativeLayout relativeLayout;
     protected ViewFlipper textflip, profileflip, textflip_reserve;
@@ -92,65 +81,12 @@ public class devSwipe extends AppCompatActivity {
         public ViewFlipper textswitcher;
         public ImageView picture;
     }
-    protected void runSwipe(Container a){
-        final ViewAssociation first=a.curr;
-        Boolean swipe_up=a.swipeDir;
-        final httpInterface requester=new httpInterface();
-        final Boolean matched[] = new Boolean[1];
-        matched[0] = false;
-        Thread thread;
-        int i = swipe_up ? 1 : 0;
-        final String url = new String("http://159.203.243.194/api/swipe/user/"+String.valueOf(User.getUser().getId())+"/"+String.valueOf(first.id)+"/"+String.valueOf(i));
-        thread = new Thread (new Runnable() {
-            public void run() {
-                JSONObject b=requester.request("GET", null, url);
-                try {
-                    if(b!=null && b.get("id")!=null)
-                        matched[0] = (Integer)b.get("id") > 0;
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        if (matched[0]) {
-                            //set up and display popup
-                            matchee_text = (TextView) container.findViewById(R.id.with);
-                            matcher_text = (TextView) container.findViewById(R.id.matcher);
-                            matchee_text.setText(first.name.getText().toString());
-                            matcher_text.setText("boogers");
-                            matchee_pic = (ImageView) container.findViewById(R.id.matcheePic);
-                            matchee_pic.setImageDrawable(first.picture.getDrawable());
-                            match_popup.showAtLocation(relativeLayout, Gravity.NO_GRAVITY, 0, 0);
-                        }
-                    }
-                });
-            }
-        });
-        thread.start();
-
-
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        if(!user_stack.empty())
-            user_stack.pop();
-        if(fetch_and_update(first)==null){
-            Toast.makeText(this, "No profiles found", Toast.LENGTH_SHORT).show();
-            Intent transfer = new Intent(devSwipe.this,DevPMSelectionActivity.class);
-            startActivity(transfer);
-        }
-    }
-
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
 
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dev_swipe);
+        setContentView(R.layout.activity_pm_swipe);
         Display display = getWindowManager().getDefaultDisplay();
         dimensions = new Point();
         display.getSize(dimensions);
@@ -175,7 +111,7 @@ public class devSwipe extends AppCompatActivity {
         //fetch profile
         if(user_stack.empty()) {
             Toast.makeText(this, "No profiles found", Toast.LENGTH_SHORT).show();
-            Intent transfer = new Intent(devSwipe.this,DevPMSelectionActivity.class);
+            Intent transfer = new Intent(pmSwipe.this,DevPMSelectionActivity.class);
             startActivity(transfer);
             return;
         }
@@ -186,8 +122,7 @@ public class devSwipe extends AppCompatActivity {
         Thread first = fetch_and_update(first_page);
         user_stack.pop();
         Thread second = fetch_and_update(second_page);
-
-        try {
+         try {
             first.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -221,11 +156,11 @@ public class devSwipe extends AppCompatActivity {
                 return true;
             }
         });
-
     }
+
     protected void populate_stack(){
         try{
-            final String url = new String("http://159.203.243.194/api/stack/user/"+User.getUser().getId());
+            final String url = new String("http://159.203.243.194/api/stack/project/"+User.getUser().getId());
             //final JSONObject obj = new JSONObject();
             final httpInterface requester = new httpInterface();
             //populate obj
@@ -243,7 +178,7 @@ public class devSwipe extends AppCompatActivity {
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
-                    } 
+                    }
 
                 }
             });
@@ -252,20 +187,18 @@ public class devSwipe extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
     }
-    protected Thread fetch_and_update(final ViewAssociation viewer){
+
+    protected Thread fetch_and_update(final ViewAssociation viewer) {
         Integer top;
-
-
         synchronized(user_stack){
             if(user_stack.empty()) {
                 Toast.makeText(this, "No profiles found", Toast.LENGTH_SHORT).show();
 
                 return null;
             }
-            //top=user_stack.pop();
             top = user_stack.peek();
+            //top=user_stack.pop();
             Log.i("popped object: ", String.valueOf(top));
         }
         viewer.id = top;
@@ -274,18 +207,14 @@ public class devSwipe extends AppCompatActivity {
         final httpInterface requester = new httpInterface();
         Thread thread;
 
-        final String url = new String("http://159.203.243.194/api/get/project/"+top.toString());
-
-
-        //Log.i("Signin: ",requestObj.toString());
-            //Toast.makeText(getApplicationContext(),requestObj.toString(),Toast.LENGTH_LONG).show();
+        final String url = new String("http://159.203.243.194/api/get/user/"+top.toString());
         thread=new Thread(new Runnable() {
             public void run() {
 
                 try {
                     final JSONObject b=(JSONObject)((JSONArray)requester.request("GET", null, url).get("results")).get(0);
                     String skill_desc=new String();
-                    JSONArray skills = (JSONArray) b.get("skills_needed");
+                    JSONArray skills = (JSONArray) b.get("skill_sets");
 
 
                     for(int i=0; i < skills.length(); i++){
@@ -293,24 +222,26 @@ public class devSwipe extends AppCompatActivity {
                         skill_desc+=((skills.length()!=i) ? " " : ".");
                     }
                     final String skills_desc = skill_desc;
-                    final JSONObject pm = (JSONObject) ((JSONArray) requester.request("GET",null,"http://159.203.243.194/api/get/user/"+String.valueOf((Integer)b.get("pm_id"))).get("results")).get(0);
-
+                    //final JSONObject pm = (JSONObject) ((JSONArray) requester.request("GET",null,"http://159.203.243.194/api/get/user/"+String.valueOf((Integer)b.get("pm_id"))).get("results")).get(0);
+                    final String bio_page = (String)b.get("bio") +"\nDesired Wage: " + (Integer)b.get("desired_salary");
+                    String temp = b.get("github_link")!=null ? b.getString("github_link") : "";
+                    final String projects = "GitHub: "+temp+"\nCompleted Projects: ";
                     runOnUiThread(new Runnable() {
                         @Override
 
                         public void run() {
                             try {
 
-                                viewer.update((String)b.get("description"),skills_desc, (String)pm.get("bio"));
+                                viewer.update(bio_page,skills_desc, projects);
 
-                                viewer.name.setText((String)b.get("title"));
+                                viewer.name.setText((String)b.get("first_name"));
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
                     });
-                    URL url = new URL("http://159.203.243.194/api/img/get/project/"+String.valueOf((Integer)b.get("id")));
+                    URL url = new URL("http://159.203.243.194/api/img/get/user/"+String.valueOf((Integer)b.get("id")));
                     final Bitmap bmp;
                     try {
                         bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
@@ -332,6 +263,61 @@ public class devSwipe extends AppCompatActivity {
 
 
         return thread;
+    }
+
+
+    protected void runSwipe(Container a) throws InterruptedException {
+        final ViewAssociation first=a.curr;
+        Boolean swipe_up=a.swipeDir;
+        final httpInterface requester=new httpInterface();
+        final Boolean matched[] = new Boolean[1];
+        matched[0] = false;
+        Thread thread;
+        int i = swipe_up ? 1 : 0;
+        final String url = new String("http://159.203.243.194/api/swipe/project/"+String.valueOf(User.getUser().getId())+"/"+String.valueOf(first.id)+"/"+String.valueOf(i));
+        thread = new Thread (new Runnable() {
+            public void run() {
+                JSONObject b=requester.request("GET", null, url);
+                try {
+                    if(b!=null && b.get("id")!=null)
+                        matched[0] = (Integer)b.get("id") > 0;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        if (true) {
+                            //set up and display popup
+                            matchee_text = (TextView) container.findViewById(R.id.with);
+                            matcher_text = (TextView) container.findViewById(R.id.matcher);
+                            matchee_text.setText(first.name.getText().toString());
+                            matchee_pic = (ImageView) container.findViewById(R.id.matcheePic);
+                            matchee_pic.setImageDrawable(first.picture.getDrawable());
+                            //TODO set up matcher photo and text
+                            matcher_text.setText("boogers");
+                            match_popup.showAtLocation(relativeLayout, Gravity.NO_GRAVITY, 0, 0);
+
+                        }
+                    }
+                });
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if(!user_stack.empty())
+            user_stack.pop();
+        if(fetch_and_update(first)==null){
+            Toast.makeText(this, "No profiles found", Toast.LENGTH_SHORT).show();
+            Intent transfer = new Intent(pmSwipe.this,DevPMSelectionActivity.class);
+            startActivity(transfer);
+        }
     }
     public class GestureListener extends GestureDetector.SimpleOnGestureListener{
         private float minFling = 50;
@@ -361,14 +347,14 @@ public class devSwipe extends AppCompatActivity {
             if(horizontal_move){
                 ViewFlipper a = (profileflip.getDisplayedChild()==0) ? textflip : textflip_reserve;
                 if(horizontal > 0){
-                    a.setInAnimation(devSwipe.this, R.anim.in_from_left);
-                    a.setOutAnimation(devSwipe.this, R.anim.out_to_right);
+                    a.setInAnimation(pmSwipe.this, R.anim.in_from_left);
+                    a.setOutAnimation(pmSwipe.this, R.anim.out_to_right);
                     a.showPrevious();
                 }
                 else {
 
-                    a.setInAnimation(devSwipe.this, R.anim.in_from_right);
-                    a.setOutAnimation(devSwipe.this, R.anim.out_to_left);
+                    a.setInAnimation(pmSwipe.this, R.anim.in_from_right);
+                    a.setOutAnimation(pmSwipe.this, R.anim.out_to_left);
                     a.showNext();
                 }
             }
@@ -381,12 +367,16 @@ public class devSwipe extends AppCompatActivity {
                 else
                     a=new Container(second_page,first_page, vertical < 0);
                 //Thread updater;
-                runSwipe(a);
+                try {
+                    runSwipe(a);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 if(vertical < 0) {
 
 
-                    profileflip.setInAnimation(devSwipe.this,R.anim.in_from_bot);
-                    profileflip.setOutAnimation(devSwipe.this,R.anim.out_to_top);
+                    profileflip.setInAnimation(pmSwipe.this,R.anim.in_from_bot);
+                    profileflip.setOutAnimation(pmSwipe.this,R.anim.out_to_top);
                     //(updater = new Thread(thread_demo)).start();
 
                     profileflip.showNext();
@@ -394,8 +384,8 @@ public class devSwipe extends AppCompatActivity {
                 }
                 else{
 
-                    profileflip.setInAnimation(devSwipe.this,R.anim.in_from_top);
-                    profileflip.setOutAnimation(devSwipe.this,R.anim.out_to_bot);
+                    profileflip.setInAnimation(pmSwipe.this,R.anim.in_from_top);
+                    profileflip.setOutAnimation(pmSwipe.this,R.anim.out_to_bot);
                     //(updater = new Thread(thread_demo)).start();
 
                     profileflip.showNext();
@@ -450,13 +440,11 @@ public class devSwipe extends AppCompatActivity {
     }
 
     public void edit_transfer(View v){
-        Intent transfer=new Intent(devSwipe.this,editProfileMainScreen.class);
+        Intent transfer=new Intent(pmSwipe.this,editProfileMainScreen.class);
         startActivity(transfer);
     }
     public void match_transfer(View v){
-        /*
-        Intent transfer=new Intent(devSwipe.this,profileDisplay.class);
+        Intent transfer=new Intent(pmSwipe.this,profileDisplay.class);
         startActivity(transfer);
-        */
     }
 }
