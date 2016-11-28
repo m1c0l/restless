@@ -92,7 +92,7 @@ public class developerUnit implements Parcelable{
                             for (int i = 0; i < temp.length(); i++){
                                 skillSet.add(temp.getString(i));
                             }
-                            temp = user.getJSONArray("project_managing");
+                            temp = user.getJSONArray("projects_managing");
                             for (int i = 0; i < temp.length(); i++){
                                 projectsDev.add(temp.getInt(i));
                             }
@@ -173,4 +173,7 @@ public class developerUnit implements Parcelable{
             return new developerUnit[size];
         }
     };
+    public ArrayList<String> getSkillSet(){
+        return skillSet;
+    }
 }

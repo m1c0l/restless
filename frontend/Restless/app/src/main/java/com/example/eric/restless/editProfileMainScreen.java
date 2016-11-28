@@ -25,7 +25,7 @@ public class editProfileMainScreen extends AppCompatActivity {
     }
 
     public void updateSkills(View v){
-        Intent transfer = new Intent(editProfileMainScreen.this, DevPMSelectionActivity.class);
+        Intent transfer = new Intent(editProfileMainScreen.this, enterSkillsEdit.class);
         startActivity(transfer);
     }
 }

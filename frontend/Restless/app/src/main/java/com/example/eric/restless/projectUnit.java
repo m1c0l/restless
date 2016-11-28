@@ -248,4 +248,10 @@ public class projectUnit implements Parcelable {
         return id;
     }
     public String getImage_path(){ return image_path;}
+
+    public String getBody1(){return "hi";}
+    public String getBody2(){return "hi";}
+    public String getBody3(){return "hi";}
+    public String getBody4(){return "hi";}
+
 }

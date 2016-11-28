@@ -20,7 +20,7 @@ import static java.lang.Math.abs;
  * Created by Eric on 11/25/2016.
  */
 
-public class profileMatchedDev extends AppCompatActivity {
+public class profileMatchedProject extends AppCompatActivity {
     protected TextView body1,body2,body3,body4, title;
     private ImageView profile_pic;
     private GestureDetectorCompat gdetect;
@@ -28,7 +28,7 @@ public class profileMatchedDev extends AppCompatActivity {
 
     private projectUnit p;
     private developerUnit d;
-    public profileMatchedDev() {
+    public profileMatchedProject() {
     }
 
     protected void onCreate(Bundle savedInstanceState){
@@ -78,13 +78,13 @@ public class profileMatchedDev extends AppCompatActivity {
             if(horizontal_move) {
 
                 if (horizontal > 0) {
-                    textflipper.setInAnimation(profileMatchedDev.this, R.anim.in_from_left);
-                    textflipper.setOutAnimation(profileMatchedDev.this, R.anim.out_to_right);
+                    textflipper.setInAnimation(profileMatchedProject.this, R.anim.in_from_left);
+                    textflipper.setOutAnimation(profileMatchedProject.this, R.anim.out_to_right);
                     textflipper.showPrevious();
                 } else {
 
-                    textflipper.setInAnimation(profileMatchedDev.this, R.anim.in_from_right);
-                    textflipper.setOutAnimation(profileMatchedDev.this, R.anim.out_to_left);
+                    textflipper.setInAnimation(profileMatchedProject.this, R.anim.in_from_right);
+                    textflipper.setOutAnimation(profileMatchedProject.this, R.anim.out_to_left);
                     textflipper.showNext();
                 }
             }
@@ -125,10 +125,10 @@ public class profileMatchedDev extends AppCompatActivity {
     }
     public void setText(){
 
-        body1.setText(d.getBody1());
-        body2.setText(d.getBody2());
-        body3.setText(d.getBody3());
-        body4.setText(d.getBody4());
+        body1.setText(p.getBody1());
+        body2.setText(p.getBody2());
+        body3.setText(p.getBody3());
+        body4.setText(p.getBody4());
 
     }
     public void onConfirm(View v){
@@ -136,7 +136,7 @@ public class profileMatchedDev extends AppCompatActivity {
         //creating new project first
         try{
             final String url = new String("http://159.203.243.194/api/matches/accept/"
-            + d.getId() + "/" + p.getId());
+                    + d.getId() + "/" + p.getId());
 
             Thread thread=new Thread(new Runnable() {
                 public void run() {
@@ -148,9 +148,8 @@ public class profileMatchedDev extends AppCompatActivity {
         }catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Intent transfer=new Intent(profileMatchedDev.this, manageMatchesPM.class);
+        Intent transfer=new Intent(profileMatchedProject.this, DevPMSelectionActivity.class);
         //pass member id and go to activity that you can view member profile
-        transfer.putExtra("TEMP_PROJECT", p);
         startActivity(transfer);
     }
     public void onDelete(View v){
@@ -170,9 +169,8 @@ public class profileMatchedDev extends AppCompatActivity {
         }catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Intent transfer=new Intent(profileMatchedDev.this, manageMatchesPM.class);
+        Intent transfer=new Intent(profileMatchedProject.this, manageMatchesPM.class);
         //pass member id and go to activity that you can view member profile
-        transfer.putExtra("TEMP_PROJECT", p);
         startActivity(transfer);
     }
 }

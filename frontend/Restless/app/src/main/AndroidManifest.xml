@@ -39,6 +39,7 @@
         <activity android:name=".profileDisplayDev" />
         <activity android:name=".pmSwipe" />
         <activity android:name=".profileMatchedDev" />
+        <activity android:name=".profileMatchedProject"></activity>
     </application>
 
 </manifest>
