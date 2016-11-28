@@ -32,6 +32,7 @@
         android:layout_below="@+id/newProject"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="74dp" />
+        android:layout_marginTop="74dp"
+        android:id="@+id/matchList" />
 
 </RelativeLayout>

@@ -1,17 +1,13 @@
 package com.example.eric.restless;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -27,7 +23,6 @@ public class viewProjectPM extends AppCompatActivity {
     public viewProjectPM customListView = null;
     public ArrayList<developerUnit> CustomListViewValuesArr = new ArrayList<>();
     private projectUnit project;
-    private ArrayList<Integer> teamIds = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +54,7 @@ public class viewProjectPM extends AppCompatActivity {
 
         //setting up buttons
         Button swipeButton = (Button) findViewById(R.id.swipe);
-        Button matchButton = (Button) findViewById(R.id.swipe);
+        Button matchButton = (Button) findViewById(R.id.match);
         Button lockButton = (Button) findViewById(R.id.lock);
         Button deleteButton = (Button) findViewById(R.id.delete1);
 
@@ -74,13 +69,11 @@ public class viewProjectPM extends AppCompatActivity {
                 manageMatches(v);
             }
         });
-
         lockButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 lockProject(v);
             }
         });
-
         deleteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 deleteProject(v);
@@ -89,6 +82,7 @@ public class viewProjectPM extends AppCompatActivity {
     }
 
     public void pullTeam(){
+        final ArrayList<Integer> teamIds = new ArrayList<>();
         final httpInterface requester = new httpInterface();
 
         try {
@@ -117,21 +111,32 @@ public class viewProjectPM extends AppCompatActivity {
             e.printStackTrace();
         }
         //for every team member
+        for (int id : teamIds){
+            developerUnit d = new developerUnit();
+            d.setId(id);
+            d.pullFromServer();
+            CustomListViewValuesArr.add(d);
+        }
     }
 
 
     /*****************  This function used by adapter ****************/
     public void onItemClick(int mPosition)
     {
+        Intent transfer=new Intent(viewProjectPM.this, profileDisplayDev.class);
         //pass member id and go to activity that you can view member profile
-    }
+        transfer.putExtra("TEMP_USER", CustomListViewValuesArr.get(mPosition));
+        startActivity(transfer);
 
+    }
     public void swipeProject(View v){
         //go to swipe page for pm
     }
-
     public void manageMatches(View v){
-        //got to manage match page
+        Intent transfer=new Intent(viewProjectPM.this, manageMatchesPM.class);
+        //pass member id and go to activity that you can view member profile
+        transfer.putExtra("TEMP_PROJECT", project);
+        startActivity(transfer);
     }
     public void lockProject(View v){
         //TODO confirmation dialog(?)

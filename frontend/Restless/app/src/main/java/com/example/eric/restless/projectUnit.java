@@ -134,34 +134,7 @@ public class projectUnit implements Parcelable {
         }catch (InterruptedException e) {
             e.printStackTrace();
         }
-        /*
-        //pushing list of skills
-        for (String skill : skills){
-            try{
-                final String url = new String("http://159.203.243.194/api/skill/add/project/"
-                        + skill + "/" + id);
 
-                Thread thread=new Thread(new Runnable() {
-                    public void run() {
-                        JSONObject b=requester.request("GET", null, url);
-                        try {
-                            if(b!=null) {
-                                //get id of project
-                                id = b.getInt("id");
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                });
-                thread.start();
-                thread.join();
-            }catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        */
 
         return true;
 

@@ -80,7 +80,7 @@
                     android:text="Matches"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/matches"
+                    android:id="@+id/match"
                     android:layout_alignParentTop="true"
                     android:layout_toRightOf="@+id/swipe"
                     android:layout_toEndOf="@+id/swipe" />
@@ -91,8 +91,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/lock"
                     android:layout_alignParentTop="true"
-                    android:layout_toRightOf="@+id/matches"
-                    android:layout_toEndOf="@+id/matches" />
+                    android:layout_toRightOf="@+id/match"
+                    android:layout_toEndOf="@+id/match" />
 
                 <Button
                     android:text="Delete"

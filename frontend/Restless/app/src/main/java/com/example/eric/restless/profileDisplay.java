@@ -1,6 +1,5 @@
 package com.example.eric.restless;
 
-import android.gesture.Gesture;
 import android.os.Bundle;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -11,8 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import org.w3c.dom.Text;
-
 import static java.lang.Math.abs;
 
 /**
@@ -20,7 +17,7 @@ import static java.lang.Math.abs;
  */
 
 public abstract class profileDisplay extends AppCompatActivity {
-    private TextView body1,body2,body3,body4, title;
+    protected TextView body1,body2,body3,body4, title;
     private ImageView profile_pic;
     private GestureDetectorCompat gdetect;
     private ViewFlipper textflipper;
@@ -30,7 +27,7 @@ public abstract class profileDisplay extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.profile_display);
+        setContentView(R.layout.profile_display_view);
 
         body1=(TextView )findViewById(R.id.Text1);
         body2=(TextView )findViewById(R.id.Text2);
@@ -41,6 +38,7 @@ public abstract class profileDisplay extends AppCompatActivity {
         textflipper = (ViewFlipper) findViewById(R.id.textFlipper1);
         //populate by polling website ?
         gdetect = new GestureDetectorCompat(this, new GestureListener());
+        setText();
     }
     private class GestureListener extends GestureDetector.SimpleOnGestureListener{
         private float minFling = 50;
@@ -113,8 +111,6 @@ public abstract class profileDisplay extends AppCompatActivity {
             this.gdetect.onTouchEvent(event);
             return super.onTouchEvent(event);
         }
-
-        public abstract void onConfirm(View v);
-        public abstract void onDelete(View v);
+        public abstract void setText();
 
 }
