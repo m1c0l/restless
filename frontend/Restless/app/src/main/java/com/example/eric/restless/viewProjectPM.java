@@ -29,6 +29,7 @@ public class viewProjectPM extends AppCompatActivity {
     public viewProjectPM customListView = null;
     public ArrayList<developerUnit> CustomListViewValuesArr = new ArrayList<>();
     private projectUnit project;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

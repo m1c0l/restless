@@ -2,8 +2,11 @@ package com.example.eric.restless;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -19,7 +22,7 @@ public class manageMatchesPM extends AppCompatActivity {
     private ArrayList<Integer> matchIds = new ArrayList<>();
     public manageMatchesPM customListView = null;
     public ArrayList<developerUnit> CustomListViewValuesArr = new ArrayList<>();
-
+    ImageButton button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +32,7 @@ public class manageMatchesPM extends AppCompatActivity {
         project = b.getParcelable("TEMP_PROJECT");
         //getting members
         getPendingMatches();
-
+        button = (ImageButton) findViewById(R.id.imageButton4);
         //custom list view stuff
         customListView = this;
         list = (ListView) findViewById(R.id.matchList);
@@ -86,6 +89,11 @@ public class manageMatchesPM extends AppCompatActivity {
         startActivity(transfer);
     }
 
+
+        public void goBack(View v){
+            Intent transfer=new Intent(manageMatchesPM.this,viewProjectPM.class);
+            startActivity(transfer);
+        }
 
 
 

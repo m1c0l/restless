@@ -18,7 +18,7 @@ import static java.lang.Math.abs;
 
 public abstract class profileDisplay extends AppCompatActivity {
     protected TextView body1,body2,body3,body4, title;
-    private ImageView profile_pic;
+    protected ImageView profile_pic;
     private GestureDetectorCompat gdetect;
     private ViewFlipper textflipper;
 
