@@ -1,6 +1,8 @@
 package com.example.eric.restless;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,10 +11,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class SignIn extends AppCompatActivity {
 
@@ -36,7 +42,7 @@ public class SignIn extends AppCompatActivity {
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
     }
-    public void signIn(View v){
+    public void signIn(View v) throws InterruptedException {
 
         //make login request!
         final httpInterface requester = new httpInterface();
@@ -78,6 +84,37 @@ public class SignIn extends AppCompatActivity {
             //setting global user object
             Log.i("user id: ", String.valueOf(a[0]));
             User.getUser().setId(a[0]);
+            //final JSONObject requestObj = new JSONObject();
+
+            Thread thread1=new Thread(new Runnable() {
+                public void run() {
+                    JSONObject b=requester.request("GET", null, "http://159.203.243.194/api/get/user/"+User.getUser().getId());
+                    try {
+                        User.getUser().setName((String)((JSONObject)(((JSONArray)b.get("results")).get(0))).get("first_name"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            thread1.start();
+            thread1.join();
+            URL url = null;
+            try {
+                url = new URL("http://159.203.243.194/api/img/get/user/"+String.valueOf((Integer) User.getUser().getId()));
+                Log.i("Shit", url.toString());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            final Bitmap bmp;
+            try {
+                bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                if(bmp!=null)
+                    User.getUser().setImage(bmp);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
 
             Intent transfer=new Intent(SignIn.this,DevPMSelectionActivity.class);
             startActivity(transfer);
