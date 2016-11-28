@@ -125,6 +125,7 @@ public class profileMatchedDev extends AppCompatActivity {
     }
     public void setText(){
 
+        title.setText(d.getName());
         body1.setText(d.getBody1());
         body2.setText(d.getBody2());
         body3.setText(d.getBody3());

@@ -124,7 +124,7 @@ public class profileMatchedProject extends AppCompatActivity {
         return super.onTouchEvent(event);
     }
     public void setText(){
-
+        title.setText(p.getTitle());
         body1.setText(p.getBody1());
         body2.setText(p.getBody2());
         body3.setText(p.getBody3());

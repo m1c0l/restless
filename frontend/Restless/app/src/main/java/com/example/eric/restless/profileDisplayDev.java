@@ -12,7 +12,7 @@ public class profileDisplayDev extends profileDisplay{
         Bundle b = getIntent().getExtras();
         d = b.getParcelable("TEMP_USER");
         if (d != null) {
-
+            title.setText(d.getName());
             body1.setText(d.getBody1());
             body2.setText(d.getBody2());
             body3.setText(d.getBody3());

@@ -48,16 +48,37 @@ public class developerUnit implements Parcelable{
 
     //name bio
     public String getBody1(){
-        return "NAME";
-    }
-    public String getBody2(){
-        return "hello world";
+        String ret = "Bio: " + bio + "\n";
+        return ret;
+
     }
     public String getBody3(){
-        return "hello world";
+        String ret = "github: " + githubLink + "\n";
+        ret += "Past Projects: ";
+
+        //TODO limit 5?
+        for (int pid : projectsDev){
+            projectUnit p = new projectUnit();
+            p.setId(pid);
+            p.pullFromServer();
+            ret += p.getTitle() + "\n";
+        }
+        return ret;
+
     }
     public String getBody4(){
-        return "hello world";
+        String ret = "";
+        ret += "Email: " + email + "\n";
+        ret += "Phone Number: " + phone +"\n";
+        return ret;
+
+    }
+    public String getBody2(){
+    String ret = "Skills:";
+    for (String s : skillSet){
+        ret += s + "\n";
+    }
+    return ret;
     }
 
 

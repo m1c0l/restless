@@ -16,7 +16,7 @@
         <activity android:name=".SignIn" />
         <activity android:name=".signUp" />
         <activity android:name=".DevPMSelectionActivity" />
-        <activity android:name=".enterSkillsEdit">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,8 +29,7 @@
         <activity android:name=".selectDevelopersActivity" />
         <activity android:name=".enterSkillsNewAccount" />
         <activity android:name=".enterSkillsNewProject" />
-        <activity android:name=".MainActivity" />
-
+        <activity android:name=".enterSkillsEdit" />
         <activity android:name=".devSwipe" />
         <activity android:name=".devMatches" />
         <activity android:name=".editProfileMainScreen" />
