@@ -48,7 +48,7 @@ public class devSwipe extends AppCompatActivity {
     protected GestureDetectorCompat gdetect;
     protected PopupWindow match_popup;
     protected LayoutInflater inflater;
-    protected ImageView profile_pic, profile_pic_reserve, match_pic;
+    protected ImageView profile_pic, profile_pic_reserve, matcher_pic, matchee_pic;
     protected TextView body1,body2,body3, body1_reserve, body2_reserve, body3_reserve;
     protected RelativeLayout relativeLayout;
     protected ViewFlipper textflip, profileflip, textflip_reserve;
@@ -110,29 +110,34 @@ public class devSwipe extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        if (matched[0]) {
+                            //set up and display popup
+                            matchee_text = (TextView) container.findViewById(R.id.with);
+                            matcher_text = (TextView) container.findViewById(R.id.matcher);
+                            matchee_text.setText(first.name.getText().toString());
+                            matcher_text.setText("boogers");
+                            matchee_pic = (ImageView) container.findViewById(R.id.matcheePic);
+                            matchee_pic.setImageDrawable(first.picture.getDrawable());
+                            match_popup.showAtLocation(relativeLayout, Gravity.NO_GRAVITY, 0, 0);
+                        }
+                    }
+                });
             }
         });
         thread.start();
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
 
-                if (matched[0]) {
-                    //set up and display popup
-                    matchee_text = (TextView) container.findViewById(R.id.with);
-                    matcher_text = (TextView) container.findViewById(R.id.matcher);
-                    matchee_text.setText(first.name.getText().toString());
-                    matcher_text.setText("boogers");
-                    match_popup.showAtLocation(relativeLayout, Gravity.NO_GRAVITY, 0, 0);
-                }
-            }
-        });
         try {
             thread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        if(!user_stack.empty())
+            user_stack.pop();
         if(fetch_and_update(first)==null){
             Toast.makeText(this, "No profiles found", Toast.LENGTH_SHORT).show();
             Intent transfer = new Intent(devSwipe.this,DevPMSelectionActivity.class);
@@ -179,6 +184,7 @@ public class devSwipe extends AppCompatActivity {
 
         Log.i("hello", "reached");
         Thread first = fetch_and_update(first_page);
+        user_stack.pop();
         Thread second = fetch_and_update(second_page);
 
         try {
@@ -258,7 +264,8 @@ public class devSwipe extends AppCompatActivity {
 
                 return null;
             }
-            top=user_stack.pop();
+            //top=user_stack.pop();
+            top = user_stack.peek();
             Log.i("popped object: ", String.valueOf(top));
         }
         viewer.id = top;
@@ -447,7 +454,9 @@ public class devSwipe extends AppCompatActivity {
         startActivity(transfer);
     }
     public void match_transfer(View v){
+        /*
         Intent transfer=new Intent(devSwipe.this,profileDisplay.class);
         startActivity(transfer);
+        */
     }
 }

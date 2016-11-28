@@ -289,6 +289,24 @@ public class pmSwipe extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        if (true) {
+                            //set up and display popup
+                            matchee_text = (TextView) container.findViewById(R.id.with);
+                            matcher_text = (TextView) container.findViewById(R.id.matcher);
+                            matchee_text.setText(first.name.getText().toString());
+                            matchee_pic = (ImageView) container.findViewById(R.id.matcheePic);
+                            matchee_pic.setImageDrawable(first.picture.getDrawable());
+                            //TODO set up matcher photo and text
+                            matcher_text.setText("boogers");
+                            match_popup.showAtLocation(relativeLayout, Gravity.NO_GRAVITY, 0, 0);
+
+                        }
+                    }
+                });
             }
         });
         thread.start();
@@ -297,24 +315,7 @@ public class pmSwipe extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
 
-                if (true) {
-                    //set up and display popup
-                    matchee_text = (TextView) container.findViewById(R.id.with);
-                    matcher_text = (TextView) container.findViewById(R.id.matcher);
-                    matchee_text.setText(first.name.getText().toString());
-                    matchee_pic = (ImageView) container.findViewById(R.id.matcherPic);
-                    matchee_pic.setImageDrawable(first.picture.getDrawable());
-                    //TODO set up matcher photo and text
-                    matcher_text.setText("boogers");
-                    match_popup.showAtLocation(relativeLayout, Gravity.NO_GRAVITY, 0, 0);
-
-                }
-            }
-        });
         if(!user_stack.empty())
             user_stack.pop();
         if(fetch_and_update(first)==null){

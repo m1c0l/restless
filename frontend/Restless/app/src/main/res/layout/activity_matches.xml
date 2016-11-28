@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/roundedheader"
-                android:text="First Screen"
+                android:text="Matches"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentLeft="true"
@@ -55,7 +55,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="20dp"
-                android:background="#F0808080"
+                android:background="#60FFFFFF"
                 android:id="@+id/first_matchList"
                 android:layout_above="@+id/firstpagebutton" />
 
@@ -67,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/roundedheader"
-                android:text="Second Screen"
+                android:text="Projects"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentLeft="true"
@@ -99,7 +99,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="20dp"
-                android:background="#F0808080"
+                android:background="#60FFFFFF"
                 android:id="@+id/second_matchList"
                 android:layout_above="@+id/secondpagebutton" />
 
