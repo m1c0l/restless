@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_update_bio"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
@@ -199,8 +198,7 @@
         android:layout_toLeftOf="@+id/github"
         android:layout_toStartOf="@+id/github"
         android:background="@drawable/roundedbutton"
-        android:onClick="moveBack"
-        android:id="@+id/button6" />
+        android:onClick="moveBack" />
 
     <Button
         android:text="U p d a t e"
@@ -233,7 +231,6 @@
         android:text="Image: "
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView16"
         android:layout_marginTop="21dp"
         android:textSize="16dp"
         android:textStyle="bold"

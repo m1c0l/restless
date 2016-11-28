@@ -156,7 +156,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="29dp"
-        android:id="@+id/textView17"
         android:textSize="16dp"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
@@ -201,8 +200,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginRight="12dp"
         android:layout_marginEnd="12dp"
-        android:onClick="back"
-        android:id="@+id/back" />
+        android:onClick="back" />
 
 
 </RelativeLayout>

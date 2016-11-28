@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_matches"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="10dp"
@@ -29,9 +28,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:textStyle="bold"
-                android:textAlignment="center"
-                android:id="@+id/first_title"
-                />
+                android:textAlignment="center" />
 
             <Button
                 android:text="Go to page 2"
@@ -56,7 +53,6 @@
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="20dp"
                 android:background="#60FFFFFF"
-                android:id="@+id/first_matchList"
                 android:layout_above="@+id/firstpagebutton" />
 
         </RelativeLayout>
@@ -73,9 +69,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:textStyle="bold"
-                android:textAlignment="center"
-                android:id="@+id/second_title"
-                />
+                android:textAlignment="center" />
 
             <Button
                 android:text="Go to page 1"
@@ -100,7 +94,6 @@
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="20dp"
                 android:background="#60FFFFFF"
-                android:id="@+id/second_matchList"
                 android:layout_above="@+id/secondpagebutton" />
 
         </RelativeLayout>

@@ -25,7 +25,6 @@
         </activity>
         <activity android:name=".createProjectActivity" />
         <activity android:name=".selectProjectActivity" />
-        <activity android:name=".pendingMatchActivity" />
         <activity android:name=".selectDevelopersActivity" />
         <activity android:name=".enterSkillsNewAccount" />
         <activity android:name=".enterSkillsNewProject" />
@@ -41,7 +40,6 @@
         <activity android:name=".pmSwipe" />
         <activity android:name=".profileMatchedDev" />
         <activity android:name=".profileMatchedProject" />
-        <activity android:name=".devManage" />
         <activity android:name=".devActiveProjects" />
         <activity android:name=".viewProjectDev" />
         <activity android:name=".devPendingMatches"></activity>

@@ -10,7 +10,7 @@ import android.view.View;
 
 public class profileDisplayProject extends profileDisplay{
     public void back(View v){
-        Intent transfer = new Intent(profileDisplayProject.this, devManage.class);
+        Intent transfer = new Intent(profileDisplayProject.this, devSwipe.class);
         startActivity(transfer);
     }
     public void setText(){
