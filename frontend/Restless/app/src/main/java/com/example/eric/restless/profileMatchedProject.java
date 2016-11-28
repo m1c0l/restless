@@ -35,10 +35,12 @@ public class profileMatchedProject extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //getting data
         Bundle b = getIntent().getExtras();
-        d = b.getParcelable("TEMP_USER");
         p = b.getParcelable("TEMP_PROJECT");
 
-
+        d = new developerUnit();
+        d.setId(User.getUser().getId());
+        d.pullFromServer();
+        
         setContentView(R.layout.profile_display_manage);
 
         body1=(TextView )findViewById(R.id.Text1);
