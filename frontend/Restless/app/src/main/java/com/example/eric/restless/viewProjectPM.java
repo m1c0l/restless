@@ -119,14 +119,15 @@ public class viewProjectPM extends AppCompatActivity {
         }
     }
 
-
     /*****************  This function used by adapter ****************/
     public void onItemClick(int mPosition)
     {
-        Intent transfer=new Intent(viewProjectPM.this, profileDisplayDev.class);
+
+        Intent transfer=new Intent(viewProjectPM.this, profileDisplayView.class);
         //pass member id and go to activity that you can view member profile
         transfer.putExtra("TEMP_USER", CustomListViewValuesArr.get(mPosition));
         startActivity(transfer);
+
 
     }
     public void swipeProject(View v){
