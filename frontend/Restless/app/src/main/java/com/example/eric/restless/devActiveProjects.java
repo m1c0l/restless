@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class devActiveProjects extends AppCompatActivity {
     ListView list;
-    projectAdapter adapter;
+    devProjectViewAdapter adapter;
     public devActiveProjects customListView = null;
     public ArrayList<projectUnit> CustomListViewValuesArr = new ArrayList<>();
 
@@ -43,7 +43,7 @@ public class devActiveProjects extends AppCompatActivity {
                 CustomListViewValuesArr.add(p);
             }
         }
-        adapter = new projectAdapter(customListView, CustomListViewValuesArr, res);
+        adapter = new devProjectViewAdapter(customListView, CustomListViewValuesArr, res);
         list.setAdapter(adapter);
     }
 
