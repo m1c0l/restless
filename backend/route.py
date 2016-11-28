@@ -30,7 +30,7 @@ def init_app(testing=False):
     from database import database
     database.db.init_app(app)
 
-def error(msg='Bad Request', status='BAD_REQUEST', code=400): #todo: add logging?
+def error(msg='Bad Request', status='BAD_REQUEST', code=400):
     """
     Sends a HTTP message with an error response
     @param msg: The error message
@@ -88,9 +88,12 @@ def update_info(type, id):
     if type not in commands:
         return error(msg='Invalid type')
     try:
+        request_json = request.get_json()
         obj = commands[type.lower()](id)
-        database.update(obj, **request.get_json())
+        database.update(obj, **request_json)
         obj = commands[type.lower()](id)
+        if type.lower() == 'project' and request_json['current_state'] > 0:
+            database.delete_pending_matches_with_project_id(id)
         return flask.jsonify(**(obj.to_dict()))
     except ValueError:
         return error(msg='Invalid ID')
@@ -170,7 +173,18 @@ def retrieve(type,ids):
 
     get = database_commands[type.lower()]
     try:
-        response = [get(int(id)).to_dict() for id in ids.split(',')]
+        split_ids = ids.split(',')
+        response = []
+        for id in split_ids:
+            retrieved_obj = get(int(id))
+            if retrieved_obj:
+                response.append(retrieved_obj.to_dict())
+            else:
+                err_dict = {
+                    "id": id,
+                    "error": "invalid id"
+                }
+                response.append(err_dict)
         return flask.jsonify(results=response)
     except (AttributeError, ValueError) as e:
         return error(msg='Invalid id: ' + str(e))

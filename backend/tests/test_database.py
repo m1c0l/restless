@@ -255,6 +255,15 @@ class DatabaseTestCase(unittest.TestCase):
         stack = get_stack_for_user(user5.id)
         self.assertEqual(len(stack), 3)
 
+        #project not recruiting shouldn't be in stack
+        project4 = Project('title4', '', user2.id)
+        project4.skills_needed.append(skill)
+        project4.skill_weights.append(Weighted_Skill(project4.id, skill.id, 5.0))
+        project4.current_state = Project.STATE_FINISHED;
+        stack = get_stack_for_user(user5.id)
+        self.assertEqual(len(stack), 3)
+        self.assertEqual(project4 in stack, False)
+
         # bad id
         with self.assertRaises(ValueError):
             get_stack_for_user(-1)

@@ -443,10 +443,16 @@ GET /api/stack/user/<id>
 - `<id>` is the user id
 Returns an array of id's of projects in the stack.
 
+#### Special users for testing
+
+- user 1 is desperate and has swiped yes on all projects, so user 1's stack should be empty, and all project's stacks should contain user 1
+- user 2 is pro and has swiped yes on all projects and all projects have swiped yes on him (matched yes on all projects), so user 2's stack should be empty
+- user 3 is a great developer and has a super high desired salary ($200/hr), so user 3's stack should be empty or small
+
 #### Example
-Get stack for user with id 1:
+Get stack for user with id 5:
 ```
-GET /api/stack/user/1
+GET /api/stack/user/5
 ```
 Response:
 ```js
@@ -487,6 +493,9 @@ GET /api/matches/<who>/<id>/<type>
     - `0` means that the match has been declined by either user.
     - `2` or more indicates that a party has accepted the match (a.k.a. sought
       more information about it)
+
+#### Special users for testing
+- user 2 is pro and has swiped yes on all projects and all projects have swiped yes on him (matched yes on all projects), so ```/api/matches/1/2/1``` should initially contain all the projects, and all of ```/api/matches/0/<project_id>/1``` should initially contain user 2
 
 #### Example
 Get all new matches for project with id 3:

@@ -200,8 +200,11 @@ def get_stack_for_user(user_id):
     #subtract the projects the user is PM on
     user_pm_projects = set(user_obj.projects_managing)
     stack = stack.difference(user_pm_projects)
-    #keep projects with higher pay rate than desired by user
-    stack = [proj for proj in stack if proj.pay_range >= user_obj.desired_salary]
+    #keep projects in recruiting state that have higher pay rate than desired by user
+    #me trying to be pythonic
+    stack = [proj for proj in stack if
+        proj.current_state == Project.STATE_RECRUITING and
+        proj.pay_range >= user_obj.desired_salary]
     #subtract any projects the user has swiped on as developer
     user_dev_swipes = get_swipes_for(Swipe.GET_USER_SWIPES, user_id, Swipe.SWIPER_DEV)
     #me trying to be pythonic
@@ -266,8 +269,12 @@ def get_stack_for_project(project_id):
     #set stack to the users who swiped yes
     stack = {swipe.user_id for swipe in dev_swipes if swipe.result == Swipe.RESULT_YES}
     #subtract users that project PM has swiped on
-    pm_swipes = get_swipes_for(Swipe.GET_PROJECT_SWIPES, project_id, Swipe.SWIPER_PM)
-    pm_swipes_user_ids = {swipe.user_id for swipe in pm_swipes}
+    pm_swipes = Match.query.filter_by(project_id=project_id).all()
+    pm_swipes_user_ids = {match.user_id for match in pm_swipes}
+    print "pm swipe user ids", pm_swipes_user_ids
+    #old implementation not using Match
+    #pm_swipes = get_swipes_for(Swipe.GET_PROJECT_SWIPES, project_id, Swipe.SWIPER_PM)
+    #pm_swipes_user_ids = {swipe.user_id for swipe in pm_swipes}
     stack = list(stack.difference(pm_swipes_user_ids))
     stack = [get_user_by_id(id) for id in stack]
     #calculate a score for each user to rank them by

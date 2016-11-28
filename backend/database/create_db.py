@@ -8,7 +8,7 @@ config_file = os.path.dirname(os.path.realpath(__file__)) + '/../config.py'
 app.config.from_pyfile(config_file)
 db.init_app(app)
 
-from models import User, Project, Skill, Weighted_Skill, Swipe, Login
+from models import User, Project, Skill, Weighted_Skill, Swipe, Login, Match
 from devs_to_projects import devs_to_projects
 from project_skills import project_skills
 from user_skills import user_skills
@@ -43,12 +43,19 @@ if __name__ == '__main__':
             #user_arr[2].skill_sets.append(s)
             db.session.commit()
 
+        """
+        user 1 is desperate and has swiped on all projects
+        user 2 is pro has swiped on all projects and all projects have swiped on him (matched yes on all projects)
+        user 3 is a great developer and has a super high desired salary ($200/hr)
+        """
         user_arr = [
             User(first_name="John", last_name="Dough", email="xyz", username="jd", bio="m4st3r h4x0r"),
             User(first_name="Mike", last_name="Li", email="mail", username="mic", bio="admin"),
             User(first_name="Rich", last_name="Sun", email="rich", username="rich", bio="waffle the bunny"),
             User(first_name="Vince", last_name="Jin", email="jinir", username="vince", bio="flask dev")
         ]
+        #set high salary for user 3
+        user_arr[2].desired_salary = 200
 
         for i in range(25):
             fname = fake.first_name()
@@ -104,15 +111,35 @@ if __name__ == '__main__':
             db.session.commit()
 
         swipe_arr = [
-            Swipe(user_id=user_arr[1].id, project_id=project_arr[0].id, result=Swipe.RESULT_YES, who_swiped=Swipe.SWIPER_DEV),
-            Swipe(user_id=user_arr[1].id, project_id=project_arr[0].id, result=Swipe.RESULT_YES, who_swiped=Swipe.SWIPER_PM),
-            Swipe(user_id=user_arr[2].id, project_id=project_arr[1].id, result=Swipe.RESULT_YES, who_swiped=Swipe.SWIPER_DEV),
-            Swipe(user_id=user_arr[0].id, project_id=project_arr[2].id, result=Swipe.RESULT_NO, who_swiped=Swipe.SWIPER_DEV),
+            #Swipe(user_id=user_arr[1].id, project_id=project_arr[0].id, result=Swipe.RESULT_YES, who_swiped=Swipe.SWIPER_DEV),
+            #Swipe(user_id=user_arr[1].id, project_id=project_arr[0].id, result=Swipe.RESULT_YES, who_swiped=Swipe.SWIPER_PM),
+            Swipe(user_id=user_arr[3].id, project_id=project_arr[1].id, result=Swipe.RESULT_YES, who_swiped=Swipe.SWIPER_DEV),
+            #Swipe(user_id=user_arr[0].id, project_id=project_arr[2].id, result=Swipe.RESULT_NO, who_swiped=Swipe.SWIPER_DEV),
             Swipe(user_id=user_arr[3].id, project_id=project_arr[3].id, result=Swipe.RESULT_NO, who_swiped=Swipe.SWIPER_DEV),
-            Swipe(user_id=user_arr[3].id, project_id=project_arr[3].id, result=Swipe.RESULT_NO, who_swiped=Swipe.SWIPER_PM)
+            #Swipe(user_id=user_arr[3].id, project_id=project_arr[3].id, result=Swipe.RESULT_NO, who_swiped=Swipe.SWIPER_PM)
         ]
+        #make user 1 and 2 swipe on all projects and all projects swipe on user 2
+        for proj in project_arr:
+            more_swipes = [
+                Swipe(user_id=user_arr[0].id, project_id=proj.id, result=Swipe.RESULT_YES, who_swiped=Swipe.SWIPER_DEV),
+                Swipe(user_id=user_arr[1].id, project_id=proj.id, result=Swipe.RESULT_YES, who_swiped=Swipe.SWIPER_DEV),
+                Swipe(user_id=user_arr[1].id, project_id=proj.id, result=Swipe.RESULT_YES, who_swiped=Swipe.SWIPER_PM),
+            ]
+            swipe_arr += more_swipes
+        #database.add_swipe should auto generate the proper Match objects
+        """
+        match_arr = [
+            #good match for user 1, project 0
+            Match(user_id=user_arr[1].id, project_id=project_arr[0].id)
+        ]
+        """
         for sw in swipe_arr:
-            database.insert_obj(sw)
+            database.add_swipe(user_id=sw.user_id, project_id=sw.project_id,
+                result=sw.result, who_swiped=sw.who_swiped)
+        """
+        for m in match_arr:
+            database.insert_obj(m)
+        """
 
         # test images
         img_dir = os.path.dirname(os.path.realpath(__file__)) + '/../' + app.config['IMG_PATH']
