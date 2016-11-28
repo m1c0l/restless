@@ -454,7 +454,9 @@ public class devSwipe extends AppCompatActivity {
         startActivity(transfer);
     }
     public void match_transfer(View v){
+        /*
         Intent transfer=new Intent(devSwipe.this,profileDisplay.class);
         startActivity(transfer);
+        */
     }
 }

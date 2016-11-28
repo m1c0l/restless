@@ -10,7 +10,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class manageMatchesPM extends AppCompatActivity {
@@ -80,14 +79,16 @@ public class manageMatchesPM extends AppCompatActivity {
     /*****************  This function used by adapter ****************/
     public void onItemClick(int mPosition)
     {
-        /*
-        Intent transfer=new Intent(manageMatchesPM.this, profileDisplayDev.class);
+        //go to profiledisplaydev to confirm or deny this person
+        Intent transfer=new Intent(manageMatchesPM.this, profileDisplayManageDev.class);
         //pass member id and go to activity that you can view member profile
+        transfer.putExtra("TEMP_PROJECT", project);
         transfer.putExtra("TEMP_USER", CustomListViewValuesArr.get(mPosition));
         startActivity(transfer);
-        */
+
     }
 
 
 
-}
+
+    }
