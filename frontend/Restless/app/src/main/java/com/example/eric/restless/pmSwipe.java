@@ -34,6 +34,7 @@ import static java.lang.Math.abs;
 
 public class pmSwipe extends AppCompatActivity {
 
+    private projectUnit project;
     protected GestureDetectorCompat gdetect;
     protected PopupWindow match_popup;
     protected LayoutInflater inflater;
@@ -85,6 +86,10 @@ public class pmSwipe extends AppCompatActivity {
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
+        Bundle bs = getIntent().getExtras();
+        project = bs.getParcelable("TEMP_PROJECT");
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pm_swipe);
         Display display = getWindowManager().getDefaultDisplay();
@@ -160,7 +165,7 @@ public class pmSwipe extends AppCompatActivity {
 
     protected void populate_stack(){
         try{
-            final String url = new String("http://159.203.243.194/api/stack/project/"+User.getUser().getId());
+            final String url = new String("http://159.203.243.194/api/stack/project/"+project.getId());
             //final JSONObject obj = new JSONObject();
             final httpInterface requester = new httpInterface();
             //populate obj

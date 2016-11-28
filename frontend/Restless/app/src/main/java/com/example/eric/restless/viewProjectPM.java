@@ -130,7 +130,10 @@ public class viewProjectPM extends AppCompatActivity {
 
     }
     public void swipeProject(View v){
-        //go to swipe page for pm
+        Intent transfer=new Intent(viewProjectPM.this, pmSwipe.class);
+        //pass member id and go to activity that you can view member profile
+        transfer.putExtra("TEMP_PROJECT", project);
+        startActivity(transfer);
     }
     public void manageMatches(View v){
         Intent transfer=new Intent(viewProjectPM.this, manageMatchesPM.class);

@@ -45,7 +45,7 @@ public class manageMatchesPM extends AppCompatActivity {
         try{
             final httpInterface requester = new httpInterface();
             final String url = new String("http://159.203.243.194/api/matches/0/"
-                    + project.getId() + "1");
+                    + project.getId() + "/"+ "1");
         Thread thread=new Thread(new Runnable() {
             public void run() {
                 JSONObject b=requester.request("GET", null, url);
@@ -80,12 +80,12 @@ public class manageMatchesPM extends AppCompatActivity {
     /*****************  This function used by adapter ****************/
     public void onItemClick(int mPosition)
     {
-        /*
-        Intent transfer=new Intent(manageMatchesPM.this, profileDisplayDev.class);
+
+        Intent transfer=new Intent(manageMatchesPM.this, profileMatchedDev.class);
         //pass member id and go to activity that you can view member profile
         transfer.putExtra("TEMP_USER", CustomListViewValuesArr.get(mPosition));
+        transfer.putExtra("TEMP_PROJECT", project);
         startActivity(transfer);
-        */
     }
 
 

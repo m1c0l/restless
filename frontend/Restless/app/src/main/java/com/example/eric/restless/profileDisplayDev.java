@@ -8,16 +8,7 @@ import android.view.View;
  */
 
 public class profileDisplayDev extends profileDisplay{
-    /*
-    public void onConfirm(View v){
-        //push to pm
-        //go back to original devs
-    }
-    public void onDelete(View v){
-        //delete from list of matches
-        //go back to list of devs
-    }
-    */
+
 
     public void setText(){
         Bundle b = getIntent().getExtras();
