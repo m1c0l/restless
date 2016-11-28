@@ -29,6 +29,9 @@ public class developerUnit implements Parcelable{
     private ArrayList<String> skillSet;
 
     //TODO more fields that we'll add as we go
+    public ArrayList<Integer> getProjectsDev(){
+        return projectsDev;
+    }
 
     public developerUnit(){
         bio = "";

@@ -40,7 +40,11 @@
         <activity android:name=".profileDisplayDev" />
         <activity android:name=".pmSwipe" />
         <activity android:name=".profileMatchedDev" />
-        <activity android:name=".profileMatchedProject"></activity>
+        <activity android:name=".profileMatchedProject" />
+        <activity android:name=".devManage" />
+        <activity android:name=".devActiveProjects" />
+        <activity android:name=".viewProjectDev" />
+        <activity android:name=".devPendingMatches"></activity>
     </application>
 
 </manifest>

@@ -450,14 +450,13 @@ public class devSwipe extends AppCompatActivity {
         startActivity(transfer);
     }
     public void match_transfer(View v){
-        /*
 
-        Intent transfer=new Intent(devSwipe.this,profileMatchedProject.class);
-        transfer.putExtra("TEMP_PROJECT", );
-        transfer.putExtra("TEMP_USER", );
+
+        Intent transfer=new Intent(devSwipe.this,devManage.class);
+        //transfer.putExtra("TEMP_PROJECT", );
+        //transfer.putExtra("TEMP_USER", );
         startActivity(transfer);
 
-        */
 
     }
 }

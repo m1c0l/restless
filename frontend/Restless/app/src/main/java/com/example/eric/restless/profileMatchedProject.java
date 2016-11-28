@@ -148,7 +148,7 @@ public class profileMatchedProject extends AppCompatActivity {
         }catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Intent transfer=new Intent(profileMatchedProject.this, DevPMSelectionActivity.class);
+        Intent transfer=new Intent(profileMatchedProject.this, devPendingMatches.class);
         //pass member id and go to activity that you can view member profile
         startActivity(transfer);
     }
@@ -169,7 +169,7 @@ public class profileMatchedProject extends AppCompatActivity {
         }catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Intent transfer=new Intent(profileMatchedProject.this, manageMatchesPM.class);
+        Intent transfer=new Intent(profileMatchedProject.this, devPendingMatches.class);
         //pass member id and go to activity that you can view member profile
         startActivity(transfer);
     }
