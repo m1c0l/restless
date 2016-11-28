@@ -10,27 +10,8 @@
     tools:context="com.example.eric.restless.selectProjectActivity">
 
 
-    <TextView
-        android:text="S e l e c t   P r o j e c t"
-        android:background="@drawable/roundedheader"
-        android:textStyle="bold"
-        android:textAllCaps="true"
-        android:textSize="20sp"
-        android:layout_marginTop="11dp"
-        android:radius="20dp"
-        android:id="@+id/projectName"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_height="30dp"
-        android:layout_width="10dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:padding="5dp"/>
-
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/project_list"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -38,6 +19,7 @@
         android:layout_above="@+id/createProjectButton"
         android:layout_alignParentEnd="true"
         android:background="#60FFFFFF"
+        android:layout_height="match_parent"
         android:layout_below="@+id/projectName" />
 
 
@@ -50,6 +32,21 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@drawable/roundedbutton"/>
+
+    <TextView
+        android:text="S e l e c t   P r o j e c t"
+        android:background="@drawable/roundedheader"
+        android:textStyle="bold"
+        android:textAllCaps="true"
+        android:textSize="20sp"
+        android:radius="20dp"
+        android:id="@+id/projectName"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>
