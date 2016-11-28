@@ -176,4 +176,7 @@ public class developerUnit implements Parcelable{
     public ArrayList<String> getSkillSet(){
         return skillSet;
     }
+    public String getGithubLink(){
+        return githubLink;
+    }
 }
