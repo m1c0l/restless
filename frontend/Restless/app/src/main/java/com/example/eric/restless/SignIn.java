@@ -36,7 +36,6 @@ public class SignIn extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
 
         Button signIn = (Button) findViewById(R.id.signIn);
-        Button linkedinSignIn = (Button) findViewById(R.id.linkedinSign);
         userText = (EditText) findViewById(R.id.usernameText);
         passwordText = (EditText) findViewById(R.id.passwordText);
 
@@ -110,6 +109,8 @@ public class SignIn extends AppCompatActivity {
 
                         if (bmp != null)
                             User.getUser().setImage(bmp);
+                        else
+                            User.getUser().setImage(BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.default_photo));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -125,9 +126,7 @@ public class SignIn extends AppCompatActivity {
         else
             Toast.makeText(getApplicationContext(),"Invalid username/password combination",Toast.LENGTH_SHORT).show();
     }
-    public void linkedinLogin(View v){
 
-    }
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.

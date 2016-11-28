@@ -8,7 +8,7 @@ import android.graphics.Bitmap;
 
 public class User {
     private int id;
-    private Bitmap image;
+    private Bitmap image=null;
     private String name;
     private static User u= new User();
     //accessor method
