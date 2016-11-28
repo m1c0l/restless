@@ -286,8 +286,37 @@ def delete_skill(type, skill_name, id):
         if not project:
             return error(msg='Invalid project id')
         sets = [s for s in project.skills_needed if s.id != skill_obj.id]
+        weghted_sets = [s for s in project.skill_weights if s.skill_id != skill_obj.id]
         database.update(project, skills_needed=sets)
         return flask.jsonify(id=skill_obj.id)
+
+@app.route("/api/skill/set_weight/<int:project_id>/<skill_name>/<weight>"):
+def set_skill_weight(project_id, skill_name, weight):
+    """
+    Sets the skill weight for a project with a certain skill.
+    @param project_id: Project ID.
+    @type project_id: C{int}
+    @param skill_name: The skill name.
+    @type skill_name: C{str}
+    @param weight: Skill weight, which will be bounded between 0.0 and 5.0.
+    @type weight: C{float}
+    @return: The skill weight object as JSON, or an error.
+    @rtype: C{str}
+    """
+    try:
+        weight = max(0.0, min(5.0, float(weight)))
+        weighted_skill_obj = Weighted_Skill(project_id, database.get_skill_by_name(skill_name).id, weight)
+        project_obj = database.get_project_by_id(project_id)
+        if project_obj:
+            database.insert_obj(weighted_skill_obj)
+            project_skill_weights = project_obj.skill_weights
+            project_skill_weights.append(weighted_skill_obj)
+            database.update(project_obj, skill_weights=project_skill_weights)
+            return flask.jsonify(**weighted_skill_obj.to_dict())
+        else:
+            return error(msg='Invalid project ID')
+    except:
+        return error(msg='Invalid weight')
 
 @app.route("/api/swipe/<type>/<int:swiper_id>/<int:swipee_id>/<int:direction>")
 def swipe(type, swiper_id, swipee_id, direction):

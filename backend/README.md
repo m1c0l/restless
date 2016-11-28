@@ -352,6 +352,21 @@ Response:
 }
 ```
 
+### Setting skill weight for a project
+```
+GET /api/skill/set_weight/<project_id>/<skill_name>/<new_weight>
+```
+Sets the weight of `skill_name` for project `project_id` to `new_weight`, a float between `0.0` and `5.0`.
+Response:
+```
+{
+    "id": 2
+    "skill_id": 3
+    "skill_weight": 4.0
+}
+```
+
+
 ## Swiping
 Register a swipe:
 ```
