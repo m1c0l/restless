@@ -198,6 +198,7 @@ public class projectUnit implements Parcelable {
             });
             thread.start();
             thread.join();
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -249,9 +250,27 @@ public class projectUnit implements Parcelable {
     }
     public String getImage_path(){ return image_path;}
 
-    public String getBody1(){return "hi";}
-    public String getBody2(){return "hi";}
-    public String getBody3(){return "hi";}
+    public String getBody1(){
+        String s = description+"\nThe project is willing to pay up to " + String.valueOf(payRange) + " per hour.";
+        return s;
+    }
+    public String getBody2(){
+        String s="";
+        for(int i=0;i < skills.size();i++){
+            if(i!=skills.size()-1)
+                s+=(skills.get(i)+" ");
+            else
+                s+=(skills.get(i)+".");
+        }
+        return s;
+    }
+    public String getBody3(){
+        developerUnit d=new developerUnit();
+        d.setId(getPm_id());
+        d.pullFromServer();
+        String s="GitHub link: "+ d.getGithubLink() + "\nThe following projects have been completed:";
+        return s;
+    }
     public String getBody4(){return "hi";}
 
 }
