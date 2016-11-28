@@ -30,7 +30,7 @@ def init_app(testing=False):
     from database import database
     database.db.init_app(app)
 
-def error(msg='Bad Request', status='BAD_REQUEST', code=400): #todo: add logging?
+def error(msg='Bad Request', status='BAD_REQUEST', code=400):
     """
     Sends a HTTP message with an error response
     @param msg: The error message
