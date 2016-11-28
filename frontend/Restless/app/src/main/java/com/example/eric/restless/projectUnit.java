@@ -1,5 +1,6 @@
 package com.example.eric.restless;
 
+import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -22,6 +23,7 @@ public class projectUnit implements Parcelable {
     private int id;
     private ArrayList<String> skills;
     private String title;
+    private String image_path;
 
     //construct from parcel
     public projectUnit(Parcel in) {
@@ -32,6 +34,7 @@ public class projectUnit implements Parcelable {
         id = in.readInt();
         skills = (ArrayList<String>)in.readSerializable();
         title = in.readString();
+        image_path = in.readString();
     }
     //writing to parcel
     @Override
@@ -43,6 +46,7 @@ public class projectUnit implements Parcelable {
         dest.writeInt(id);
         dest.writeSerializable(skills);
         dest.writeString(title);
+        dest.writeString(image_path);
     }
 
 
@@ -69,6 +73,7 @@ public class projectUnit implements Parcelable {
         pm_id = User.getUser().getId();
         skills = new ArrayList<>();
         title = "";
+        image_path = "";
     }
 
     public boolean newProjectToServer(){
@@ -135,6 +140,25 @@ public class projectUnit implements Parcelable {
             e.printStackTrace();
         }
 
+        //add image to server
+        if(image_path!=null) {
+            try {
+                final String url = new String("http://159.203.243.194/api/img/upload/project/" + id);
+                final httpInterface requester1 = new httpInterface();
+
+                Thread thread1 = new Thread(new Runnable() {
+                    public void run() {
+                        requester1.post_image(image_path, url);
+                    }
+                });
+                thread1.start();
+
+                thread1.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
 
         return true;
 
@@ -199,6 +223,7 @@ public class projectUnit implements Parcelable {
     public void setState(int i){
         state = i;
     }
+    public void setImage_path(String s){image_path=s;}
 
     //getters
     public String getTitle(){
@@ -222,5 +247,5 @@ public class projectUnit implements Parcelable {
     public int getId() {
         return id;
     }
-
+    public String getImage_path(){ return image_path;}
 }
