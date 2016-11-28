@@ -290,7 +290,7 @@ def delete_skill(type, skill_name, id):
         database.update(project, skills_needed=sets)
         return flask.jsonify(id=skill_obj.id)
 
-@app.route("/api/skill/set_weight/<int:project_id>/<skill_name>/<weight>"):
+@app.route("/api/skill/set_weight/<int:project_id>/<skill_name>/<weight>")
 def set_skill_weight(project_id, skill_name, weight):
     """
     Sets the skill weight for a project with a certain skill.
