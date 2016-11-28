@@ -14,7 +14,6 @@ import org.json.JSONObject;
  */
 
 public class enterSkillsEdit extends enterSkills {
-    @Override
     private developerUnit d = new developerUnit();
     protected void onCreate(Bundle savedInstanceState) {
         //getting skills
@@ -32,50 +31,46 @@ public class enterSkillsEdit extends enterSkills {
         super.onCreate(savedInstanceState);
     }
 
-    public void finishSkillsList(View v){
+    public void finishSkillsList(View v) {
 
 
         final httpInterface requester = new httpInterface();
-            for (String skill : d.getSkillSet()){
-                
-            }
-
-            //removing all skills
-
-            //updating skill set
-            for (skillUnit s : CustomListViewValuesArr){
-                try{
-                    final String url = new String("http://159.203.243.194/api/update/user/" + User.getUser().getId());
-                }
-
-
-            }
-
-
+        for (String skill : d.getSkillSet()) {
+            //deleting all skill
             try {
-                JSONArray j = new JSONArray();
-                for (skillUnit s: CustomListViewValuesArr)
-                    j.put(s.getName());
-                final JSONObject obj = new JSONObject();
-                obj.put("skill_sets", j);
-                try{
-                final String url = new String("http://159.203.243.194/api/update/user/" + User.getUser().getId());
-                    Thread thread=new Thread(new Runnable() {
+                final String url = new String("http://159.203.243.194/api/skill/delete/user/"
+                        + skill + "/" + User.getUser().getId());
+                Thread thread = new Thread(new Runnable() {
                     public void run() {
-                        JSONObject b=requester.request("POST", obj, url);
-
+                        JSONObject b = requester.request("GET", null, url);
                     }
                 });
-                    thread.start();
-                    thread.join();
-                }catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            } catch(JSONException e){
+                thread.start();
+                thread.join();
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        Intent transfer = new Intent(enterSkillsEdit.this, DevPMSelectionActivity.class);
-        startActivity(transfer);
+        }
+        for (skillUnit skill1 : CustomListViewValuesArr) {
+            String skill = skill1.getName();
+            //deleting all skill
+            try {
+                final String url = new String("http://159.203.243.194/api/skill/add/user/"
+                        + skill + "/" + User.getUser().getId());
+                Thread thread = new Thread(new Runnable() {
+                    public void run() {
+                        JSONObject b = requester.request("GET", null, url);
+                    }
+                });
+                thread.start();
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            Intent transfer = new Intent(enterSkillsEdit.this, DevPMSelectionActivity.class);
+            startActivity(transfer);
+        }
     }
 
 }
