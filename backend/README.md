@@ -461,7 +461,6 @@ Response:
 }
 ```
 ### Get stack for a project
-> Not implemented yet
 
 ```
 GET /api/stack/project/<id>
