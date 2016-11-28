@@ -156,7 +156,7 @@ public class profileMatchedProject extends AppCompatActivity {
         final httpInterface requester = new httpInterface();
         //creating new project first
         try{
-            final String url = new String("http://159.203.243.194/api/matches/accept/"
+            final String url = new String("http://159.203.243.194/api/matches/decline/"
                     + d.getId() + "/" + p.getId());
 
             Thread thread=new Thread(new Runnable() {
