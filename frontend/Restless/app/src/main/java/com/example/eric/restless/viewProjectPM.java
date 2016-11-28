@@ -29,6 +29,7 @@ public class viewProjectPM extends AppCompatActivity {
     public viewProjectPM customListView = null;
     public ArrayList<developerUnit> CustomListViewValuesArr = new ArrayList<>();
     private projectUnit project;
+    private Button  swipeButton, matchButton, lockButton, deleteButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,32 +90,51 @@ public class viewProjectPM extends AppCompatActivity {
 
 
         //setting up buttons
-        Button swipeButton = (Button) findViewById(R.id.swipe);
-        Button matchButton = (Button) findViewById(R.id.match);
-        Button lockButton = (Button) findViewById(R.id.lock);
-        Button deleteButton = (Button) findViewById(R.id.delete1);
+        swipeButton = (Button) findViewById(R.id.swipe);
+        matchButton = (Button) findViewById(R.id.match);
+        lockButton = (Button) findViewById(R.id.lock);
+        deleteButton = (Button) findViewById(R.id.delete1);
 
         //if locked, these 2 are not set and buttons are set unclickable
-        swipeButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                swipeProject(v);
-            }
-        });
-        matchButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                manageMatches(v);
-            }
-        });
-        lockButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                lockProject(v);
-            }
-        });
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                deleteProject(v);
-            }
-        });
+
+
+        if (project.getState() == 0){
+            swipeButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    swipeProject(v);
+                }
+            });
+            matchButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    manageMatches(v);
+                }
+            });
+            lockButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    lockProject(v);
+                }
+            });
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    deleteProject(v);
+                }
+            });
+        }
+        else if (project.getState() == 1) {
+            swipeButton.setEnabled(false);
+            matchButton.setEnabled(false);
+            lockButton.setEnabled(false);
+
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    deleteProject(v);
+                }
+            });
+        }
+        //shouldn't occur
+        else {
+
+        }
     }
 
     public void pullTeam(){
@@ -198,10 +218,11 @@ public class viewProjectPM extends AppCompatActivity {
         } catch (JSONException e){
             e.printStackTrace();
         }
-        //TODO wipe out pending confirmations
-
         //locking up swipe and manage swipe buttons
-
+        project.setState(1);
+        swipeButton.setEnabled(false);
+        matchButton.setEnabled(false);
+        lockButton.setEnabled(false);
     }
     public void deleteProject(View v){
         //TODO confirmation dialog(?)
