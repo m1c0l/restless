@@ -213,6 +213,8 @@ public class pmSwipe extends AppCompatActivity {
         Thread thread;
 
         final String url = new String("http://159.203.243.194/api/get/user/"+top.toString());
+        final Bitmap bmp[] = new Bitmap[1];
+        bmp[0]=null;
         thread=new Thread(new Runnable() {
             public void run() {
 
@@ -231,6 +233,10 @@ public class pmSwipe extends AppCompatActivity {
                     final String bio_page = (String)b.get("bio") +"\nDesired Wage: " + (Integer)b.get("desired_salary");
                     String temp = b.get("github_link")!=null ? b.getString("github_link") : "";
                     final String projects = "GitHub: "+temp+"\nCompleted Projects: ";
+                    URL url1 = new URL("http://159.203.243.194/api/img/get/user/"+String.valueOf(b.getInt("id")));
+                    bmp[0] = BitmapFactory.decodeStream(url1.openConnection().getInputStream());
+
+
                     runOnUiThread(new Runnable() {
                         @Override
 
@@ -238,7 +244,8 @@ public class pmSwipe extends AppCompatActivity {
                             try {
 
                                 viewer.update(bio_page,skills_desc, projects);
-
+                                if(bmp[0]!=null && bmp[0].getByteCount() > 10000)
+                                    viewer.picture.setImageBitmap(bmp[0]);
                                 viewer.name.setText((String)b.get("first_name"));
 
                             } catch (JSONException e) {
@@ -246,18 +253,16 @@ public class pmSwipe extends AppCompatActivity {
                             }
                         }
                     });
-                    URL url = new URL("http://159.203.243.194/api/img/get/user/"+String.valueOf((Integer)b.get("id")));
-                    final Bitmap bmp;
-                    try {
-                        bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                        if(bmp!=null)
-                            viewer.picture.setImageBitmap(bmp);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+
+
+
+
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
 
@@ -265,6 +270,13 @@ public class pmSwipe extends AppCompatActivity {
             }
         });
         thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
 
 
         return thread;
@@ -293,15 +305,19 @@ public class pmSwipe extends AppCompatActivity {
                     @Override
                     public void run() {
 
-                        if (true) {
+                        if (matched[0]) {
                             //set up and display popup
                             matchee_text = (TextView) container.findViewById(R.id.with);
                             matcher_text = (TextView) container.findViewById(R.id.matcher);
                             matchee_text.setText(first.name.getText().toString());
                             matchee_pic = (ImageView) container.findViewById(R.id.matcheePic);
                             matchee_pic.setImageDrawable(first.picture.getDrawable());
+                            matcher_pic = (ImageView) container.findViewById(R.id.matcherPic);
                             //TODO set up matcher photo and text
-                            matcher_text.setText("boogers");
+                            matcher_text.setText(User.getUser().getName());
+
+                            matcher_pic.setImageBitmap(User.getUser().getImage());
+
                             match_popup.showAtLocation(relativeLayout, Gravity.NO_GRAVITY, 0, 0);
 
                         }

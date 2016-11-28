@@ -284,6 +284,8 @@ public class devSwipe extends AppCompatActivity {
 
                 try {
                     final JSONObject b=(JSONObject)((JSONArray)requester.request("GET", null, url).get("results")).get(0);
+                    final Bitmap bmp[] = new Bitmap[1];
+                    bmp[0] = null;
                     String skill_desc=new String();
                     JSONArray skills = (JSONArray) b.get("skills_needed");
 
@@ -294,13 +296,16 @@ public class devSwipe extends AppCompatActivity {
                     }
                     final String skills_desc = skill_desc;
                     final JSONObject pm = (JSONObject) ((JSONArray) requester.request("GET",null,"http://159.203.243.194/api/get/user/"+String.valueOf((Integer)b.get("pm_id"))).get("results")).get(0);
+                    URL url = new URL("http://159.203.243.194/api/img/get/project/"+String.valueOf((Integer)b.get("id")));
 
+                    bmp[0] = BitmapFactory.decodeStream(url.openConnection().getInputStream());
                     runOnUiThread(new Runnable() {
                         @Override
 
                         public void run() {
                             try {
-
+                                if(bmp[0]!=null)
+                                    viewer.picture.setImageBitmap(bmp[0]);
                                 viewer.update((String)b.get("description"),skills_desc, (String)pm.get("bio"));
 
                                 viewer.name.setText((String)b.get("title"));
@@ -310,23 +315,14 @@ public class devSwipe extends AppCompatActivity {
                             }
                         }
                     });
-                    URL url = new URL("http://159.203.243.194/api/img/get/project/"+String.valueOf((Integer)b.get("id")));
-                    final Bitmap bmp;
-                    try {
-                        bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                        if(bmp!=null)
-                            viewer.picture.setImageBitmap(bmp);
+
+
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
+                    } catch (JSONException e1) {
+                    e1.printStackTrace();
                 }
-
-
-            }
+                    }
         });
         thread.start();
 
