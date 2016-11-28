@@ -79,7 +79,6 @@ public class manageMatchesPM extends AppCompatActivity {
     /*****************  This function used by adapter ****************/
     public void onItemClick(int mPosition)
     {
-
         Intent transfer=new Intent(manageMatchesPM.this, profileMatchedDev.class);
         //pass member id and go to activity that you can view member profile
         transfer.putExtra("TEMP_PROJECT", project);

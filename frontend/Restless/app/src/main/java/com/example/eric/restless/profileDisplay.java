@@ -16,19 +16,18 @@ import static java.lang.Math.abs;
  * Created by Eric on 11/25/2016.
  */
 
-public class profileDisplayView extends AppCompatActivity {
+public abstract class profileDisplay extends AppCompatActivity {
     protected TextView body1,body2,body3,body4, title;
     private ImageView profile_pic;
     private GestureDetectorCompat gdetect;
     private ViewFlipper textflipper;
 
-    public profileDisplayView() {
+    public profileDisplay() {
     }
 
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_display_view);
-
 
         body1=(TextView )findViewById(R.id.Text1);
         body2=(TextView )findViewById(R.id.Text2);
@@ -67,52 +66,51 @@ public class profileDisplayView extends AppCompatActivity {
             if(horizontal_move) {
 
                 if (horizontal > 0) {
-                    textflipper.setInAnimation(profileDisplayView.this, R.anim.in_from_left);
-                    textflipper.setOutAnimation(profileDisplayView.this, R.anim.out_to_right);
+                    textflipper.setInAnimation(profileDisplay.this, R.anim.in_from_left);
+                    textflipper.setOutAnimation(profileDisplay.this, R.anim.out_to_right);
                     textflipper.showPrevious();
                 } else {
 
-                    textflipper.setInAnimation(profileDisplayView.this, R.anim.in_from_right);
-                    textflipper.setOutAnimation(profileDisplayView.this, R.anim.out_to_left);
+                    textflipper.setInAnimation(profileDisplay.this, R.anim.in_from_right);
+                    textflipper.setOutAnimation(profileDisplay.this, R.anim.out_to_left);
                     textflipper.showNext();
                 }
             }
             return true;
         }
 
-            @Override
-            public void onShowPress(MotionEvent event){
-            }
-
-            @Override
-            public boolean onSingleTapUp(MotionEvent event) {
-                return true;
-            }
-
-            @Override
-            public boolean onDoubleTap(MotionEvent event) {
-                return true;
-            }
-
-            @Override
-            public boolean onDoubleTapEvent(MotionEvent event) {
-
-                return true;
-            }
-
-            @Override
-            public boolean onSingleTapConfirmed(MotionEvent event) {
-
-                return true;
-            }
-
-        }
         @Override
-        public boolean onTouchEvent(MotionEvent event){
-            this.gdetect.onTouchEvent(event);
-            return super.onTouchEvent(event);
+        public void onShowPress(MotionEvent event){
         }
-        public void setText(){
-            body1.setText("HELLO WORLD");
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent event) {
+            return true;
         }
+
+        @Override
+        public boolean onDoubleTap(MotionEvent event) {
+            return true;
+        }
+
+        @Override
+        public boolean onDoubleTapEvent(MotionEvent event) {
+
+            return true;
+        }
+
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent event) {
+
+            return true;
+        }
+
+    }
+    @Override
+    public boolean onTouchEvent(MotionEvent event){
+        this.gdetect.onTouchEvent(event);
+        return super.onTouchEvent(event);
+    }
+    public abstract void setText();
+
 }

@@ -33,11 +33,12 @@
         <activity android:name=".devMatches" />
         <activity android:name=".editProfileMainScreen" />
         <activity android:name=".viewProjectPM" />
-        <activity android:name=".profileDisplayManage" />
         <activity android:name=".changePassword" />
         <activity android:name=".manageMatchesPM" />
         <activity android:name=".updateBio" />
-        <activity android:name=".pmSwipe"></activity>
+        <activity android:name=".profileDisplayDev" />
+        <activity android:name=".pmSwipe" />
+        <activity android:name=".profileMatchedDev" />
     </application>
 
 </manifest>
