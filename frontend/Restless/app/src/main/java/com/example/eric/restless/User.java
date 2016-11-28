@@ -16,7 +16,9 @@ public class User {
         return u;
     }
     //private constructor
-    private User(){}
+    private User(){
+        id = 1;
+    }
     public Bitmap getImage(){return image;}
     public void setImage(Bitmap b){image=b;}
     public String getName(){return name;}

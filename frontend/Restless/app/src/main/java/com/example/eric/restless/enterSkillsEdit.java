@@ -2,6 +2,7 @@ package com.example.eric.restless;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import org.json.JSONArray;
@@ -14,10 +15,10 @@ import org.json.JSONObject;
 
 public class enterSkillsEdit extends enterSkills {
     @Override
+    private developerUnit d = new developerUnit();
     protected void onCreate(Bundle savedInstanceState) {
         //getting skills
         //doing query of user skills
-        developerUnit d = new developerUnit();
         d.setId(User.getUser().getId());
         d.pullFromServer();
 
@@ -32,10 +33,27 @@ public class enterSkillsEdit extends enterSkills {
     }
 
     public void finishSkillsList(View v){
+
+
         final httpInterface requester = new httpInterface();
+            for (String skill : d.getSkillSet()){
+                
+            }
+
+            //removing all skills
+
             //updating skill set
+            for (skillUnit s : CustomListViewValuesArr){
+                try{
+                    final String url = new String("http://159.203.243.194/api/update/user/" + User.getUser().getId());
+                }
+
+
+            }
+
+
             try {
-                JSONArray j = new JSONArray("skill_sets");
+                JSONArray j = new JSONArray();
                 for (skillUnit s: CustomListViewValuesArr)
                     j.put(s.getName());
                 final JSONObject obj = new JSONObject();
