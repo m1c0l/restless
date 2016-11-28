@@ -175,4 +175,11 @@ public class profileMatchedProject extends AppCompatActivity {
         //pass member id and go to activity that you can view member profile
         startActivity(transfer);
     }
+    public void back(View v){
+        Intent transfer=new Intent(profileMatchedProject.this, devPendingMatches.class);
+        //pass member id and go to activity that you can view member profile
+        startActivity(transfer);
+    }
+
+
 }

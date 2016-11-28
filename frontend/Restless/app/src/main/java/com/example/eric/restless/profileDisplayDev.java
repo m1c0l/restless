@@ -1,9 +1,11 @@
 package com.example.eric.restless;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -14,6 +16,10 @@ import java.net.URL;
  */
 
 public class profileDisplayDev extends profileDisplay{
+    public void back(View v){
+        Intent transfer = new Intent(profileDisplayDev.this, PMActivity.class);
+        startActivity(transfer);
+    }
     public void setText(){
         developerUnit d;
         Bundle b = getIntent().getExtras();

@@ -90,10 +90,11 @@ public class manageMatchesPM extends AppCompatActivity {
     }
 
 
-        public void goBack(View v){
-            Intent transfer=new Intent(manageMatchesPM.this,viewProjectPM.class);
-            startActivity(transfer);
-        }
+    public void goBack(View v){
+        Intent transfer=new Intent(manageMatchesPM.this,viewProjectPM.class);
+        transfer.putExtra("TEMP_PROJECT", project);
+        startActivity(transfer);
+    }
 
 
 

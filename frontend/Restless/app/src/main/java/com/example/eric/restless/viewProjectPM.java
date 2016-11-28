@@ -45,6 +45,7 @@ public class viewProjectPM extends AppCompatActivity {
         //getting data from previous activity
         Bundle b = getIntent().getExtras();
         project = b.getParcelable("TEMP_PROJECT");
+        project.pullFromServer();
 
         projectName.setText(project.getTitle());
         projectDescription.setText(project.getDescription());

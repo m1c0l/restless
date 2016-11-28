@@ -24,6 +24,7 @@ public abstract class profileDisplay extends AppCompatActivity {
 
     public profileDisplay() {
     }
+    public abstract void back(View v);
 
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);

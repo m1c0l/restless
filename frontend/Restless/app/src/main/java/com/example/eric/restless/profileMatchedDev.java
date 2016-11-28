@@ -212,5 +212,11 @@ public class profileMatchedDev extends AppCompatActivity {
         transfer.putExtra("TEMP_PROJECT", p);
         startActivity(transfer);
     }
+    public void back(View v){
+        Intent transfer=new Intent(profileMatchedDev.this, manageMatchesPM.class);
+        //pass member id and go to activity that you can view member profile
+        transfer.putExtra("TEMP_PROJECT", p);
+        startActivity(transfer);
+    }
 
 }
