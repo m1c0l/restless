@@ -107,7 +107,7 @@
                     android:layout_height="fill_parent"
                     android:background="@drawable/rounded_text"
                     android:id="@+id/Text4"
-
+                    android:layout_marginTop="20dp"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true" />

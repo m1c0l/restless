@@ -1,6 +1,8 @@
 package com.example.eric.restless;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +15,10 @@ import android.widget.ViewFlipper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import static java.lang.Math.abs;
 
@@ -47,6 +53,36 @@ public class profileMatchedDev extends AppCompatActivity {
         body4=(TextView) findViewById(R.id.Text4);
         title=(TextView )findViewById(R.id.TextFieldTitle1);
         profile_pic = (ImageView) findViewById(R.id.dev_profile_pic1);
+        Thread thread= new Thread(new Runnable() {
+            public void run() {
+                try {
+                    URL url = new URL("http://159.203.243.194/api/img/get/user/" + String.valueOf(d.getId()));
+                    final Bitmap bmp[] = new Bitmap[1];
+                    bmp[0] = null;
+                    bmp[0] = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                    runOnUiThread(new Runnable() {
+                        @Override
+
+                        public void run() {
+                            if (bmp[0] != null && bmp[0].getByteCount() > 10000)
+                                profile_pic.setImageBitmap(bmp[0]);
+                        }
+                    });
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         textflipper = (ViewFlipper) findViewById(R.id.textFlipper1);
         //populate by polling website ?
         gdetect = new GestureDetectorCompat(this, new GestureListener());
@@ -176,4 +212,5 @@ public class profileMatchedDev extends AppCompatActivity {
         transfer.putExtra("TEMP_PROJECT", p);
         startActivity(transfer);
     }
+
 }
