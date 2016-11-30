@@ -52,10 +52,18 @@ if __name__ == '__main__':
             User(first_name="John", last_name="Dough", email="xyz", username="jd", bio="m4st3r h4x0r"),
             User(first_name="Mike", last_name="Li", email="mail", username="mic", bio="admin"),
             User(first_name="Rich", last_name="Sun", email="rich", username="rich", bio="waffle the bunny"),
-            User(first_name="Vince", last_name="Jin", email="jinir", username="vince", bio="flask dev")
+            User(first_name="Vince", last_name="Jin", email="vince@jin.com", username="vince", bio="flask dev")
         ]
         #set high salary for user 3
         user_arr[2].desired_salary = 200
+        #yo Vince gets a bio
+        vince = user_arr[3]
+        vince.bio = "Flask developer who likes servers and spaghetti code. Works on the Restless app part time and takes CS 130."
+        vince.desired_salary = 5
+        vince.phone = "3103103100"
+        vince.github_link = "https://github.com/vincentjinir"
+        vince.city = "Los Angeles"
+
 
         for i in range(25):
             fname = fake.first_name()
@@ -85,11 +93,15 @@ if __name__ == '__main__':
 
 
         project_arr = [
-            Project(title="H4cks", description="M4st3r h4cks 4 dayz", pm_id=user_arr[0].id),
+            Project(title="Restless", description="Mathing developers with projects.", pm_id=user_arr[0].id),
             Project(title="H4cks2", description="M4st3r h4cks again", pm_id=user_arr[3].id),
             Project(title="H4cks3", description="M4st3r h4cks in Minecraft", pm_id=user_arr[3].id),
             Project(title="H4cks4", description="M4st3r h4cks IRL", pm_id=user_arr[2].id)
         ]
+        #restless project
+        restless = project_arr[0]
+        restless.description = "A Tinder-like app where developers can swipe on projects they'd like to work on, and project managers can also accept or decline candidates by swiping."
+        restless.pay_range = 10
         for i in range(25):
             title = ' '.join(fake.words())
             desc = fake.paragraph()
