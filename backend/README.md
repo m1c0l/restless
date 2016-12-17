@@ -385,7 +385,9 @@ GET /api/swipe/<type>/<swiper_id>/<swipee_id>/<direction>
 ### Example
 If user with ID `3` swipes *up* on the project with ID `2`, we can register
 that as follows:
-http://159.203.243.194/api/swipe/user/3/2/1
+```
+GET /api/swipe/user/3/2/1
+```
 
 The server will respond with the ID of the complement swipe in the database. If
 there is a match, this will return a positive number.
