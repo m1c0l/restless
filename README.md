@@ -21,12 +21,15 @@ If the user chooses to manage their account as a Developer, he or she will be ab
 ## Screenshots
 
 User profile
+
 ![User profile image](https://github.com/m1c0l/restless/blob/master/screenshots/user.png?raw=true)
 
 Project profile
+
 ![Project profile image](https://github.com/m1c0l/restless/blob/master/screenshots/project.png?raw=true)
 
 Developer matching with project
+
 ![Match image](https://github.com/m1c0l/restless/blob/master/screenshots/match.png?raw=true)
 
 ## Design
