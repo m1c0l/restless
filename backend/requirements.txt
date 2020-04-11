@@ -32,7 +32,7 @@ jsonpointer==1.0
 lxml==3.3.3
 oauth==1.0.1
 prettytable==0.7.2
-pyOpenSSL==0.13
+pyOpenSSL==17.5.0
 pycurl==7.19.3
 pyinotify==0.9.4
 pyserial==2.6
