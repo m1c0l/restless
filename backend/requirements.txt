@@ -1,6 +1,6 @@
 Cheetah==2.4.4
 Faker==0.7.3
-Flask==0.11.1
+Flask==1.0
 Flask-SQLAlchemy==2.1
 Jinja2==2.8
 Landscape-Client==14.12
