@@ -24,7 +24,7 @@ coverage==4.2
 distro-info==0.12
 epydoc==3.0.1
 euca2ools==3.0.1
-html5lib==0.999
+html5lib==0.999999999
 ipaddress==1.0.17
 itsdangerous==0.24
 jsonpatch==1.3
